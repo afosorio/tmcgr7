@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/conversionFragment">
+
+    <fragment
+        android:id="@+id/conversionFragment"
+        android:name="com.grupo7.moneychange.ui.conversion.ConversionFragment"
+        android:label="Conversion Page"
+        tools:layout="@layout/conversion_fragment" >
+        <action
+            android:id="@+id/action_conversionFragment_to_detailConversionFragment"
+            app:destination="@id/detailConversionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailConversionFragment"
+        android:name="com.grupo7.moneychange.ui.detail.DetailConversionFragment"
+        android:label="Detail Page"
+        tools:layout="@layout/detail_conversion_fragment" >
+        <argument
+            android:name="stringDemo"
+            app:argType="string"
+            android:defaultValue='"Grupo07"' />
+    </fragment>
+</navigation>
