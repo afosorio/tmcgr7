@@ -30,7 +30,6 @@ class ConversionFragment : Fragment() {
 
         conversionViewModel = ViewModelProviders.of(this@ConversionFragment).get(ConversionViewModel::class.java)
         dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {
-            viewModel = conversionViewModel
             handler = EventHandler()
         }
 
