@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //region location
     private suspend fun getLocation(): Location? {
         val success = requestPermission()
         return if (success) findLastLocation() else null
@@ -67,7 +68,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     @SuppressLint("MissingPermission")
     private suspend fun findLastLocation(): Location? =
         suspendCancellableCoroutine { continuation ->
@@ -75,6 +75,6 @@ class MainActivity : AppCompatActivity() {
                 continuation.resume(it.result)
             }
         }
-
+//endregion
 
 }
