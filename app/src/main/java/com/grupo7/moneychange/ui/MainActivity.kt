@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 //endregion
 
     companion object {
-        const val DEFAULT_COUNTRY_NAME = "Colombias"
+        const val DEFAULT_COUNTRY_NAME = "Rusia"
     }
 
 }
