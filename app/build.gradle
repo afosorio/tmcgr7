@@ -14,6 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary true
     }
     buildTypes {
         release {
@@ -32,6 +33,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$support.appcompat"
     implementation "androidx.core:core-ktx:$core_ktx"
     implementation "androidx.constraintlayout:constraintlayout:$support.constraintlayout"
+    implementation "androidx.recyclerview:recyclerview:$support.recyclerview"
 
     //retrofit
     implementation "com.squareup.moshi:moshi-kotlin:$retrofit.moshi"
