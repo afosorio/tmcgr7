@@ -1,7 +1,7 @@
 package com.grupo7.moneychange.data.dto
 
 /**
- *
+ * afosorio 23.11.2019
  */
 data class Quotes(
     val USDAED: Double,
