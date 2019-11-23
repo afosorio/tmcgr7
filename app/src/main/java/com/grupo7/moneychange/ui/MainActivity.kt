@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         val fromLocation = location?.let {
             geocoder.getFromLocation(location.latitude, location.longitude, 1)
         }
-        return fromLocation?.firstOrNull()?.countryName ?: "Colombias"
+        return fromLocation?.firstOrNull()?.countryName ?: DEFAULT_COUNTRY_NAME
 
     }
 
@@ -76,5 +76,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 //endregion
+
+    companion object {
+        const val DEFAULT_COUNTRY_NAME = "Colombias"
+    }
 
 }
