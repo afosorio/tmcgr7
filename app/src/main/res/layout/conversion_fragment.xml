@@ -1,38 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable name="handler" type="com.grupo7.moneychange.ui.conversion.EventHandler"/>
-
+        <variable
+            name="handler"
+            type="com.grupo7.moneychange.ui.conversion.EventHandler" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/frameLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.conversion.ConversionFragment">
+        android:fillViewport="true"
+        tools:context=".ui.MainActivity">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go to detail page"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick= "@{(view) -> handler.onHandleClick(view)}"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/gps_img"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="@id/location_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/location_text"
+                app:srcCompat="@drawable/ic_gps_off" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/location_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/current_location"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/gps_img"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/conversion_from_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"
+                app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@android:layout/simple_spinner_item" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/conversion_from_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:hint="1"
+                android:lines="1"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/conversion_from_spinner"
+                app:layout_constraintTop_toBottomOf="@id/location_text" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/exchange_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:layout_constraintBottom_toTopOf="@id/conversion_to"
+                app:layout_constraintEnd_toEndOf="@id/conversion_from_edit"
+                app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
+                app:layout_constraintTop_toBottomOf="@id/conversion_from_edit"
+                app:srcCompat="@drawable/ic_exchange" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/conversion_to_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="80dp"
+                app:layout_constraintBottom_toBottomOf="@id/conversion_to"
+                app:layout_constraintEnd_toEndOf="@id/conversion_from_spinner"
+                app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
+                tools:listitem="@android:layout/simple_spinner_item" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/conversion_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:text="1"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="@id/conversion_from_edit"
+                app:layout_constraintStart_toStartOf="@id/conversion_from_edit"
+                app:layout_constraintTop_toBottomOf="@id/conversion_from_edit" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/rate_conversion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/conversion_to"
+                tools:text="@string/conversion_rate_hint" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/history_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/history"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rate_conversion" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:padding="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/history_title"
+                tools:itemCount="7"
+                tools:listitem="@layout/item_history" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </layout>
-
-
 

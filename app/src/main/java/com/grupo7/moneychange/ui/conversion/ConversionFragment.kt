@@ -1,20 +1,19 @@
 package com.grupo7.moneychange.ui.conversion
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.Observer
+import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 
 class ConversionFragment : Fragment() {
+
+    var list_of_items = arrayOf("USD", "COP", "EUR")
 
     companion object {
         fun newInstance() = ConversionFragment()
@@ -34,7 +33,23 @@ class ConversionFragment : Fragment() {
             handler = EventHandler()
         }
 
+        initViews()
+
         return dataBindingView.root
+    }
+
+    private fun initViews() {
+        context?.let {
+            val adapter = ArrayAdapter(it, R.layout.spinner_item, list_of_items)
+            adapter.setDropDownViewResource(R.layout.spinner_item)
+            dataBindingView.conversionFromSpinner.apply {
+                this.adapter = adapter
+            }
+            dataBindingView.conversionToSpinner.apply {
+                this.adapter = adapter
+            }
+        }
+
     }
 }
 
