@@ -29,6 +29,7 @@ class ConversionFragment : Fragment() {
     ): View? {
 
         conversionViewModel = ViewModelProviders.of(this@ConversionFragment).get(ConversionViewModel::class.java)
+
         dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {
             handler = EventHandler()
         }
@@ -41,6 +42,7 @@ class EventHandler {
     fun onHandleClick(view: View) {
         val action = ConversionFragmentDirections
             .actionConversionFragmentToDetailConversionFragment("ho")
+
         view.findNavController().navigate(action)
     }
 }
