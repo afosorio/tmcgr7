@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConversionFragment : Fragment() {
 
@@ -19,7 +22,7 @@ class ConversionFragment : Fragment() {
         fun newInstance() = ConversionFragment()
     }
 
-    private lateinit var conversionViewModel: ConversionViewModel
+    private val conversionViewModel: ConversionViewModel by viewModel()
     private lateinit var dataBindingView: ConversionFragmentBinding
 
     override fun onCreateView(
@@ -27,11 +30,17 @@ class ConversionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        conversionViewModel = ViewModelProviders.of(this@ConversionFragment).get(ConversionViewModel::class.java)
+        //conversionViewModel = ViewModelProviders.of(this@ConversionFragment).get(ConversionViewModel::class.java)
 
         dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {
             handler = EventHandler()
         }
+
+        //Aqui con el Observer realizas el llamado el servicio
+        conversionViewModel.getLive().observe(this, Observer {
+            //Aqui se obtuvo la respuesta de tipo LiveResponse
+            Toast.makeText(context, it.privacy, Toast.LENGTH_LONG).show()
+        })
 
         initViews()
 

@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.Repository
+package com.grupo7.moneychange.repository
 
 
 import android.app.Application

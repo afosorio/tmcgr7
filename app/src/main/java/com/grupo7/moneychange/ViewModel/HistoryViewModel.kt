@@ -2,7 +2,7 @@ package com.grupo7.moneychange.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.grupo7.moneychange.Repository.HistoryRepository
+import com.grupo7.moneychange.repository.HistoryRepository
 import com.grupo7.moneychange.data.entity.History
 
 /**

@@ -2,7 +2,7 @@ package com.grupo7.moneychange.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.grupo7.moneychange.Repository.CurrencyRepository
+import com.grupo7.moneychange.repository.CurrencyRepository
 import com.grupo7.moneychange.data.entity.Currency
 
 /**
