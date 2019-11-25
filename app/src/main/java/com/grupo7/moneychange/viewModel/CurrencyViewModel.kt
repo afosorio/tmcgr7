@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.ViewModel
+package com.grupo7.moneychange.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
