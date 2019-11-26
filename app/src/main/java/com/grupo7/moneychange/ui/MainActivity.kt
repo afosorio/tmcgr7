@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     var list_of_items = arrayOf("USD", "COP", "EUR")
-    private val countryRepository = CountryRepository(this@MainActivity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,12 +20,14 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(this, R.layout.spinner_item, list_of_items)
         adapter.setDropDownViewResource(R.layout.spinner_item)
-        conversion_from_spinner!!.adapter = adapter
-        conversion_to_spinner!!.adapter = adapter
+        conversion_from_spinner?.adapter = adapter
+        conversion_to_spinner?.adapter = adapter
 
 
         GlobalScope.launch(Dispatchers.Main) {
-            location_text?.text = countryRepository.currentCountry()
+            val countryRepository = CountryRepository(this@MainActivity)
+            val text = "estás en ${countryRepository.currentCountry()}"
+            location_text?.text = text
         }
 
 

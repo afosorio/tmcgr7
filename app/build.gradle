@@ -63,8 +63,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:$play_services"
 
     //coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version_core"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version_android"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines.version_core"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines.version_android"
 
     //permission
     implementation "com.karumi:dexter:$dexter"
