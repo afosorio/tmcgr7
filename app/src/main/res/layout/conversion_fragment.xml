@@ -8,6 +8,10 @@
         <variable
             name="handler"
             type="com.grupo7.moneychange.ui.conversion.EventHandler" />
+
+        <variable
+            name="viewModel"
+            type="com.grupo7.moneychange.ui.conversion.ConversionViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -62,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:hint="1"
+                android:text="@={viewModel.textView}"
                 android:lines="1"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"

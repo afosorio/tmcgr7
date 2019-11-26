@@ -27,3 +27,11 @@ class RetrofitLiveData<T>(private val call: Call<T>) : LiveData<T>(), Callback<T
         value = null
     }
 }
+
+//
+//interface CustomResponse{
+//
+// fun response
+//}
+//
+//enum class ResponseType<T> {S, E}
