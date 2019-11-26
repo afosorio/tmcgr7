@@ -17,7 +17,7 @@ buildscript {
 
         retrofit = ['moshi'             : '1.9.2',
                     'retrofit'          : '2.6.2',
-                    'loggin_interceptor': '4.2.2',
+                    'loggin_interceptor': '3.12.5',
                     'converter_moshi'   : '2.6.2']
 
         test = ['junit'        : '4.12',
