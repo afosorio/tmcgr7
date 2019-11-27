@@ -1,6 +1,6 @@
 package com.grupo7.moneychange.repository
 
-import android.app.Application
+import android.content.Context
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,9 +11,9 @@ import com.grupo7.moneychange.data.entity.Currency
 /**
  * afosorio 23.11.2019
  */
-class CurrencyRepository(application: Application) {
+class CurrencyRepository(context: Context) {
 
-    private val currencyDao: CurrencyDao? = MoneyChangeDb.getInstance(application)?.currencyDao()
+    private val currencyDao: CurrencyDao? = MoneyChangeDb.getInstance(context)?.currencyDao()
 
     fun insert(currency: Currency) {
         if (currency != null) InsertAsyncTask(currencyDao).execute(currency)
