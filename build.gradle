@@ -3,7 +3,7 @@
 buildscript {
     ext {
         sdk = ['compileSdk': 29,
-               'minSdk'    : 15,
+               'minSdk'    : 21,
                'targetSdk' : 29]
 
         support = ['appcompat'       : '1.1.0',

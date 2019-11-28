@@ -28,10 +28,12 @@ class RetrofitLiveData<T>(private val call: Call<T>) : LiveData<T>(), Callback<T
     }
 }
 
-//
-//interface CustomResponse{
-//
-// fun response
-//}
-//
-//enum class ResponseType<T> {S, E}
+
+enum class ResultManager{SUCCESS, FEALURE, ERROR}
+
+interface resultado{
+
+    fun success()
+    fun fealure()
+    fun error()
+}
