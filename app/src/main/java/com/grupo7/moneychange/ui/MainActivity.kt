@@ -1,36 +1,44 @@
 package com.grupo7.moneychange.ui
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.repository.CountryRepository
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.conversion_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    var list_of_items = arrayOf("USD", "COP", "EUR")
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = ArrayAdapter(this, R.layout.spinner_item, list_of_items)
-        adapter.setDropDownViewResource(R.layout.spinner_item)
-        conversion_from_spinner?.adapter = adapter
-        conversion_to_spinner?.adapter = adapter
-
+        val navController: NavController = findNavController(R.id.navHostFragment)
+        appBarConfiguration =
+            AppBarConfiguration.Builder(R.id.conversionFragment)
+                .build()
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         GlobalScope.launch(Dispatchers.Main) {
             val countryRepository = CountryRepository(this@MainActivity)
             val text = "estás en ${countryRepository.currentCountry()}"
             location_text?.text = text
         }
+    }
 
 
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.navHostFragment).navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
 

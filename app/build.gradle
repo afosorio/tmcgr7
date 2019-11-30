@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
+
 apply plugin: 'kotlin-android'
+
 apply plugin: 'kotlin-android-extensions'
+
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion sdk.compileSdk
@@ -22,24 +26,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 repositories {
     jcenter()
 }
 
 dependencies {
-
-    //Persistence
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    kapt "android.arch.persistence.room:compiler:3.5.2"
-    implementation "android.arch.lifecycle:extensions:1.1.1" //ViewModel and LiveData
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$support.appcompat"
     implementation "androidx.core:core-ktx:$core_ktx"
     implementation "androidx.constraintlayout:constraintlayout:$support.constraintlayout"
     implementation "androidx.recyclerview:recyclerview:$support.recyclerview"
+    implementation "androidx.legacy:legacy-support-v4:$support.legacy"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Persistence
+    implementation "android.arch.persistence.room:runtime:$room.runtime"
+    kapt "android.arch.persistence.room:compiler:$room.compiler"
+    implementation "android.arch.lifecycle:extensions:$room.extensions" //ViewModel and LiveData
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     //retrofit
     implementation "com.squareup.moshi:moshi-kotlin:$retrofit.moshi"
