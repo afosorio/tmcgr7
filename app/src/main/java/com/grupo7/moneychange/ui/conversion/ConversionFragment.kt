@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
@@ -42,7 +41,12 @@ class ConversionFragment : Fragment() {
             Toast.makeText(context, it.privacy, Toast.LENGTH_LONG).show()
         })
 
+        conversionViewModel.country.observe(this, Observer {
+            dataBindingView.locationText.text = it
+        })
+
         initViews()
+
 
         return dataBindingView.root
     }

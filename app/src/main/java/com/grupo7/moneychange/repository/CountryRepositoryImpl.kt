@@ -7,24 +7,25 @@ import android.location.Geocoder
 import android.location.Location
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.grupo7.moneychange.data.repositories.CountryRepository
 import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class CountryRepository(activity: Activity) {
+class CountryRepositoryImpl(activity: Activity) : CountryRepository {
 
     private val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
     private val geocoder = Geocoder(activity)
     private val permissionChecker = PermissionChecker(activity, ACCESS_FINE_LOCATION)
-    //region location
 
-    suspend fun currentCountry(): String = getLocation().toCountry()
+    override suspend fun getCountryLocation(): String {
+        return getLocation().toCountry()
+    }
 
     private suspend fun getLocation(): Location? {
         val success = permissionChecker.requestPermission()
         return if (success) findLastLocation() else null
     }
-
 
     @SuppressLint("MissingPermission")
     private suspend fun findLastLocation(): Location? =
@@ -41,8 +42,6 @@ class CountryRepository(activity: Activity) {
         return country?.firstOrNull()?.countryName ?: DEFAULT_COUNTRY_NAME
 
     }
-
-//endregion
 
     companion object {
         const val DEFAULT_COUNTRY_NAME = "Rusia"
