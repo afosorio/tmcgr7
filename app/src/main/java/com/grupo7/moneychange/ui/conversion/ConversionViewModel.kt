@@ -1,5 +1,7 @@
 package com.grupo7.moneychange.ui.conversion
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,18 +24,20 @@ class ConversionViewModel(
     private var _currencyList = MutableLiveData<List<Currency>>().apply {
         value = emptyList()
     }
-    var currencyList: LiveData<List<Currency>> = _currencyList
+    var currencyList: MutableLiveData<List<Currency>> = MutableLiveData()
+    var list2: List<Currency> = emptyList()
 
     var textView: MutableLiveData<String> = MutableLiveData()
 
     init {
         viewModelScope.launch {
             initServiceCall()
-            getRoomInfo()
         }
     }
     private fun getRoomInfo(){
-        currencyList = currentRepository.getAll()
+        currentRepository.getAll().observeForever {
+            currencyList.value = it
+        }
     }
     private fun initServiceCall() {
         liveRepository.getLive().observeForever {
@@ -66,7 +70,7 @@ class ConversionViewModel(
             currentRepository.insert(objectToSave)
 //            listFromServer.add(objectToSave)
         }
-
+        getRoomInfo()
 //        _currencyList.value = listFromServer
 
     }

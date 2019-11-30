@@ -65,7 +65,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"
                     app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:coin_values="@{viewModel.currencyList}"
+                    app:coin_values="@{viewModel.list2}"
                     tools:listitem="@android:layout/simple_spinner_item" />
 
 <!--                <androidx.appcompat.widget.AppCompatSpinner-->
