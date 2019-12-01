@@ -17,16 +17,8 @@ class ConversionViewModel(
     private val currentRepository: CurrencyRepository
 ) : ViewModel() {
 
-
-    private var _serverResponse: MutableLiveData<LiveResponse> = MutableLiveData()
-    val serverResponse: LiveData<LiveResponse> = _serverResponse
-
-    private var _currencyList = MutableLiveData<List<Currency>>().apply {
-        value = emptyList()
-    }
     var currencyList: MutableLiveData<List<Currency>> = MutableLiveData()
     var list2: List<Currency> = emptyList()
-
     var textView: MutableLiveData<String> = MutableLiveData()
 
     init {
@@ -58,9 +50,7 @@ class ConversionViewModel(
 
     private fun saveData(coins: MutableMap<String, Double>) {
 
-//        val listFromServer = mutableListOf<Currency>()
         coins.forEach {
-
             val objectToSave = Currency(
                 0,
                 it.key,
@@ -68,10 +58,8 @@ class ConversionViewModel(
                 it.value
             )
             currentRepository.insert(objectToSave)
-//            listFromServer.add(objectToSave)
         }
         getRoomInfo()
-//        _currencyList.value = listFromServer
 
     }
 }

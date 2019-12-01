@@ -68,17 +68,6 @@
                     app:coin_values="@{viewModel.list2}"
                     tools:listitem="@android:layout/simple_spinner_item" />
 
-<!--                <androidx.appcompat.widget.AppCompatSpinner-->
-<!--                    android:id="@+id/conversion_from_spinner"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="0dp"-->
-<!--                    android:layout_marginTop="40dp"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"-->
-<!--                    app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:coin_values_two="@{viewModelV2.currencyList2}"-->
-<!--                    tools:listitem="@android:layout/simple_spinner_item" />-->
-
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/conversion_from_edit"
                     android:layout_width="0dp"

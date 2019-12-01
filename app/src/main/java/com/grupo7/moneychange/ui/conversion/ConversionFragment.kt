@@ -24,11 +24,11 @@ class ConversionFragment : Fragment() {
         dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = conversionViewModel
         }
-observerList()
+        observerList()
         return dataBindingView.root
     }
 
-    fun observerList(){
+    private fun observerList(){
         conversionViewModel.currencyList.observe(this, Observer {
             conversionViewModel.list2 = it
             dataBindingView.notifyChange()
@@ -39,5 +39,4 @@ observerList()
         super.onActivityCreated(savedInstanceState)
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
     }
-
 }
