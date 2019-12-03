@@ -7,7 +7,6 @@ import com.grupo7.moneychange.data.repositories.CountryRepository
 import com.grupo7.moneychange.data.repositories.LiveRepository
 import com.grupo7.moneychange.data.repositories.LiveRepositoryImpl
 import com.grupo7.moneychange.repository.CountryRepositoryImpl
-import com.grupo7.moneychange.ui.MainActivity
 import com.grupo7.moneychange.ui.conversion.ConversionViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -19,7 +18,7 @@ val conversionModule = module {
     }
 
     factory<LiveRepository> { LiveRepositoryImpl(liveApi = get()) }
-    factory<CountryRepository> { CountryRepositoryImpl(activity = androidContext() as MainActivity) }
+    factory<CountryRepository> { CountryRepositoryImpl(context = androidContext()) }
 
 }
 val retrofitModule = module {
