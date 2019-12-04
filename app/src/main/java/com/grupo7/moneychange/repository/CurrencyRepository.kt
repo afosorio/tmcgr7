@@ -28,6 +28,26 @@ class CurrencyRepository(context: Context) {
 
     fun getAll(): LiveData<List<Currency>> = allCurrency
 
+    fun insertCurrencyList(newList : List<Currency>){
+
+        var oldList= getAll().value
+        var mapList : MutableMap<String, Currency> = mutableMapOf()
+
+        if (oldList != null) {
+            for(currency in oldList){
+                mapList[currency.description] = currency
+            }
+        }
+
+        for (newCurrency in newList){
+
+            val oldCurrency : Currency? = mapList.get(newCurrency.description)
+            if(!oldCurrency?.description.equals(newCurrency.description)){
+                insert(newCurrency)
+            }
+        }
+    }
+
     private class InsertAsyncTask(private val currencyDao: CurrencyDao?) :
         AsyncTask<Currency, Void, Void>() {
         override fun doInBackground(vararg currencys: Currency?): Void? {
@@ -37,5 +57,6 @@ class CurrencyRepository(context: Context) {
             return null
         }
     }
+
 }
 
