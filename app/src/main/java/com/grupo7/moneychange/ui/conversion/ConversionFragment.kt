@@ -8,7 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.SpinnerAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.grupo7.moneychange.R
+import com.grupo7.moneychange.adapters.IRecyclerViewAdapter
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import kotlinx.android.synthetic.main.conversion_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,6 +33,10 @@ class ConversionFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        recyclerView.adapter = IRecyclerViewAdapter()
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
+
+
+
     }
 }

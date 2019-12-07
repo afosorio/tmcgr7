@@ -16,7 +16,7 @@ import com.grupo7.moneychange.data.entity.History
 class HistoryRepository(context: Context) {
 
     private lateinit var historyDao: HistoryDao
-    private lateinit var allHistory: LiveData<List<History>>
+    private  var allHistory: LiveData<List<History>>
 
     init {
         MoneyChangeDb.getInstance(context)?.historyDao()?.let {

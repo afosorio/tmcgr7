@@ -12,14 +12,15 @@ import com.grupo7.moneychange.repository.CurrencyRepository
 import com.grupo7.moneychange.repository.HistoryRepository
 import kotlinx.coroutines.launch
 
-
 class ConversionViewModel(
+
     private val liveRepository: LiveRepository,
     private val currentRepository: CurrencyRepository,
     private val historyRepository: HistoryRepository
+
 ) : ViewModel() {
 
-    var textView: MutableLiveData<String> = MutableLiveData()
+    var textViewCuurency:  MutableLiveData<Currency> = MutableLiveData()
     var editTextConversionTo: MutableLiveData<String> = MutableLiveData()
     var textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
     var textViewRateConversion: MutableLiveData<String> = MutableLiveData()
@@ -34,17 +35,13 @@ class ConversionViewModel(
     }
     var historyList: LiveData<List<History>> = _historyList
 
-
     init {
         viewModelScope.launch {
             initServiceCall()
         }
+        getHistory()
     }
-    private fun getRoomInfo(){
-        currentRepository.getAll().observeForever {
-            _currencyList.value  = it
-        }
-    }
+
     private fun initServiceCall() {
         liveRepository.getLive().observeForever {
             it?.takeIf {
@@ -59,10 +56,10 @@ class ConversionViewModel(
     }
 
     private fun successPath(coins: MutableMap<String, Double>) {
-        saveData(coins)
+        saveCurrencyList(coins)
     }
 
-    private fun saveData(coins: MutableMap<String, Double>) {
+    private fun saveCurrencyList(coins: MutableMap<String, Double>) {
 
         val listFromServer = mutableListOf<Currency>()
         coins.forEach {
@@ -79,27 +76,31 @@ class ConversionViewModel(
         getRoomInfo()
     }
 
-
-    private fun rateCalculate(): Int {
-        return editTextConversionTo.value!!.toInt() * textViewConversionFrom.value!!.toInt()
+    private fun getRoomInfo(){
+        currentRepository.getAll().observeForever {
+            _currencyList.value  = it
+        }
     }
 
     fun onClickChange(view: View) {
-        rateCalculate()
-    }
 
-    private fun saveHistory(){
+        editTextConversionTo.value = (textViewConversionFrom.value!!.toInt()
+                * textViewCuurency.value!!.value.toInt()).toString()
+
         var history = History(
             0,
             1,
-            1,
+            textViewCuurency.value!!.id,
             textViewConversionFrom.value!!.toDouble(),
-            editTextConversionTo.value!!.toDouble(),
             editTextConversionTo.value!!.toDouble()
         )
-        historyRepository.insert(history)
+        saveHistory(history)
     }
 
+    private fun saveHistory(history:History){
+        historyRepository.insert(history)
+        getHistory()
+    }
 
     private fun getHistory(){
         historyRepository.getAll().observeForever {
