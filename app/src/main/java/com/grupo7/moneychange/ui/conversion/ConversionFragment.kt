@@ -33,10 +33,19 @@ class ConversionFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        recyclerView.adapter = IRecyclerViewAdapter()
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initListAdapter()
+    }
 
-
+    private fun initListAdapter() {
+        val viewModel = dataBindingView.viewModel
+        viewModel?.let {
+            val adapter = IRecyclerViewAdapter()
+            dataBindingView.recyclerView.adapter = adapter
+        }
     }
 }

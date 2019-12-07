@@ -13,7 +13,7 @@ import com.grupo7.moneychange.data.entity.Currency
 class CurrencyRepository(context: Context) {
 
     private lateinit var currencyDao: CurrencyDao
-    private lateinit var allCurrency: LiveData<List<Currency>>
+    private var allCurrency: LiveData<List<Currency>>
 
     init {
         MoneyChangeDb.getInstance(context)?.currencyDao()?.let {
@@ -23,15 +23,15 @@ class CurrencyRepository(context: Context) {
     }
 
     fun insert(currency: Currency) {
-        if (currency != null) InsertAsyncTask(currencyDao).execute(currency)
+        InsertAsyncTask(currencyDao).execute(currency)
     }
 
     fun getAll(): LiveData<List<Currency>> = allCurrency
 
     fun insertCurrencyList(newList : List<Currency>){
 
-        var oldList= getAll().value
-        var mapList : MutableMap<String, Currency> = mutableMapOf()
+        val oldList= getAll().value
+        val mapList : MutableMap<String, Currency> = mutableMapOf()
 
         if (oldList != null) {
             for(currency in oldList){

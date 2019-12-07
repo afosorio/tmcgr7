@@ -10,13 +10,14 @@ import com.grupo7.moneychange.data.MoneyChangeDb
 import com.grupo7.moneychange.data.dao.CurrencyDao
 import com.grupo7.moneychange.data.entity.Currency
 import com.grupo7.moneychange.data.entity.History
+
 /**
  * afosorio 23.11.2019
  */
 class HistoryRepository(context: Context) {
 
     private lateinit var historyDao: HistoryDao
-    private  var allHistory: LiveData<List<History>>
+    private var allHistory: LiveData<List<History>>
 
     init {
         MoneyChangeDb.getInstance(context)?.historyDao()?.let {
@@ -26,7 +27,7 @@ class HistoryRepository(context: Context) {
     }
 
     fun insert(history: History) {
-        if (history != null) InsertAsyncTask(historyDao).execute(history)
+        InsertAsyncTask(historyDao).execute(history)
     }
 
     fun getAll(): LiveData<List<History>> = allHistory

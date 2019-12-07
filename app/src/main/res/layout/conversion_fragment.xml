@@ -5,7 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="viewModel" type="com.grupo7.moneychange.ui.conversion.ConversionViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.grupo7.moneychange.ui.conversion.ConversionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,9 +57,9 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/conversion_from_spinner"
-                    app:coin_values_from="@{viewModel.currencyList}"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
+                    app:coin_values_from="@{viewModel.currencyList}"
                     app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"
                     app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"
                     app:layout_constraintStart_toStartOf="parent"
@@ -95,10 +98,10 @@
                     android:layout_width="150dp"
                     android:layout_height="40dp"
                     app:coin_values="@{viewModel.currencyList}"
-                    app:selectedValue="@={viewModel.textViewCuurency}"
                     app:layout_constraintBottom_toBottomOf="@id/conversion_to"
                     app:layout_constraintEnd_toEndOf="@id/conversion_from_spinner"
                     app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
+                    app:selectedValue="@={viewModel.textViewCurrency}"
                     tools:listitem="@android:layout/simple_spinner_item" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -140,6 +143,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    app:bind_item_data="@{viewModel.historyList}"
                     android:padding="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -147,7 +151,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/history_title"
                     tools:itemCount="7"
-
                     tools:listitem="@layout/item_history" />
 
                 <ImageButton
@@ -155,7 +158,7 @@
                     android:layout_width="51dp"
                     android:layout_height="45dp"
                     android:layout_marginTop="56dp"
-                    android:onClick="@{(view)-> viewModel.onClickChange(view)}"
+                    android:onClick="@{()-> viewModel.onClickChange()}"
                     android:src="@android:drawable/ic_input_add"
                     android:text="@android:string/ok"
                     android:textStyle="bold"

@@ -3,55 +3,33 @@ package com.grupo7.moneychange.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.grupo7.moneychange.R
-import com.grupo7.moneychange.data.entity.Currency
 import com.grupo7.moneychange.data.entity.History
-import com.grupo7.moneychange.databinding.ConversionFragmentBinding
+import kotlinx.android.synthetic.main.item_history.view.*
 
 class IRecyclerViewAdapter : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
 
-    private var items: List<History> = emptyList()
+    private var items = emptyList<History>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return  ItemViewHolder(parent)
+        val inflater = LayoutInflater.from(parent.context)
+        return ViewHolder(inflater.inflate(R.layout.item_history, parent, false))
     }
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (holder is ItemViewHolder && items.size > position) {
-            holder.bind(items[position])
-        }
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position])
 
     fun update(items: List<History>) {
         this.items = items
         notifyDataSetChanged()
     }
 
-    companion object {
-        @JvmStatic
-        @BindingAdapter("recycler_items")
-        fun RecyclerView.bindItems(items: List<History>) {
-            val adapter = adapter as IRecyclerViewAdapter
-            adapter.update(items)
-        }
-   }
-
-   abstract class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
-    class ItemViewHolder(
-        private val parent: ViewGroup,
-        private val binding: ConversionFragmentBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context), R.layout.item_history, parent, false )
-    ) : ViewHolder(binding.root) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(item: History) {
-            binding.historyTitle
+            itemView.conversion_text.text = "From = ${item.valueFrom} -  To = ${item.valueTo}"
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.grupo7.moneychange.ui.conversion
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,7 +19,7 @@ class ConversionViewModel(
 
 ) : ViewModel() {
 
-    var textViewCuurency:  MutableLiveData<Currency> = MutableLiveData()
+    var textViewCurrency: MutableLiveData<Currency> = MutableLiveData()
     var editTextConversionTo: MutableLiveData<String> = MutableLiveData()
     var textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
     var textViewRateConversion: MutableLiveData<String> = MutableLiveData()
@@ -36,10 +35,12 @@ class ConversionViewModel(
     var historyList: LiveData<List<History>> = _historyList
 
     init {
+        initRoom()
+        initHistory()
+
         viewModelScope.launch {
             initServiceCall()
         }
-        getHistory()
     }
 
     private fun initServiceCall() {
@@ -66,43 +67,40 @@ class ConversionViewModel(
 
             val objectToSave = Currency(
                 0,
-                it.key.substring(3,6),
+                it.key.substring(3, 6),
                 "https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwjaqqf1qIvmAhXBv54KHQr_CcIQPAgH",
                 it.value
             )
             listFromServer.add(objectToSave)
         }
         currentRepository.insertCurrencyList(listFromServer)
-        getRoomInfo()
     }
 
-    private fun getRoomInfo(){
+    private fun initRoom() {
         currentRepository.getAll().observeForever {
-            _currencyList.value  = it
+            _currencyList.value = it
         }
     }
 
-    fun onClickChange(view: View) {
-
+    fun onClickChange() {
         editTextConversionTo.value = (textViewConversionFrom.value!!.toInt()
-                * textViewCuurency.value!!.value.toInt()).toString()
+                * textViewCurrency.value!!.value.toInt()).toString()
 
         var history = History(
             0,
             1,
-            textViewCuurency.value!!.id,
+            textViewCurrency.value!!.id,
             textViewConversionFrom.value!!.toDouble(),
             editTextConversionTo.value!!.toDouble()
         )
         saveHistory(history)
     }
 
-    private fun saveHistory(history:History){
+    private fun saveHistory(history: History) {
         historyRepository.insert(history)
-        getHistory()
     }
 
-    private fun getHistory(){
+    private fun initHistory() {
         historyRepository.getAll().observeForever {
             _historyList.value = it
         }
