@@ -147,7 +147,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/history_title"
                     tools:itemCount="7"
-                    app:recycler_items="@{viewModel.historyList}"
+
                     tools:listitem="@layout/item_history" />
 
                 <ImageButton

@@ -14,7 +14,7 @@ import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 
 class IRecyclerViewAdapter : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
 
-    private var items: List<History> = TODO()
+    private var items: List<History> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return  ItemViewHolder(parent)
