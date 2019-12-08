@@ -31,13 +31,17 @@ class History (
     val valueFrom : Double,
 
     @ColumnInfo(name = "valueto") @NotNull
-    val valueTo: Double,
+    val valueTo: Double
 
-    @ColumnInfo(name = "valuebase") @NotNull
-    val valueBase : Double
+
 ) {
 
     companion object{
         const val  TABLE_NAME = "history"
     }
+
+    override fun toString(): String {
+        return valueTo.toString()
+    }
+
 }

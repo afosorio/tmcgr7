@@ -1,7 +1,7 @@
 package com.grupo7.moneychange.ui
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,11 +24,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.navHostFragment).navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
-
-
 }

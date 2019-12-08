@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Moneychange</string>
-    <string name="current_location">You are in Colombia</string>
+    <string name="current_location">You are in %1$s</string>
     <string name="conversion_rate_hint">1 USD = 3500 COP</string>
     <string name="history">History</string>
 </resources>
