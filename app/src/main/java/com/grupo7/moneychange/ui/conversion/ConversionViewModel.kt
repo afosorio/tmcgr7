@@ -6,50 +6,59 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grupo7.moneychange.data.entity.Currency
 import com.grupo7.moneychange.data.entity.History
+import com.grupo7.moneychange.data.repositories.CountryRepository
 import com.grupo7.moneychange.data.repositories.LiveRepository
-import com.grupo7.moneychange.repository.CurrencyRepository
 import com.grupo7.moneychange.repository.HistoryRepository
+import com.grupo7.moneychange.repository.CurrencyRepository
+import com.grupo7.moneychange.utils.PermissionChecker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ConversionViewModel(
 
     private val liveRepository: LiveRepository,
     private val currentRepository: CurrencyRepository,
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val countryRepository: CountryRepository
 
 ) : ViewModel() {
 
-    var textViewCurrency: MutableLiveData<Currency> = MutableLiveData()
-    var editTextConversionTo: MutableLiveData<String> = MutableLiveData()
-    var textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
-    var textViewRateConversion: MutableLiveData<String> = MutableLiveData()
+    val textViewCurrency: MutableLiveData<Currency> = MutableLiveData()
+    val editTextConversionTo: MutableLiveData<String> = MutableLiveData()
+    val textViewRateConversion: MutableLiveData<String> = MutableLiveData()
+    val textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
+
+    private val countryMutable = MutableLiveData<String>()
+    val country: LiveData<String> get() = countryMutable
 
     private var _currencyList = MutableLiveData<List<Currency>>().apply {
         value = emptyList()
     }
-    var currencyList: LiveData<List<Currency>> = _currencyList
+    val currencyList: LiveData<List<Currency>> get() = _currencyList
 
     private var _historyList = MutableLiveData<List<History>>().apply {
         value = emptyList()
     }
-    var historyList: LiveData<List<History>> = _historyList
+    val historyList: LiveData<List<History>> get() = _historyList
 
     init {
         initRoom()
         initHistory()
+        initServiceCall()
 
-        viewModelScope.launch {
-            initServiceCall()
-        }
     }
 
     private fun initServiceCall() {
-        liveRepository.getLive().observeForever {
-            it?.takeIf {
-                it.success
-            }?.let { response ->
-                successPath(response.quotes)
-            } ?: errorPath()
+        viewModelScope.launch {
+            liveRepository.getLive().observeForever {
+                it?.takeIf {
+                    it.success
+                }?.let { response ->
+                    successPath(response.quotes)
+                } ?: errorPath()
+            }
         }
     }
 
@@ -103,6 +112,14 @@ class ConversionViewModel(
     private fun initHistory() {
         historyRepository.getAll().observeForever {
             _historyList.value = it
+        }
+    }
+
+    fun getLocation(permissionChecker: PermissionChecker) {
+        viewModelScope.launch {
+            countryMutable.value = countryRepository.getCountryLocation(permissionChecker)
+            //val text = "estás en $countryRepository"
+            //withContext(Dispatchers.Main) { countryMutable.value = text }
         }
     }
 }

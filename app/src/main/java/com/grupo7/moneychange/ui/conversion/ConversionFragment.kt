@@ -1,5 +1,6 @@
 package com.grupo7.moneychange.ui.conversion
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.adapters.IRecyclerViewAdapter
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
+import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.android.synthetic.main.conversion_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,12 +21,13 @@ class ConversionFragment : Fragment() {
 
     private val conversionViewModel: ConversionViewModel by viewModel()
     private lateinit var dataBindingView: ConversionFragmentBinding
+    private lateinit var permissionChecker: PermissionChecker
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        permissionChecker = PermissionChecker(this.requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
         dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = conversionViewModel
         }
@@ -47,5 +50,6 @@ class ConversionFragment : Fragment() {
             val adapter = IRecyclerViewAdapter()
             dataBindingView.recyclerView.adapter = adapter
         }
+        conversionViewModel.getLocation(permissionChecker)
     }
 }

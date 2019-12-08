@@ -69,4 +69,16 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$test.runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test.espresso_core"
     testImplementation "org.koin:koin-test:$koin_version"
+
+    //google location services
+    implementation "com.google.android.gms:play-services-gcm:$play_services"
+    implementation "com.google.android.gms:play-services-location:$play_services"
+
+    //coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines.version_core"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines.version_android"
+
+    //permission
+    implementation "com.karumi:dexter:$dexter"
+
 }
