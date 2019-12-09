@@ -158,7 +158,7 @@
                     android:layout_width="51dp"
                     android:layout_height="45dp"
                     android:layout_marginTop="56dp"
-                    android:onClick="@{()-> viewModel.onClickChange()}"
+                    android:onClick="@{()-> viewModel.onClickChange(viewModel.textViewConversionFrom, viewModel.textViewCurrency)}"
                     android:src="@android:drawable/ic_input_add"
                     android:text="@android:string/ok"
                     android:textStyle="bold"

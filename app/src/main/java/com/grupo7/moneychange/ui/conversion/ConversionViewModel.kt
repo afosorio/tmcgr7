@@ -8,13 +8,10 @@ import com.grupo7.moneychange.data.entity.Currency
 import com.grupo7.moneychange.data.entity.History
 import com.grupo7.moneychange.data.repositories.CountryRepository
 import com.grupo7.moneychange.data.repositories.LiveRepository
-import com.grupo7.moneychange.repository.HistoryRepository
 import com.grupo7.moneychange.repository.CurrencyRepository
+import com.grupo7.moneychange.repository.HistoryRepository
 import com.grupo7.moneychange.utils.PermissionChecker
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ConversionViewModel(
 
@@ -91,18 +88,23 @@ class ConversionViewModel(
         }
     }
 
-    fun onClickChange() {
-        editTextConversionTo.value = (textViewConversionFrom.value!!.toInt()
-                * textViewCurrency.value!!.value.toInt()).toString()
+    fun onClickChange(textViewConversionFrom: String?, textViewCurrency: Currency?) {
+        if (textViewConversionFrom.isNullOrBlank() || textViewCurrency == null) {
+            return
+        }
 
-        var history = History(
-            0,
-            1,
-            textViewCurrency.value!!.id,
-            textViewConversionFrom.value!!.toDouble(),
-            editTextConversionTo.value!!.toDouble()
+        val result = (textViewConversionFrom.toInt() * textViewCurrency.value)
+
+        this.editTextConversionTo.value = result.toString()
+        saveHistory(
+            History(
+                0,
+                1,
+                textViewCurrency.id,
+                textViewConversionFrom.toDouble(),
+                result
+            )
         )
-        saveHistory(history)
     }
 
     private fun saveHistory(history: History) {
