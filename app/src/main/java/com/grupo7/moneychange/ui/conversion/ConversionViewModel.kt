@@ -44,7 +44,6 @@ class ConversionViewModel(
         initRoom()
         initHistory()
         initServiceCall()
-
     }
 
     private fun initServiceCall() {

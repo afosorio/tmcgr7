@@ -10,15 +10,23 @@ import com.grupo7.moneychange.repository.CountryRepositoryImpl
 import com.grupo7.moneychange.repository.CurrencyRepository
 import com.grupo7.moneychange.repository.HistoryRepository
 import com.grupo7.moneychange.ui.conversion.ConversionViewModel
+import com.grupo7.moneychange.ui.conversion.SharedViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+
 val conversionModule = module {
     viewModel {
-        ConversionViewModel(liveRepository = get(),
+        ConversionViewModel(
+            liveRepository = get(),
             currentRepository = get(),
             historyRepository = get(),
-            countryRepository = get() )
+            countryRepository = get()
+        )
+    }
+
+    viewModel {
+        SharedViewModel()
     }
 
     factory<CountryRepository> { CountryRepositoryImpl(context = androidContext()) }

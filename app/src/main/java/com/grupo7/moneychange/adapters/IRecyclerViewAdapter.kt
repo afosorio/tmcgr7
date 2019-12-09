@@ -9,7 +9,9 @@ import com.grupo7.moneychange.R
 import com.grupo7.moneychange.data.entity.History
 import kotlinx.android.synthetic.main.item_history.view.*
 
-class IRecyclerViewAdapter(private val listener: (History) -> Unit) : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
+typealias Listener = ((History) -> Unit)
+
+class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickDetailHistory: Listener) : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
 
     private var items = emptyList<History>()
 
@@ -20,7 +22,7 @@ class IRecyclerViewAdapter(private val listener: (History) -> Unit) : RecyclerVi
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position], listener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position], clickDataUp, clickDetailHistory)
 
     fun update(items: List<History>) {
         this.items = items
@@ -30,9 +32,10 @@ class IRecyclerViewAdapter(private val listener: (History) -> Unit) : RecyclerVi
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: History, listener: (History) -> Unit) {
+        fun bind(item: History, clickDataUp: Listener, clickDetailHistory: Listener) {
             itemView.conversion_text.text = "From = ${item.valueFrom} -  To = ${item.valueTo}"
-            itemView.data_up.setOnClickListener { listener(item) }
+            itemView.data_up.setOnClickListener { clickDataUp(item) }
+            itemView.imgDetailHistory.setOnClickListener { clickDetailHistory(item) }
         }
     }
 }
