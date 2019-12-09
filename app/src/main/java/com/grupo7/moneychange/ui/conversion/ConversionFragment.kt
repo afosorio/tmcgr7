@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.adapters.IRecyclerViewAdapter
+import com.grupo7.moneychange.data.entity.History
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.android.synthetic.main.conversion_fragment.*
@@ -27,7 +28,7 @@ class ConversionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        permissionChecker = PermissionChecker(this.requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+        permissionChecker = PermissionChecker(this.requireActivity().parent, Manifest.permission.ACCESS_FINE_LOCATION)
         dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = conversionViewModel
         }
@@ -47,7 +48,7 @@ class ConversionFragment : Fragment() {
     private fun initListAdapter() {
         val viewModel = dataBindingView.viewModel
         viewModel?.let {
-            val adapter = IRecyclerViewAdapter()
+            val adapter = IRecyclerViewAdapter(conversionViewModel::clickDataUp)
             dataBindingView.recyclerView.adapter = adapter
         }
         conversionViewModel.getLocation(permissionChecker)

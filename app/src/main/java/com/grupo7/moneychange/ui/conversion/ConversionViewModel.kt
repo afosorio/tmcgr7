@@ -120,8 +120,11 @@ class ConversionViewModel(
     fun getLocation(permissionChecker: PermissionChecker) {
         viewModelScope.launch {
             countryMutable.value = countryRepository.getCountryLocation(permissionChecker)
-            //val text = "estás en $countryRepository"
-            //withContext(Dispatchers.Main) { countryMutable.value = text }
         }
+    }
+
+    fun clickDataUp(item: History) {
+        textViewConversionFrom.value = item.valueFrom.toInt().toString()
+        editTextConversionTo.value = item.valueTo.toString()
     }
 }

@@ -1,5 +1,6 @@
 package com.grupo7.moneychange.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,7 @@ import com.grupo7.moneychange.R
 import com.grupo7.moneychange.data.entity.History
 import kotlinx.android.synthetic.main.item_history.view.*
 
-class IRecyclerViewAdapter : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
+class IRecyclerViewAdapter(private val listener: (History) -> Unit) : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
 
     private var items = emptyList<History>()
 
@@ -19,7 +20,7 @@ class IRecyclerViewAdapter : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolde
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position], listener)
 
     fun update(items: List<History>) {
         this.items = items
@@ -28,8 +29,10 @@ class IRecyclerViewAdapter : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolde
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(item: History) {
+        @SuppressLint("SetTextI18n")
+        fun bind(item: History, listener: (History) -> Unit) {
             itemView.conversion_text.text = "From = ${item.valueFrom} -  To = ${item.valueTo}"
+            itemView.data_up.setOnClickListener { listener(item) }
         }
     }
 }
