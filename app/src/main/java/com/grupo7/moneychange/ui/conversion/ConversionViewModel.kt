@@ -123,6 +123,7 @@ class ConversionViewModel(
     }
 
     fun clickDataUp(item: History) {
+        //TODO("se debe actualizar el spinner de la moneda seleccionada")
         textViewConversionFrom.value = item.valueFrom.toInt().toString()
         editTextConversionTo.value = item.valueTo.toString()
     }
