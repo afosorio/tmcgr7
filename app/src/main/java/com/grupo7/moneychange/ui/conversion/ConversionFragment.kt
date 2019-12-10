@@ -51,7 +51,7 @@ class ConversionFragment : Fragment() {
     }
 
     private fun navigationDetailConversionFragment(item:History) {
-        val action = ConversionFragmentDirections.actionConversionFragmentToDetailConversionFragment(item.id.toString())
+        val action = ConversionFragmentDirections.actionConversionFragmentToDetailConversionFragment(item.id)
         view?.findNavController()?.navigate(action)
     }
 }
