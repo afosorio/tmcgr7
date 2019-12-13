@@ -23,7 +23,7 @@ class ConversionViewModel(
 ) : ViewModel() {
 
     val textViewCurrency: MutableLiveData<Currency> = MutableLiveData()
-    val editTextConversionTo: MutableLiveData<String> = MutableLiveData()
+    val editTextConversionTo: MutableLiveData<String> = MutableLiveData("0$")
     val textViewRateConversion: MutableLiveData<String> = MutableLiveData()
     val textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
 
@@ -107,7 +107,9 @@ class ConversionViewModel(
     }
 
     private fun saveHistory(history: History) {
-        historyRepository.insert(history)
+        viewModelScope.launch {
+            historyRepository.insert(history)
+        }
     }
 
     private fun initHistory() {

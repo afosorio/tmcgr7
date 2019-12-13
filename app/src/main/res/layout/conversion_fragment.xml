@@ -11,185 +11,182 @@
             type="com.grupo7.moneychange.ui.conversion.ConversionViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:fillViewport="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/gps_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:tint="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="@id/location_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/location_text"
+                app:srcCompat="@drawable/ic_gps_off" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/location_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{String.format(@string/current_location, viewModel.country)}"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/gps_img"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/current_location" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/conversion_from_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:coin_values_from="@{viewModel.currencyList}"
+                app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"
+                app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/conversion_from_edit"
+                tools:listitem="@android:layout/simple_spinner_item" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/conversion_from_edit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="1"
+                android:inputType="number"
+                android:lines="1"
+                android:text="@={viewModel.textViewConversionFrom}"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/conversion_from_spinner"
+                app:layout_constraintTop_toBottomOf="@id/location_text" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/exchange_img"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toTopOf="@id/conversion_to"
+                app:layout_constraintEnd_toEndOf="@id/conversion_from_edit"
+                app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
+                app:layout_constraintTop_toBottomOf="@id/conversion_from_edit"
+                app:srcCompat="@drawable/ic_exchange" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/conversion_to_spinner"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:coin_values="@{viewModel.currencyList}"
+                app:layout_constraintBottom_toBottomOf="@id/btnConvert"
+                app:layout_constraintEnd_toEndOf="@id/conversion_from_spinner"
+                app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
+                app:layout_constraintTop_toTopOf="@id/btnConvert"
+                app:selectedValue="@={viewModel.textViewCurrency}"
+                tools:listitem="@android:layout/simple_spinner_item" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/conversion_to"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@={viewModel.editTextConversionTo}"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/btnConvert"
+                app:layout_constraintEnd_toStartOf="@id/btnConvert"
+                app:layout_constraintStart_toStartOf="@id/conversion_from_edit"
+                app:layout_constraintTop_toTopOf="@id/btnConvert"
+                tools:text="1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnConvert"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="@{()-> viewModel.onClickChange(viewModel.textViewConversionFrom, viewModel.textViewCurrency)}"
+                android:padding="6dp"
+                android:text="@android:string/ok"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/conversion_to"
+                app:layout_constraintTop_toBottomOf="@id/exchange_img"
+                app:srcCompat="@android:drawable/ic_input_add" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/rate_conversion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@={viewModel.textViewRateConversion}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/conversion_to"
+                tools:text="@string/conversion_rate_hint" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/history_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="@string/history"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rate_conversion" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:bind_item_data="@{viewModel.historyList}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/history_title"
+                tools:itemCount="7"
+                tools:listitem="@layout/item_history" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp">
+                android:id="@+id/llErrorContainer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@android:color/darker_gray"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/gps_img"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:tint="@android:color/black"
-                    app:layout_constraintBottom_toBottomOf="@id/location_text"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/location_text"
-                    app:srcCompat="@drawable/ic_gps_off" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/location_text"
-                    android:layout_width="338dp"
-                    android:layout_height="49dp"
-                    android:layout_margin="8dp"
-                    android:text="@{String.format(@string/current_location, viewModel.country)}"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="26sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/gps_img"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/conversion_from_spinner"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    app:coin_values_from="@{viewModel.currencyList}"
-                    app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"
-                    app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@android:layout/simple_spinner_item" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/conversion_from_edit"
-                    android:layout_width="178dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="20dp"
-                    android:hint="1"
-                    android:inputType="number"
-                    android:lines="1"
-                    android:text="@={viewModel.textViewConversionFrom}"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/conversion_from_spinner"
-                    app:layout_constraintTop_toBottomOf="@id/location_text" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/exchange_img"
-                    android:layout_width="44dp"
-                    android:layout_height="35dp"
-                    app:layout_constraintBottom_toTopOf="@id/conversion_to"
-                    app:layout_constraintEnd_toEndOf="@id/conversion_from_edit"
-                    app:layout_constraintHorizontal_bias="0.501"
-                    app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
-                    app:layout_constraintTop_toBottomOf="@id/conversion_from_edit"
-                    app:layout_constraintVertical_bias="0.619"
-                    app:srcCompat="@drawable/ic_exchange" />
-
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/conversion_to_spinner"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    app:coin_values="@{viewModel.currencyList}"
-                    app:layout_constraintBottom_toBottomOf="@id/conversion_to"
-                    app:layout_constraintEnd_toEndOf="@id/conversion_from_spinner"
-                    app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
-                    app:selectedValue="@={viewModel.textViewCurrency}"
-                    tools:listitem="@android:layout/simple_spinner_item" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/conversion_to"
-                    android:layout_width="135dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="56dp"
-                    android:text="@={viewModel.editTextConversionTo}"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@id/conversion_from_edit"
-                    app:layout_constraintTop_toBottomOf="@id/conversion_from_edit" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/rate_conversion"
-                    android:layout_width="391dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="@={viewModel.textViewRateConversion}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/conversion_to"
-                    tools:text="@string/conversion_rate_hint" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/history_title"
-                    android:layout_width="384dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="@string/history"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rate_conversion" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:padding="8dp"
-                    app:bind_item_data="@{viewModel.historyList}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/history_title"
-                    tools:itemCount="7"
-                    tools:listitem="@layout/item_history" />
-
-                <ImageButton
-                    android:id="@+id/btnConvert"
-                    android:layout_width="51dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="56dp"
-                    android:onClick="@{()-> viewModel.onClickChange(viewModel.textViewConversionFrom, viewModel.textViewCurrency)}"
-                    android:src="@android:drawable/ic_input_add"
-                    android:text="@android:string/ok"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.384"
-                    app:layout_constraintStart_toEndOf="@+id/conversion_to"
-                    app:layout_constraintTop_toBottomOf="@+id/conversion_from_edit" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/llErrorContainer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/darker_gray"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 </layout>
