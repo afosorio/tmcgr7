@@ -5,16 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.grupo7.moneychange.R
+import androidx.navigation.findNavController
 import com.grupo7.moneychange.adapters.IRecyclerViewAdapter
+import com.grupo7.moneychange.data.entity.History
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.utils.PermissionChecker
-import kotlinx.android.synthetic.main.conversion_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConversionFragment : Fragment() {
@@ -47,9 +44,14 @@ class ConversionFragment : Fragment() {
     private fun initListAdapter() {
         val viewModel = dataBindingView.viewModel
         viewModel?.let {
-            val adapter = IRecyclerViewAdapter()
+            val adapter = IRecyclerViewAdapter(conversionViewModel::clickDataUp, ::navigationDetailConversionFragment)
             dataBindingView.recyclerView.adapter = adapter
         }
         conversionViewModel.getLocation(permissionChecker)
+    }
+
+    private fun navigationDetailConversionFragment(item:History) {
+        val action = ConversionFragmentDirections.actionConversionFragmentToDetailConversionFragment(item.id)
+        view?.findNavController()?.navigate(action)
     }
 }

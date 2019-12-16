@@ -8,13 +8,10 @@ import com.grupo7.moneychange.data.entity.Currency
 import com.grupo7.moneychange.data.entity.History
 import com.grupo7.moneychange.data.repositories.CountryRepository
 import com.grupo7.moneychange.data.repositories.LiveRepository
-import com.grupo7.moneychange.repository.HistoryRepository
 import com.grupo7.moneychange.repository.CurrencyRepository
+import com.grupo7.moneychange.repository.HistoryRepository
 import com.grupo7.moneychange.utils.PermissionChecker
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ConversionViewModel(
 
@@ -26,7 +23,7 @@ class ConversionViewModel(
 ) : ViewModel() {
 
     val textViewCurrency: MutableLiveData<Currency> = MutableLiveData()
-    val editTextConversionTo: MutableLiveData<String> = MutableLiveData()
+    val editTextConversionTo: MutableLiveData<String> = MutableLiveData("0$")
     val textViewRateConversion: MutableLiveData<String> = MutableLiveData()
     val textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
 
@@ -47,7 +44,6 @@ class ConversionViewModel(
         initRoom()
         initHistory()
         initServiceCall()
-
     }
 
     private fun initServiceCall() {
@@ -91,22 +87,29 @@ class ConversionViewModel(
         }
     }
 
-    fun onClickChange() {
-        editTextConversionTo.value = (textViewConversionFrom.value!!.toInt()
-                * textViewCurrency.value!!.value.toInt()).toString()
+    fun onClickChange(textViewConversionFrom: String?, textViewCurrency: Currency?) {
+        if (textViewConversionFrom.isNullOrBlank() || textViewCurrency == null) {
+            return
+        }
 
-        var history = History(
-            0,
-            1,
-            textViewCurrency.value!!.id,
-            textViewConversionFrom.value!!.toDouble(),
-            editTextConversionTo.value!!.toDouble()
+        val result = (textViewConversionFrom.toInt() * textViewCurrency.value)
+
+        this.editTextConversionTo.value = result.toString()
+        saveHistory(
+            History(
+                0,
+                1,
+                textViewCurrency.id,
+                textViewConversionFrom.toDouble(),
+                result
+            )
         )
-        saveHistory(history)
     }
 
     private fun saveHistory(history: History) {
-        historyRepository.insert(history)
+        viewModelScope.launch {
+            historyRepository.insert(history)
+        }
     }
 
     private fun initHistory() {
@@ -118,8 +121,12 @@ class ConversionViewModel(
     fun getLocation(permissionChecker: PermissionChecker) {
         viewModelScope.launch {
             countryMutable.value = countryRepository.getCountryLocation(permissionChecker)
-            //val text = "estás en $countryRepository"
-            //withContext(Dispatchers.Main) { countryMutable.value = text }
         }
+    }
+
+    fun clickDataUp(item: History) {
+        //TODO("se debe actualizar el spinner de la moneda seleccionada")
+        textViewConversionFrom.value = item.valueFrom.toInt().toString()
+        editTextConversionTo.value = item.valueTo.toString()
     }
 }

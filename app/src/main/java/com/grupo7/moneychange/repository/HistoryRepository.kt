@@ -2,19 +2,17 @@ package com.grupo7.moneychange.repository
 
 
 import android.content.Context
-import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.grupo7.moneychange.data.dao.HistoryDao
 import com.grupo7.moneychange.data.MoneyChangeDb
-import com.grupo7.moneychange.data.dao.CurrencyDao
-import com.grupo7.moneychange.data.entity.Currency
+import com.grupo7.moneychange.data.dao.HistoryDao
 import com.grupo7.moneychange.data.entity.History
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * afosorio 23.11.2019
  */
-class HistoryRepository(context: Context) {
+class HistoryRepository(context: Context) : HistoryDataSource {
 
     private lateinit var historyDao: HistoryDao
     private var allHistory: LiveData<List<History>>
@@ -26,21 +24,20 @@ class HistoryRepository(context: Context) {
         allHistory = historyDao.getAll()
     }
 
-    fun insert(history: History) {
-        InsertAsyncTask(historyDao).execute(history)
+    override suspend fun insert(history: History) = withContext(Dispatchers.IO) {
+        historyDao.insert(history)
     }
 
-    fun getAll(): LiveData<List<History>> = allHistory
-
-    private class InsertAsyncTask(private val historyDao: HistoryDao?) :
-        AsyncTask<History, Void, Void>() {
-        override fun doInBackground(vararg historys: History?): Void? {
-            for (history in historys) {
-                if (history != null) historyDao?.insert(history)
-            }
-            return null
-        }
+    override suspend fun findById(id: Int): History = withContext(Dispatchers.IO) {
+        historyDao.findById(id)
     }
+
+    override fun getAll(): LiveData<List<History>> = allHistory
+
+
+//    override fun getAll(): LiveData<List<History>> = {
+//        return historyDao.getAll()
+//    }
 }
 
 

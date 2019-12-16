@@ -1,34 +1,37 @@
 package com.grupo7.moneychange.ui.detail
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import com.grupo7.moneychange.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.grupo7.moneychange.databinding.DetailConversionFragmentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailConversionFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = DetailConversionFragment()
-    }
-
-    private lateinit var viewModel: DetailConversionViewModel
+    private val detailViewModel: DetailConversionViewModel by viewModel()
+    private lateinit var dataBindingView: DetailConversionFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.detail_conversion_fragment, container, false)
+        dataBindingView = DetailConversionFragmentBinding.inflate(inflater, container, false).apply {
+            viewModel = detailViewModel
+        }
+        var args = DetailConversionFragmentArgs.fromBundle(arguments!!)
+        detailViewModel.fetchHistoryById(args.historyId)
+        return dataBindingView.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(DetailConversionViewModel::class.java)
-        // TODO: Use the ViewModel
+        /*detailViewModel.historyData.observe(this, Observer {
+            val s = it.toString()
+        })*/
+        dataBindingView.lifecycleOwner = this.viewLifecycleOwner
     }
 
 }
