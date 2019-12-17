@@ -13,11 +13,12 @@ import com.grupo7.moneychange.data.entity.History
  * afosorio 23.11.2019
  * This class contain database instance
  */
-@Database(entities = [Currency::class, History:: class], version = 1)
+
+@Database(entities = [Currency::class, History::class], version = 2)
 abstract class MoneyChangeDb : RoomDatabase() {
 
     abstract fun historyDao(): HistoryDao
-    abstract fun currencyDao() : CurrencyDao
+    abstract fun currencyDao(): CurrencyDao
 
     companion object {
 
@@ -31,8 +32,9 @@ abstract class MoneyChangeDb : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     MoneyChangeDb::class.java,
-                    DATABASE_NAME
-                ).build()
+                    DATABASE_NAME)
+                    .fallbackToDestructiveMigration()
+                    .build()
             }
             return INSTANCE
         }

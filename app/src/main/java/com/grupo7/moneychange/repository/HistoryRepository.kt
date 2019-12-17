@@ -1,37 +1,42 @@
 package com.grupo7.moneychange.repository
 
 
-import android.app.Application
-import android.os.AsyncTask
+import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.grupo7.moneychange.data.dao.HistoryDao
 import com.grupo7.moneychange.data.MoneyChangeDb
+import com.grupo7.moneychange.data.dao.HistoryDao
 import com.grupo7.moneychange.data.entity.History
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 /**
  * afosorio 23.11.2019
  */
-class HistoryRepository(application: Application) {
+class HistoryRepository(context: Context) : HistoryDataSource {
 
-    private val historyDao: HistoryDao? = MoneyChangeDb.getInstance(application)?.historyDao()
+    private lateinit var historyDao: HistoryDao
+    private var allHistory: LiveData<List<History>>
 
-    fun insert(history: History) {
-        if (history != null) InsertAsyncTask(historyDao).execute(history)
-    }
-
-    fun getAll(): LiveData<List<History>> {
-        return historyDao?.getAll() ?: MutableLiveData<List<History>>()
-    }
-
-    private class InsertAsyncTask(private val historyDao: HistoryDao?) :
-        AsyncTask<History, Void, Void>() {
-        override fun doInBackground(vararg historys: History?): Void? {
-            for (history in historys) {
-                if (history != null) historyDao?.insert(history)
-            }
-            return null
+    init {
+        MoneyChangeDb.getInstance(context)?.historyDao()?.let {
+            historyDao = it
         }
+        allHistory = historyDao.getAll()
     }
+
+    override suspend fun insert(history: History) = withContext(Dispatchers.IO) {
+        historyDao.insert(history)
+    }
+
+    override suspend fun findById(id: Int): History = withContext(Dispatchers.IO) {
+        historyDao.findById(id)
+    }
+
+    override fun getAll(): LiveData<List<History>> = allHistory
+
+//    override fun getAll(): LiveData<List<History>> = {
+//        return historyDao.getAll()
+//    }
 }
 
 

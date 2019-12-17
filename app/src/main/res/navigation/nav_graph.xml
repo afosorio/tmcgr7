@@ -24,8 +24,7 @@
         android:label="Detail Page"
         tools:layout="@layout/detail_conversion_fragment" >
         <argument
-            android:name="stringDemo"
-            app:argType="string"
-            android:defaultValue='"Grupo07"' />
+            android:name="historyId"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -29,5 +29,9 @@ data class Currency(
     companion object {
         const val TABLE_NAME = "currency"
     }
+
+    override fun toString(): String {
+        return this.description
+    }
 }
 

@@ -11,9 +11,10 @@ import com.grupo7.moneychange.data.entity.History
 
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = HistoryRepository(application)
-    val contacts = repository.getAll()
+//    val contacts = repository.getAll()
 
     fun save(history: History) {
-        repository.insert(history)
+//        repository.insert(history)
+
     }
 }

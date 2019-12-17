@@ -1,0 +1,744 @@
+Index: app/src/main/java/com/grupo7/moneychange/ui/detail/DetailConversionFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo7.moneychange.ui.detail\n\nimport androidx.lifecycle.ViewModelProviders\nimport android.os.Bundle\nimport androidx.fragment.app.Fragment\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\n\nimport com.grupo7.moneychange.R\n\nclass DetailConversionFragment : Fragment() {\n\n    companion object {\n        fun newInstance() = DetailConversionFragment()\n    }\n\n    private lateinit var viewModel: DetailConversionViewModel\n\n    override fun onCreateView(\n        inflater: LayoutInflater, container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View? {\n        setHasOptionsMenu(true)\n        return inflater.inflate(R.layout.detail_conversion_fragment, container, false)\n    }\n\n    override fun onActivityCreated(savedInstanceState: Bundle?) {\n        super.onActivityCreated(savedInstanceState)\n        viewModel = ViewModelProviders.of(this).get(DetailConversionViewModel::class.java)\n        // TODO: Use the ViewModel\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/grupo7/moneychange/ui/detail/DetailConversionFragment.kt	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/java/com/grupo7/moneychange/ui/detail/DetailConversionFragment.kt	(date 1575990881000)
+@@ -1,34 +1,31 @@
+ package com.grupo7.moneychange.ui.detail
+ 
+-import androidx.lifecycle.ViewModelProviders
+ import android.os.Bundle
+-import androidx.fragment.app.Fragment
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+-
+-import com.grupo7.moneychange.R
++import androidx.fragment.app.Fragment
++import com.grupo7.moneychange.databinding.DetailConversionFragmentBinding
+ 
+ class DetailConversionFragment : Fragment() {
+ 
+-    companion object {
+-        fun newInstance() = DetailConversionFragment()
+-    }
+-
+-    private lateinit var viewModel: DetailConversionViewModel
++    private val detailViewModel: DetailConversionViewModel by viewModel()
++    private lateinit var dataBindingView: DetailConversionFragmentBinding
+ 
+     override fun onCreateView(
+         inflater: LayoutInflater, container: ViewGroup?,
+         savedInstanceState: Bundle?
+     ): View? {
+-        setHasOptionsMenu(true)
+-        return inflater.inflate(R.layout.detail_conversion_fragment, container, false)
++        dataBindingView = DetailConversionFragmentBinding.inflate(inflater, container, false).apply {
++            viewModel = detailViewModel
++        }
++        return dataBindingView.root
+     }
+ 
+     override fun onActivityCreated(savedInstanceState: Bundle?) {
+         super.onActivityCreated(savedInstanceState)
+-        viewModel = ViewModelProviders.of(this).get(DetailConversionViewModel::class.java)
+-        // TODO: Use the ViewModel
++
++        dataBindingView.lifecycleOwner = this.viewLifecycleOwner
+     }
+ 
+ }
+Index: app/src/main/java/com/grupo7/moneychange/ui/conversion/ConversionViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo7.moneychange.ui.conversion\n\nimport android.view.View\nimport androidx.lifecycle.LiveData\nimport androidx.lifecycle.MutableLiveData\nimport androidx.lifecycle.ViewModel\nimport androidx.lifecycle.viewModelScope\nimport com.grupo7.moneychange.data.entity.Currency\nimport com.grupo7.moneychange.data.entity.History\nimport com.grupo7.moneychange.data.repositories.LiveRepository\nimport com.grupo7.moneychange.repository.CurrencyRepository\nimport com.grupo7.moneychange.repository.HistoryRepository\nimport kotlinx.coroutines.launch\n\nclass ConversionViewModel(\n\n    private val liveRepository: LiveRepository,\n    private val currentRepository: CurrencyRepository,\n    private val historyRepository: HistoryRepository\n\n) : ViewModel() {\n\n    var textViewCuurency:  MutableLiveData<Currency> = MutableLiveData()\n    var editTextConversionTo: MutableLiveData<String> = MutableLiveData()\n    var textViewConversionFrom: MutableLiveData<String> = MutableLiveData()\n    var textViewRateConversion: MutableLiveData<String> = MutableLiveData()\n\n    private var _currencyList = MutableLiveData<List<Currency>>().apply {\n        value = emptyList()\n    }\n    var currencyList: LiveData<List<Currency>> = _currencyList\n\n    private var _historyList = MutableLiveData<List<History>>().apply {\n        value = emptyList()\n    }\n    var historyList: LiveData<List<History>> = _historyList\n\n    init {\n        viewModelScope.launch {\n            initServiceCall()\n        }\n        getHistory()\n    }\n\n    private fun initServiceCall() {\n        liveRepository.getLive().observeForever {\n            it?.takeIf {\n                it.success\n            }?.let { response ->\n                successPath(response.quotes)\n            } ?: errorPath()\n        }\n    }\n\n    private fun errorPath() {\n    }\n\n    private fun successPath(coins: MutableMap<String, Double>) {\n        saveCurrencyList(coins)\n    }\n\n    private fun saveCurrencyList(coins: MutableMap<String, Double>) {\n\n        val listFromServer = mutableListOf<Currency>()\n        coins.forEach {\n\n            val objectToSave = Currency(\n                0,\n                it.key.substring(3,6),\n                \"https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwjaqqf1qIvmAhXBv54KHQr_CcIQPAgH\",\n                it.value\n            )\n            listFromServer.add(objectToSave)\n        }\n        currentRepository.insertCurrencyList(listFromServer)\n        getRoomInfo()\n    }\n\n    private fun getRoomInfo(){\n        currentRepository.getAll().observeForever {\n            _currencyList.value  = it\n        }\n    }\n\n    fun onClickChange(view: View) {\n\n        editTextConversionTo.value = (textViewConversionFrom.value!!.toInt()\n                * textViewCuurency.value!!.value.toInt()).toString()\n\n        var history = History(\n            0,\n            1,\n            textViewCuurency.value!!.id,\n            textViewConversionFrom.value!!.toDouble(),\n            editTextConversionTo.value!!.toDouble()\n        )\n        saveHistory(history)\n    }\n\n    private fun saveHistory(history:History){\n        historyRepository.insert(history)\n        getHistory()\n    }\n\n    private fun getHistory(){\n        historyRepository.getAll().observeForever {\n            _historyList.value = it\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/grupo7/moneychange/ui/conversion/ConversionViewModel.kt	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/java/com/grupo7/moneychange/ui/conversion/ConversionViewModel.kt	(date 1575767445000)
+@@ -20,7 +20,7 @@
+ 
+ ) : ViewModel() {
+ 
+-    var textViewCuurency:  MutableLiveData<Currency> = MutableLiveData()
++    var textViewCurrency:  MutableLiveData<Currency> = MutableLiveData()
+     var editTextConversionTo: MutableLiveData<String> = MutableLiveData()
+     var textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
+     var textViewRateConversion: MutableLiveData<String> = MutableLiveData()
+@@ -84,13 +84,14 @@
+ 
+     fun onClickChange(view: View) {
+ 
++
+         editTextConversionTo.value = (textViewConversionFrom.value!!.toInt()
+-                * textViewCuurency.value!!.value.toInt()).toString()
++                * textViewCurrency.value!!.value.toInt()).toString()
+ 
+         var history = History(
+             0,
+             1,
+-            textViewCuurency.value!!.id,
++            textViewCurrency.value!!.id,
+             textViewConversionFrom.value!!.toDouble(),
+             editTextConversionTo.value!!.toDouble()
+         )
+Index: app/src/main/java/com/grupo7/moneychange/ui/conversion/ConversionFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo7.moneychange.ui.conversion\n\nimport android.os.Bundle\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.ArrayAdapter\nimport android.widget.SpinnerAdapter\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.Observer\nimport androidx.recyclerview.widget.LinearLayoutManager\nimport com.grupo7.moneychange.R\nimport com.grupo7.moneychange.adapters.IRecyclerViewAdapter\nimport com.grupo7.moneychange.databinding.ConversionFragmentBinding\nimport kotlinx.android.synthetic.main.conversion_fragment.*\nimport org.koin.androidx.viewmodel.ext.android.viewModel\n\nclass ConversionFragment : Fragment() {\n\n    private val conversionViewModel: ConversionViewModel by viewModel()\n    private lateinit var dataBindingView: ConversionFragmentBinding\n\n    override fun onCreateView(\n        inflater: LayoutInflater, container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View? {\n\n        dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {\n            viewModel = conversionViewModel\n        }\n        return dataBindingView.root\n    }\n\n    override fun onActivityCreated(savedInstanceState: Bundle?) {\n        super.onActivityCreated(savedInstanceState)\n        recyclerView.adapter = IRecyclerViewAdapter()\n        dataBindingView.lifecycleOwner = this.viewLifecycleOwner\n\n\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/grupo7/moneychange/ui/conversion/ConversionFragment.kt	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/java/com/grupo7/moneychange/ui/conversion/ConversionFragment.kt	(date 1575991329000)
+@@ -9,16 +9,21 @@
+ import androidx.fragment.app.Fragment
+ import androidx.lifecycle.Observer
+ import androidx.recyclerview.widget.LinearLayoutManager
++import androidx.recyclerview.widget.RecyclerView
+ import com.grupo7.moneychange.R
+ import com.grupo7.moneychange.adapters.IRecyclerViewAdapter
++import com.grupo7.moneychange.data.entity.History
+ import com.grupo7.moneychange.databinding.ConversionFragmentBinding
++import com.grupo7.moneychange.ui.detail.DetailConversionViewModel
+ import kotlinx.android.synthetic.main.conversion_fragment.*
++import kotlinx.android.synthetic.main.item_history.view.*
+ import org.koin.androidx.viewmodel.ext.android.viewModel
+ 
+ class ConversionFragment : Fragment() {
+ 
+     private val conversionViewModel: ConversionViewModel by viewModel()
+     private lateinit var dataBindingView: ConversionFragmentBinding
++    private val historyAdapter = HistoryAdapter()
+ 
+     override fun onCreateView(
+         inflater: LayoutInflater, container: ViewGroup?,
+@@ -33,10 +38,40 @@
+ 
+     override fun onActivityCreated(savedInstanceState: Bundle?) {
+         super.onActivityCreated(savedInstanceState)
+-        recyclerView.adapter = IRecyclerViewAdapter()
++//        recyclerView.adapter = IRecyclerViewAdapter()
++        recyclerView.apply {
++            adapter = historyAdapter
++        }
++        conversionViewModel.historyList.observe(this, Observer{
++            historyAdapter.setItems(it)
++        })
+         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
+ 
++    }
++}
++
++class HistoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
++    private val items = mutableListOf<History>()
++
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
++        val inflater = LayoutInflater.from(parent.context)
++
++        return object : RecyclerView.ViewHolder(inflater.inflate(R.layout.item_history, parent, false)){}
++    }
+ 
++    override fun getItemCount(): Int = items.size
+ 
++    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
++        val item = items[position]
++        holder.itemView.apply {
++            conversion_text.text = String.format(context.getString(R.string.conversion_rate), item.valueFrom, item.valueTo)
++        }
+     }
++
++    fun setItems(newItems: List<History>) {
++        items.clear()
++        items.addAll(newItems)
++        notifyDataSetChanged()
++    }
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/grupo7/moneychange/data/entity/History.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo7.moneychange.data.entity\n\nimport androidx.room.ColumnInfo\nimport androidx.room.Entity\nimport androidx.room.ForeignKey\nimport androidx.room.PrimaryKey\nimport org.jetbrains.annotations.NotNull\nimport java.util.*\n\n@Entity(tableName = History.TABLE_NAME,\n        foreignKeys = [\n            ForeignKey(entity = Currency::class, parentColumns = arrayOf(\"id\"), childColumns = arrayOf(\"currencyfrom\"), onDelete = ForeignKey.NO_ACTION),\n            ForeignKey(entity = Currency::class, parentColumns = arrayOf(\"id\"), childColumns = arrayOf(\"currencyto\"), onDelete = ForeignKey.NO_ACTION)]\n    )\nclass History (\n\n    @PrimaryKey(autoGenerate = true)\n    @ColumnInfo(name = \"id\")\n    val id: Int = 0,\n\n    //@ColumnInfo(name = \"date\") @NotNull\n    //val date:Date,\n\n    @ColumnInfo(name = \"currencyfrom\")\n    val currencyFrom:Int,\n\n    @ColumnInfo(name = \"currencyto\")\n    val currencyTo:Int,\n\n    @ColumnInfo(name = \"valuefrom\") @NotNull\n    val valueFrom : Double,\n\n    @ColumnInfo(name = \"valueto\") @NotNull\n    val valueTo: Double\n\n\n) {\n\n    companion object{\n        const val  TABLE_NAME = \"history\"\n    }\n\n    override fun toString(): String {\n        return valueTo.toString()\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/grupo7/moneychange/data/entity/History.kt	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/java/com/grupo7/moneychange/data/entity/History.kt	(date 1575740566000)
+@@ -9,8 +9,8 @@
+ 
+ @Entity(tableName = History.TABLE_NAME,
+         foreignKeys = [
+-            ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyfrom"), onDelete = ForeignKey.NO_ACTION),
+-            ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyto"), onDelete = ForeignKey.NO_ACTION)]
++            ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyFrom"), onDelete = ForeignKey.NO_ACTION),
++            ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyTo"), onDelete = ForeignKey.NO_ACTION)]
+     )
+ class History (
+ 
+@@ -21,16 +21,12 @@
+     //@ColumnInfo(name = "date") @NotNull
+     //val date:Date,
+ 
+-    @ColumnInfo(name = "currencyfrom")
+     val currencyFrom:Int,
+ 
+-    @ColumnInfo(name = "currencyto")
+     val currencyTo:Int,
+ 
+-    @ColumnInfo(name = "valuefrom") @NotNull
+     val valueFrom : Double,
+ 
+-    @ColumnInfo(name = "valueto") @NotNull
+     val valueTo: Double
+ 
+ 
+Index: app/src/main/java/com/grupo7/moneychange/ui/detail/DetailConversionViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo7.moneychange.ui.detail\n\nimport androidx.lifecycle.ViewModel\n\nclass DetailConversionViewModel : ViewModel() {\n    // TODO: Implement the ViewModel\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/grupo7/moneychange/ui/detail/DetailConversionViewModel.kt	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/java/com/grupo7/moneychange/ui/detail/DetailConversionViewModel.kt	(date 1575991329000)
+@@ -1,7 +1,26 @@
+ package com.grupo7.moneychange.ui.detail
+ 
++import androidx.lifecycle.LiveData
++import androidx.lifecycle.MutableLiveData
+ import androidx.lifecycle.ViewModel
++import androidx.lifecycle.viewModelScope
++import com.grupo7.moneychange.repository.HistoryRepository
++import kotlinx.coroutines.launch
++
++class DetailConversionViewModel(
++    private val historyRepository: HistoryRepository
++) : ViewModel() {
+ 
+-class DetailConversionViewModel : ViewModel() {
+-    // TODO: Implement the ViewModel
++    var textViewDate: MutableLiveData<String> = MutableLiveData()
++    var textViewConversion: MutableLiveData<String> = MutableLiveData()
++    var textViewRate_base: MutableLiveData<String> = MutableLiveData()
++
++    //private var _date: LiveData<>
++
++    init {
++        viewModelScope.launch {
++
++        }
++    }
++
+ }
+Index: app/src/main/res/layout/conversion_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <data>\n        <variable name=\"viewModel\" type=\"com.grupo7.moneychange.ui.conversion.ConversionViewModel\" />\n    </data>\n\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\">\n\n        <androidx.core.widget.NestedScrollView\n            android:layout_width=\"0dp\"\n            android:layout_height=\"0dp\"\n            android:fillViewport=\"true\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <androidx.constraintlayout.widget.ConstraintLayout\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"match_parent\"\n                android:layout_margin=\"10dp\">\n\n                <androidx.appcompat.widget.AppCompatImageView\n                    android:id=\"@+id/gps_img\"\n                    android:layout_width=\"0dp\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginStart=\"8dp\"\n                    android:layout_marginEnd=\"8dp\"\n                    android:tint=\"@android:color/black\"\n                    app:layout_constraintBottom_toBottomOf=\"@id/location_text\"\n                    app:layout_constraintStart_toStartOf=\"parent\"\n                    app:layout_constraintTop_toTopOf=\"@id/location_text\"\n                    app:srcCompat=\"@drawable/ic_gps_off\" />\n\n                <androidx.appcompat.widget.AppCompatTextView\n                    android:id=\"@+id/location_text\"\n                    android:layout_width=\"338dp\"\n                    android:layout_height=\"49dp\"\n                    android:layout_margin=\"8dp\"\n                    android:text=\"@string/current_location\"\n                    android:textAlignment=\"center\"\n                    android:textColor=\"@android:color/black\"\n                    android:textSize=\"30sp\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintEnd_toEndOf=\"parent\"\n                    app:layout_constraintStart_toEndOf=\"@id/gps_img\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n\n                <androidx.appcompat.widget.AppCompatSpinner\n                    android:id=\"@+id/conversion_from_spinner\"\n                    app:coin_values_from=\"@{viewModel.currencyList}\"\n                    android:layout_width=\"150dp\"\n                    android:layout_height=\"40dp\"\n                    app:layout_constraintBottom_toBottomOf=\"@id/conversion_from_edit\"\n                    app:layout_constraintEnd_toStartOf=\"@id/conversion_from_edit\"\n                    app:layout_constraintStart_toStartOf=\"parent\"\n                    tools:listitem=\"@android:layout/simple_spinner_item\" />\n\n                <androidx.appcompat.widget.AppCompatEditText\n                    android:id=\"@+id/conversion_from_edit\"\n                    android:layout_width=\"178dp\"\n                    android:layout_height=\"45dp\"\n                    android:layout_marginTop=\"20dp\"\n                    android:hint=\"1\"\n                    android:inputType=\"number\"\n                    android:lines=\"1\"\n                    android:text=\"@={viewModel.textViewConversionFrom}\"\n                    android:textAlignment=\"center\"\n                    android:textColor=\"@android:color/black\"\n                    android:textSize=\"18sp\"\n                    app:layout_constraintEnd_toEndOf=\"parent\"\n                    app:layout_constraintStart_toEndOf=\"@id/conversion_from_spinner\"\n                    app:layout_constraintTop_toBottomOf=\"@id/location_text\" />\n\n                <androidx.appcompat.widget.AppCompatImageView\n                    android:id=\"@+id/exchange_img\"\n                    android:layout_width=\"44dp\"\n                    android:layout_height=\"35dp\"\n                    app:layout_constraintBottom_toTopOf=\"@id/conversion_to\"\n                    app:layout_constraintEnd_toEndOf=\"@id/conversion_from_edit\"\n                    app:layout_constraintHorizontal_bias=\"0.501\"\n                    app:layout_constraintStart_toStartOf=\"@id/conversion_from_spinner\"\n                    app:layout_constraintTop_toBottomOf=\"@id/conversion_from_edit\"\n                    app:layout_constraintVertical_bias=\"0.619\"\n                    app:srcCompat=\"@drawable/ic_exchange\" />\n\n                <androidx.appcompat.widget.AppCompatSpinner\n                    android:id=\"@+id/conversion_to_spinner\"\n                    android:layout_width=\"150dp\"\n                    android:layout_height=\"40dp\"\n                    app:coin_values=\"@{viewModel.currencyList}\"\n                    app:selectedValue=\"@={viewModel.textViewCuurency}\"\n                    app:layout_constraintBottom_toBottomOf=\"@id/conversion_to\"\n                    app:layout_constraintEnd_toEndOf=\"@id/conversion_from_spinner\"\n                    app:layout_constraintStart_toStartOf=\"@id/conversion_from_spinner\"\n                    tools:listitem=\"@android:layout/simple_spinner_item\" />\n\n                <androidx.appcompat.widget.AppCompatTextView\n                    android:id=\"@+id/conversion_to\"\n                    android:layout_width=\"135dp\"\n                    android:layout_height=\"45dp\"\n                    android:layout_marginTop=\"56dp\"\n                    android:text=\"@={viewModel.editTextConversionTo}\"\n                    android:textSize=\"18sp\"\n                    app:layout_constraintEnd_toEndOf=\"parent\"\n                    app:layout_constraintHorizontal_bias=\"0.0\"\n                    app:layout_constraintStart_toStartOf=\"@id/conversion_from_edit\"\n                    app:layout_constraintTop_toBottomOf=\"@id/conversion_from_edit\" />\n\n                <androidx.appcompat.widget.AppCompatTextView\n                    android:id=\"@+id/rate_conversion\"\n                    android:layout_width=\"391dp\"\n                    android:layout_height=\"45dp\"\n                    android:layout_marginTop=\"16dp\"\n                    android:gravity=\"center\"\n                    android:text=\"@={viewModel.textViewRateConversion}\"\n                    app:layout_constraintEnd_toEndOf=\"parent\"\n                    app:layout_constraintStart_toStartOf=\"parent\"\n                    app:layout_constraintTop_toBottomOf=\"@id/conversion_to\"\n                    tools:text=\"@string/conversion_rate_hint\" />\n\n                <androidx.appcompat.widget.AppCompatTextView\n                    android:id=\"@+id/history_title\"\n                    android:layout_width=\"384dp\"\n                    android:layout_height=\"45dp\"\n                    android:layout_marginTop=\"16dp\"\n                    android:gravity=\"center\"\n                    android:text=\"@string/history\"\n                    app:layout_constraintEnd_toEndOf=\"parent\"\n                    app:layout_constraintStart_toStartOf=\"parent\"\n                    app:layout_constraintTop_toBottomOf=\"@id/rate_conversion\" />\n\n                <androidx.recyclerview.widget.RecyclerView\n                    android:id=\"@+id/recyclerView\"\n                    android:layout_width=\"0dp\"\n                    android:layout_height=\"0dp\"\n                    android:padding=\"8dp\"\n                    app:layoutManager=\"androidx.recyclerview.widget.LinearLayoutManager\"\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\n                    app:layout_constraintEnd_toEndOf=\"parent\"\n                    app:layout_constraintStart_toStartOf=\"parent\"\n                    app:layout_constraintTop_toBottomOf=\"@id/history_title\"\n                    tools:itemCount=\"7\"\n\n                    tools:listitem=\"@layout/item_history\" />\n\n                <ImageButton\n                    android:id=\"@+id/btnConvert\"\n                    android:layout_width=\"51dp\"\n                    android:layout_height=\"45dp\"\n                    android:layout_marginTop=\"56dp\"\n                    android:onClick=\"@{(view)-> viewModel.onClickChange(view)}\"\n                    android:src=\"@android:drawable/ic_input_add\"\n                    android:text=\"@android:string/ok\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintEnd_toEndOf=\"parent\"\n                    app:layout_constraintHorizontal_bias=\"0.384\"\n                    app:layout_constraintStart_toEndOf=\"@+id/conversion_to\"\n                    app:layout_constraintTop_toBottomOf=\"@+id/conversion_from_edit\" />\n            </androidx.constraintlayout.widget.ConstraintLayout>\n\n        </androidx.core.widget.NestedScrollView>\n\n        <LinearLayout\n            android:id=\"@+id/llErrorContainer\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"0dp\"\n            android:background=\"@android:color/darker_gray\"\n            android:orientation=\"horizontal\"\n            android:visibility=\"gone\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <ImageView\n                android:id=\"@+id/imageView\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"match_parent\"\n                android:layout_weight=\"1\"\n                tools:srcCompat=\"@tools:sample/avatars\" />\n        </LinearLayout>\n    </androidx.constraintlayout.widget.ConstraintLayout>\n\n\n</layout>\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/conversion_fragment.xml	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/res/layout/conversion_fragment.xml	(date 1575767445000)
+@@ -5,189 +5,164 @@
+     xmlns:tools="http://schemas.android.com/tools">
+ 
+     <data>
+-        <variable name="viewModel" type="com.grupo7.moneychange.ui.conversion.ConversionViewModel" />
++
++        <variable
++            name="viewModel"
++            type="com.grupo7.moneychange.ui.conversion.ConversionViewModel" />
+     </data>
+ 
+-    <androidx.constraintlayout.widget.ConstraintLayout
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent">
+-
+-        <androidx.core.widget.NestedScrollView
+-            android:layout_width="0dp"
+-            android:layout_height="0dp"
+-            android:fillViewport="true"
+-            app:layout_constraintBottom_toBottomOf="parent"
+-            app:layout_constraintEnd_toEndOf="parent"
+-            app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintTop_toTopOf="parent">
++    <androidx.core.widget.NestedScrollView
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:fillViewport="true"
++        android:isScrollContainer="true">
+ 
+-            <androidx.constraintlayout.widget.ConstraintLayout
+-                android:layout_width="match_parent"
+-                android:layout_height="match_parent"
+-                android:layout_margin="10dp">
++        <androidx.constraintlayout.widget.ConstraintLayout
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:layout_margin="10dp">
+ 
+-                <androidx.appcompat.widget.AppCompatImageView
+-                    android:id="@+id/gps_img"
+-                    android:layout_width="0dp"
+-                    android:layout_height="wrap_content"
+-                    android:layout_marginStart="8dp"
+-                    android:layout_marginEnd="8dp"
+-                    android:tint="@android:color/black"
+-                    app:layout_constraintBottom_toBottomOf="@id/location_text"
+-                    app:layout_constraintStart_toStartOf="parent"
+-                    app:layout_constraintTop_toTopOf="@id/location_text"
+-                    app:srcCompat="@drawable/ic_gps_off" />
++            <androidx.appcompat.widget.AppCompatImageView
++                android:id="@+id/gps_img"
++                android:layout_width="0dp"
++                android:layout_height="wrap_content"
++                android:layout_marginStart="8dp"
++                android:layout_marginEnd="8dp"
++                android:tint="@android:color/black"
++                app:layout_constraintBottom_toBottomOf="@id/location_text"
++                app:layout_constraintStart_toStartOf="parent"
++                app:layout_constraintTop_toTopOf="@id/location_text"
++                app:srcCompat="@drawable/ic_gps_off" />
+ 
+-                <androidx.appcompat.widget.AppCompatTextView
+-                    android:id="@+id/location_text"
+-                    android:layout_width="338dp"
+-                    android:layout_height="49dp"
+-                    android:layout_margin="8dp"
+-                    android:text="@string/current_location"
+-                    android:textAlignment="center"
+-                    android:textColor="@android:color/black"
+-                    android:textSize="30sp"
+-                    android:textStyle="bold"
+-                    app:layout_constraintEnd_toEndOf="parent"
+-                    app:layout_constraintStart_toEndOf="@id/gps_img"
+-                    app:layout_constraintTop_toTopOf="parent" />
++            <androidx.appcompat.widget.AppCompatTextView
++                android:id="@+id/location_text"
++                android:layout_width="0dp"
++                android:layout_height="wrap_content"
++                android:layout_margin="8dp"
++                android:text="@string/current_location"
++                android:textAlignment="center"
++                android:textColor="@android:color/black"
++                android:textSize="30sp"
++                android:textStyle="bold"
++                app:layout_constraintEnd_toEndOf="parent"
++                app:layout_constraintStart_toEndOf="@id/gps_img"
++                app:layout_constraintTop_toTopOf="parent" />
+ 
+-                <androidx.appcompat.widget.AppCompatSpinner
+-                    android:id="@+id/conversion_from_spinner"
+-                    app:coin_values_from="@{viewModel.currencyList}"
+-                    android:layout_width="150dp"
+-                    android:layout_height="40dp"
+-                    app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"
+-                    app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"
+-                    app:layout_constraintStart_toStartOf="parent"
+-                    tools:listitem="@android:layout/simple_spinner_item" />
++            <androidx.appcompat.widget.AppCompatSpinner
++                android:id="@+id/conversion_from_spinner"
++                android:layout_width="wrap_content"
++                android:layout_height="0dp"
++                app:coin_values_from="@{viewModel.currencyList}"
++                app:layout_constraintBottom_toBottomOf="@id/conversion_from_edit"
++                app:layout_constraintEnd_toStartOf="@id/conversion_from_edit"
++                app:layout_constraintStart_toStartOf="parent"
++                app:layout_constraintTop_toTopOf="@id/conversion_from_edit"
++                tools:listitem="@android:layout/simple_spinner_item" />
+ 
+-                <androidx.appcompat.widget.AppCompatEditText
+-                    android:id="@+id/conversion_from_edit"
+-                    android:layout_width="178dp"
+-                    android:layout_height="45dp"
+-                    android:layout_marginTop="20dp"
+-                    android:hint="1"
+-                    android:inputType="number"
+-                    android:lines="1"
+-                    android:text="@={viewModel.textViewConversionFrom}"
+-                    android:textAlignment="center"
+-                    android:textColor="@android:color/black"
+-                    android:textSize="18sp"
+-                    app:layout_constraintEnd_toEndOf="parent"
+-                    app:layout_constraintStart_toEndOf="@id/conversion_from_spinner"
+-                    app:layout_constraintTop_toBottomOf="@id/location_text" />
++            <androidx.appcompat.widget.AppCompatEditText
++                android:id="@+id/conversion_from_edit"
++                android:layout_width="150dp"
++                android:layout_height="wrap_content"
++                android:layout_marginTop="20dp"
++                android:hint="1"
++                android:inputType="number"
++                android:lines="1"
++                android:text="@={viewModel.textViewConversionFrom}"
++                android:textAlignment="center"
++                android:textColor="@android:color/black"
++                android:textSize="18sp"
++                app:layout_constraintEnd_toEndOf="parent"
++                app:layout_constraintStart_toEndOf="@id/conversion_from_spinner"
++                app:layout_constraintTop_toBottomOf="@id/location_text" />
+ 
+-                <androidx.appcompat.widget.AppCompatImageView
+-                    android:id="@+id/exchange_img"
+-                    android:layout_width="44dp"
+-                    android:layout_height="35dp"
+-                    app:layout_constraintBottom_toTopOf="@id/conversion_to"
+-                    app:layout_constraintEnd_toEndOf="@id/conversion_from_edit"
+-                    app:layout_constraintHorizontal_bias="0.501"
+-                    app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
+-                    app:layout_constraintTop_toBottomOf="@id/conversion_from_edit"
+-                    app:layout_constraintVertical_bias="0.619"
+-                    app:srcCompat="@drawable/ic_exchange" />
++            <androidx.appcompat.widget.AppCompatImageView
++                android:id="@+id/exchange_img"
++                android:layout_width="wrap_content"
++                android:layout_height="0dp"
++                android:scaleType="matrix"
++                app:layout_constraintBottom_toTopOf="@id/conversion_to"
++                app:layout_constraintEnd_toEndOf="@id/conversion_from_edit"
++                app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
++                app:layout_constraintTop_toBottomOf="@id/conversion_from_edit"
++                app:layout_constraintVertical_bias="0.619"
++                app:srcCompat="@drawable/ic_exchange" />
+ 
+-                <androidx.appcompat.widget.AppCompatSpinner
+-                    android:id="@+id/conversion_to_spinner"
+-                    android:layout_width="150dp"
+-                    android:layout_height="40dp"
+-                    app:coin_values="@{viewModel.currencyList}"
+-                    app:selectedValue="@={viewModel.textViewCuurency}"
+-                    app:layout_constraintBottom_toBottomOf="@id/conversion_to"
+-                    app:layout_constraintEnd_toEndOf="@id/conversion_from_spinner"
+-                    app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
+-                    tools:listitem="@android:layout/simple_spinner_item" />
++            <androidx.appcompat.widget.AppCompatSpinner
++                android:id="@+id/conversion_to_spinner"
++                android:layout_width="0dp"
++                android:layout_height="wrap_content"
++                app:coin_values="@{viewModel.currencyList}"
++                app:layout_constraintBottom_toBottomOf="@id/conversion_to"
++                app:layout_constraintEnd_toEndOf="@id/conversion_from_spinner"
++                app:layout_constraintStart_toStartOf="@id/conversion_from_spinner"
++                app:layout_constraintTop_toTopOf="@id/conversion_to"
++                app:selectedValue="@={viewModel.textViewCurrency}"
++                tools:listitem="@android:layout/simple_spinner_item" />
+ 
+-                <androidx.appcompat.widget.AppCompatTextView
+-                    android:id="@+id/conversion_to"
+-                    android:layout_width="135dp"
+-                    android:layout_height="45dp"
+-                    android:layout_marginTop="56dp"
+-                    android:text="@={viewModel.editTextConversionTo}"
+-                    android:textSize="18sp"
+-                    app:layout_constraintEnd_toEndOf="parent"
+-                    app:layout_constraintHorizontal_bias="0.0"
+-                    app:layout_constraintStart_toStartOf="@id/conversion_from_edit"
+-                    app:layout_constraintTop_toBottomOf="@id/conversion_from_edit" />
++            <androidx.appcompat.widget.AppCompatTextView
++                android:id="@+id/conversion_to"
++                android:layout_width="0dp"
++                android:layout_height="wrap_content"
++                android:layout_marginTop="56dp"
++                android:gravity="center"
++                android:text="@={viewModel.editTextConversionTo}"
++                android:textSize="18sp"
++                app:layout_constraintEnd_toStartOf="@id/btnConvert"
++                app:layout_constraintHorizontal_bias="0.0"
++                app:layout_constraintStart_toStartOf="@id/conversion_from_edit"
++                app:layout_constraintTop_toBottomOf="@id/conversion_from_edit"
++                tools:text="1" />
++
++            <androidx.appcompat.widget.AppCompatImageView
++                android:id="@+id/btnConvert"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:onClick="@{(view) -> viewModel.onClickChange(view)}"
++                app:layout_constraintBottom_toBottomOf="@id/conversion_to"
++                app:layout_constraintEnd_toEndOf="parent"
++                app:layout_constraintStart_toEndOf="@id/conversion_to"
++                app:layout_constraintTop_toTopOf="@id/conversion_to"
++                app:srcCompat="@android:drawable/ic_input_add" />
+ 
+-                <androidx.appcompat.widget.AppCompatTextView
+-                    android:id="@+id/rate_conversion"
+-                    android:layout_width="391dp"
+-                    android:layout_height="45dp"
+-                    android:layout_marginTop="16dp"
+-                    android:gravity="center"
+-                    android:text="@={viewModel.textViewRateConversion}"
+-                    app:layout_constraintEnd_toEndOf="parent"
+-                    app:layout_constraintStart_toStartOf="parent"
+-                    app:layout_constraintTop_toBottomOf="@id/conversion_to"
+-                    tools:text="@string/conversion_rate_hint" />
++            <androidx.appcompat.widget.AppCompatTextView
++                android:id="@+id/rate_conversion"
++                android:layout_width="391dp"
++                android:layout_height="45dp"
++                android:layout_marginTop="16dp"
++                android:gravity="center"
++                android:text="@={viewModel.textViewRateConversion}"
++                app:layout_constraintEnd_toEndOf="parent"
++                app:layout_constraintStart_toStartOf="parent"
++                app:layout_constraintTop_toBottomOf="@id/conversion_to"
++                tools:text="@string/conversion_rate_hint" />
+ 
+-                <androidx.appcompat.widget.AppCompatTextView
+-                    android:id="@+id/history_title"
+-                    android:layout_width="384dp"
+-                    android:layout_height="45dp"
+-                    android:layout_marginTop="16dp"
+-                    android:gravity="center"
+-                    android:text="@string/history"
+-                    app:layout_constraintEnd_toEndOf="parent"
+-                    app:layout_constraintStart_toStartOf="parent"
+-                    app:layout_constraintTop_toBottomOf="@id/rate_conversion" />
++            <androidx.appcompat.widget.AppCompatTextView
++                android:id="@+id/history_title"
++                android:layout_width="384dp"
++                android:layout_height="45dp"
++                android:layout_marginTop="16dp"
++                android:gravity="center"
++                android:text="@string/history"
++                app:layout_constraintEnd_toEndOf="parent"
++                app:layout_constraintStart_toStartOf="parent"
++                app:layout_constraintTop_toBottomOf="@id/rate_conversion" />
+ 
+-                <androidx.recyclerview.widget.RecyclerView
+-                    android:id="@+id/recyclerView"
+-                    android:layout_width="0dp"
+-                    android:layout_height="0dp"
+-                    android:padding="8dp"
+-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+-                    app:layout_constraintBottom_toBottomOf="parent"
+-                    app:layout_constraintEnd_toEndOf="parent"
+-                    app:layout_constraintStart_toStartOf="parent"
+-                    app:layout_constraintTop_toBottomOf="@id/history_title"
+-                    tools:itemCount="7"
+-
+-                    tools:listitem="@layout/item_history" />
++            <androidx.recyclerview.widget.RecyclerView
++                android:id="@+id/recyclerView"
++                android:layout_width="0dp"
++                android:layout_height="0dp"
++                android:padding="8dp"
++                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
++                app:layout_constraintBottom_toBottomOf="parent"
++                app:layout_constraintEnd_toEndOf="parent"
++                app:layout_constraintStart_toStartOf="parent"
++                app:layout_constraintTop_toBottomOf="@id/history_title"
++                tools:itemCount="7"
++                tools:listitem="@layout/item_history" />
+ 
+-                <ImageButton
+-                    android:id="@+id/btnConvert"
+-                    android:layout_width="51dp"
+-                    android:layout_height="45dp"
+-                    android:layout_marginTop="56dp"
+-                    android:onClick="@{(view)-> viewModel.onClickChange(view)}"
+-                    android:src="@android:drawable/ic_input_add"
+-                    android:text="@android:string/ok"
+-                    android:textStyle="bold"
+-                    app:layout_constraintEnd_toEndOf="parent"
+-                    app:layout_constraintHorizontal_bias="0.384"
+-                    app:layout_constraintStart_toEndOf="@+id/conversion_to"
+-                    app:layout_constraintTop_toBottomOf="@+id/conversion_from_edit" />
+-            </androidx.constraintlayout.widget.ConstraintLayout>
++        </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+-        </androidx.core.widget.NestedScrollView>
++    </androidx.core.widget.NestedScrollView>
+ 
+-        <LinearLayout
+-            android:id="@+id/llErrorContainer"
+-            android:layout_width="0dp"
+-            android:layout_height="0dp"
+-            android:background="@android:color/darker_gray"
+-            android:orientation="horizontal"
+-            android:visibility="gone"
+-            app:layout_constraintBottom_toBottomOf="parent"
+-            app:layout_constraintEnd_toEndOf="parent"
+-            app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintTop_toTopOf="parent">
+-
+-            <ImageView
+-                android:id="@+id/imageView"
+-                android:layout_width="wrap_content"
+-                android:layout_height="match_parent"
+-                android:layout_weight="1"
+-                tools:srcCompat="@tools:sample/avatars" />
+-        </LinearLayout>
+-    </androidx.constraintlayout.widget.ConstraintLayout>
+-
+-
+ </layout>
+ 
+Index: app/src/main/java/com/grupo7/moneychange/ui/di/MainModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.grupo7.moneychange.ui.di\n\nimport com.grupo7.moneychange.R\nimport com.grupo7.moneychange.data.endpoints.LiveApi\nimport com.grupo7.moneychange.data.network.RetrofitBuild\nimport com.grupo7.moneychange.data.repositories.LiveRepository\nimport com.grupo7.moneychange.data.repositories.LiveRepositoryImpl\nimport com.grupo7.moneychange.repository.CurrencyRepository\nimport com.grupo7.moneychange.repository.HistoryRepository\nimport com.grupo7.moneychange.ui.conversion.ConversionViewModel\nimport org.koin.android.ext.koin.androidContext\nimport org.koin.androidx.viewmodel.dsl.viewModel\nimport org.koin.dsl.module\nval conversionModule = module {\n    viewModel {\n        ConversionViewModel(liveRepository = get(), currentRepository = get(),historyRepository = get() )\n    }\n\n    factory<LiveRepository> { LiveRepositoryImpl(liveApi = get()) }\n    factory { CurrencyRepository(androidContext()) }\n    factory { HistoryRepository(androidContext()) }\n}\nval retrofitModule = module {\n    single { RetrofitBuild(androidContext().resources.getString(R.string.base_url)) }\n    single { get<RetrofitBuild>().retrofit.create(LiveApi::class.java) }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/grupo7/moneychange/ui/di/MainModule.kt	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/java/com/grupo7/moneychange/ui/di/MainModule.kt	(date 1575988249000)
+@@ -8,12 +8,14 @@
+ import com.grupo7.moneychange.repository.CurrencyRepository
+ import com.grupo7.moneychange.repository.HistoryRepository
+ import com.grupo7.moneychange.ui.conversion.ConversionViewModel
++import com.grupo7.moneychange.ui.detail.DetailConversionViewModel
+ import org.koin.android.ext.koin.androidContext
+ import org.koin.androidx.viewmodel.dsl.viewModel
+ import org.koin.dsl.module
+ val conversionModule = module {
+     viewModel {
+         ConversionViewModel(liveRepository = get(), currentRepository = get(),historyRepository = get() )
++        DetailConversionViewModel(get())
+     }
+ 
+     factory<LiveRepository> { LiveRepositoryImpl(liveApi = get()) }
+Index: app/src/main/res/layout/detail_conversion_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/frameLayout2\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    tools:context=\".ui.detail.DetailConversionFragment\">\n\n    <TextView\n        android:id=\"@+id/textView\"\n        android:layout_width=\"0dp\"\n        android:layout_height=\"0dp\"\n        android:text=\"Hello\"\n        android:gravity=\"center\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintTop_toTopOf=\"parent\" />\n\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/detail_conversion_fragment.xml	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/res/layout/detail_conversion_fragment.xml	(date 1575767445000)
+@@ -1,21 +1,56 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<layout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/frameLayout2"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    tools:context=".ui.detail.DetailConversionFragment">
++    tools:context=".ui.detail.DetailConversionFragment">
++
++    <data>
++        <variable
++            name="viewModel"
++            type="com.grupo7.moneychange.ui.detail.DetailConversionViewModel" />
++    </data>
++
++    <androidx.constraintlayout.widget.ConstraintLayout
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++
++        <androidx.appcompat.widget.AppCompatTextView
++            android:id="@+id/date"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
+ 
+-    <TextView
+-        android:id="@+id/textView"
+-        android:layout_width="0dp"
+-        android:layout_height="0dp"
+-        android:text="Hello"
+-        android:gravity="center"
+-        app:layout_constraintBottom_toBottomOf="parent"
+-        app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toTopOf="parent" />
++            android:textColor="@android:color/black"
++            android:textSize="20sp"
++            app:layout_constraintBottom_toTopOf="@id/conversion"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="parent"
++            tools:text="20 de Octubre 2019" />
++
++        <androidx.appcompat.widget.AppCompatTextView
++            android:id="@+id/conversion"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:textColor="@android:color/black"
++            android:textSize="36sp"
++            android:textStyle="bold"
++            app:layout_constraintBottom_toTopOf="@id/rate_base"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toBottomOf="@id/date"
++            tools:text="3 USD to COP 7500" />
++
++        <androidx.appcompat.widget.AppCompatTextView
++            android:id="@+id/rate_base"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:textColor="@android:color/black"
++            android:textSize="16sp"
++            app:layout_constraintBottom_toBottomOf="parent"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toBottomOf="@id/conversion"
++            tools:text="1 USD = 3500 COP" />
++    </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+-</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
++</layout>
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    package=\"com.grupo7.moneychange\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n\n    <application\n        android:name=\"com.grupo7.moneychange.app.App\"\n        android:allowBackup=\"true\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\n        android:supportsRtl=\"true\"\n        android:networkSecurityConfig=\"@xml/network_security_config\"\n        android:theme=\"@style/AppTheme\">\n        <activity android:name=\".ui.MainActivity\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n    </application>\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/AndroidManifest.xml	(date 1575765514000)
+@@ -13,7 +13,8 @@
+         android:supportsRtl="true"
+         android:networkSecurityConfig="@xml/network_security_config"
+         android:theme="@style/AppTheme">
+-        <activity android:name=".ui.MainActivity">
++        <activity android:name=".ui.MainActivity"
++            android:windowSoftInputMode="adjustResize">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+ 
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\n    <string name=\"app_name\">Moneychange</string>\n    <string name=\"current_location\">You are in Colombia</string>\n    <string name=\"conversion_rate_hint\">1 USD = 3500 COP</string>\n    <string name=\"history\">History</string>\n</resources>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/src/main/res/values/strings.xml	(date 1575758137000)
+@@ -2,5 +2,6 @@
+     <string name="app_name">Moneychange</string>
+     <string name="current_location">You are in Colombia</string>
+     <string name="conversion_rate_hint">1 USD = 3500 COP</string>
++    <string name="conversion_rate">%.2f USD = %.2f COP</string>
+     <string name="history">History</string>
+ </resources>
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\n\napply plugin: 'kotlin-android'\n\napply plugin: 'kotlin-android-extensions'\n\napply plugin: 'kotlin-kapt'\n\napply plugin: 'androidx.navigation.safeargs.kotlin'\n\nandroid {\n    compileSdkVersion sdk.compileSdk\n    buildToolsVersion \"29.0.2\"\n    defaultConfig {\n        applicationId nameAplicationId\n        minSdkVersion sdk.minSdk\n        targetSdkVersion sdk.targetSdk\n        versionCode 1\n        versionName \"1.0\"\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n        vectorDrawables.useSupportLibrary true\n    }\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n\n    dataBinding {\n        enabled = true\n    }\n}\nrepositories {\n    jcenter()\n}\n\ndependencies {\n    implementation\"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version\"\n    implementation \"androidx.appcompat:appcompat:$support.appcompat\"\n    implementation \"androidx.core:core-ktx:$core_ktx\"\n    implementation \"androidx.constraintlayout:constraintlayout:$support.constraintlayout\"\n    implementation \"androidx.recyclerview:recyclerview:$support.recyclerview\"\n    implementation \"androidx.legacy:legacy-support-v4:$support.legacy\"\n    implementation \"androidx.lifecycle:lifecycle-extensions:$lifecycle_version\"\n    implementation \"androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version\"\n    implementation \"androidx.navigation:navigation-fragment-ktx:$nav_version\"\n    implementation \"androidx.navigation:navigation-ui-ktx:$nav_version\"\n\n    //Persistence\n    implementation \"android.arch.persistence.room:runtime:$room.runtime\"\n    kapt \"android.arch.persistence.room:compiler:$room.compiler\"\n    implementation \"android.arch.lifecycle:extensions:$room.extensions\" //ViewModel and LiveData\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\n\n    //retrofit\n    implementation \"com.squareup.moshi:moshi-kotlin:$retrofit.moshi\"\n    implementation \"com.squareup.retrofit2:retrofit:$retrofit.retrofit\"\n    implementation \"com.squareup.okhttp3:logging-interceptor:$retrofit.loggin_interceptor\"\n    implementation \"com.squareup.retrofit2:converter-moshi:$retrofit.converter_moshi\"\n\n    // Koin for Android\n    implementation \"org.koin:koin-android:$koin_version\"\n    implementation \"org.koin:koin-androidx-scope:$koin_version\"\n    implementation \"org.koin:koin-androidx-viewmodel:$koin_version\"\n\n    // Test\n    testImplementation \"junit:junit:$test.junit\"\n    androidTestImplementation \"androidx.test:runner:$test.runner\"\n    androidTestImplementation \"androidx.test.espresso:espresso-core:$test.espresso_core\"\n    testImplementation \"org.koin:koin-test:$koin_version\"\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 131f1e91fa228d2b9d2a77d6679d722ef9f93dbc)
++++ app/build.gradle	(date 1575738739000)
+@@ -19,6 +19,11 @@
+         versionName "1.0"
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         vectorDrawables.useSupportLibrary true
++        javaCompileOptions {
++            annotationProcessorOptions {
++                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
++            }
++        }
+     }
+     buildTypes {
+         release {
