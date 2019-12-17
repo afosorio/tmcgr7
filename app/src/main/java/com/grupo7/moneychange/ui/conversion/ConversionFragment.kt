@@ -24,6 +24,7 @@ class ConversionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         permissionChecker = PermissionChecker(this.requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
         dataBindingView = ConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = conversionViewModel

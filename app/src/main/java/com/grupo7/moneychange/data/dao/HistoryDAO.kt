@@ -26,5 +26,6 @@ interface HistoryDao {
 //    fun getAll(): List<History>
 
     @Query("SELECT * FROM HISTORY")
+
     fun getAll(): LiveData<List<History>>
 }

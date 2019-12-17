@@ -33,7 +33,6 @@ class History (
     @ColumnInfo(name = "valueto") @NotNull
     val valueTo: Double
 
-
 ) {
 
     companion object{
@@ -43,5 +42,4 @@ class History (
     override fun toString(): String {
         return valueTo.toString()
     }
-
 }

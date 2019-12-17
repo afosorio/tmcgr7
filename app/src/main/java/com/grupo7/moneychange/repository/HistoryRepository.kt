@@ -34,7 +34,6 @@ class HistoryRepository(context: Context) : HistoryDataSource {
 
     override fun getAll(): LiveData<List<History>> = allHistory
 
-
 //    override fun getAll(): LiveData<List<History>> = {
 //        return historyDao.getAll()
 //    }

@@ -18,12 +18,14 @@ class DetailConversionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         dataBindingView = DetailConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = detailViewModel
         }
         var args = DetailConversionFragmentArgs.fromBundle(arguments!!)
         detailViewModel.fetchHistoryById(args.historyId)
         return dataBindingView.root
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

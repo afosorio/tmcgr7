@@ -15,5 +15,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     fun save(history: History) {
 //        repository.insert(history)
+
     }
 }

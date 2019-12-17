@@ -28,7 +28,6 @@ class RetrofitLiveData<T>(private val call: Call<T>) : LiveData<T>(), Callback<T
     }
 }
 
-
 enum class ResultManager{SUCCESS, FEALURE, ERROR}
 
 interface resultado{

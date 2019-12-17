@@ -13,6 +13,7 @@ import com.grupo7.moneychange.data.entity.History
  * afosorio 23.11.2019
  * This class contain database instance
  */
+
 @Database(entities = [Currency::class, History::class], version = 2)
 abstract class MoneyChangeDb : RoomDatabase() {
 
@@ -31,8 +32,7 @@ abstract class MoneyChangeDb : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     MoneyChangeDb::class.java,
-                    DATABASE_NAME
-                )
+                    DATABASE_NAME)
                     .fallbackToDestructiveMigration()
                     .build()
             }
