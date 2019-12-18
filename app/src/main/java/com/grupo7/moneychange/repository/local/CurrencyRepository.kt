@@ -1,11 +1,11 @@
-package com.grupo7.moneychange.repository
+package com.grupo7.moneychange.repository.local
 
 import android.content.Context
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import com.grupo7.moneychange.data.MoneyChangeDb
-import com.grupo7.moneychange.data.dao.CurrencyDao
-import com.grupo7.moneychange.data.entity.Currency
+import com.grupo7.moneychange.data.local.MoneyChangeDb
+import com.grupo7.moneychange.data.local.dao.CurrencyDao
+import com.grupo7.moneychange.data.local.entity.Currency
 
 /**
  * afosorio 23.11.2019

@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.data.entity
+package com.grupo7.moneychange.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

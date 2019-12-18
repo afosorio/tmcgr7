@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import com.grupo7.moneychange.adapters.IRecyclerViewAdapter
-import com.grupo7.moneychange.data.entity.History
+import com.grupo7.moneychange.ui.adapters.IRecyclerViewAdapter
+import com.grupo7.moneychange.data.local.entity.History
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.utils.PermissionChecker
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,7 +50,7 @@ class ConversionFragment : Fragment() {
         conversionViewModel.getLocation(permissionChecker)
     }
 
-    private fun navigationDetailConversionFragment(item:History) {
+    private fun navigationDetailConversionFragment(item: History) {
         val action = ConversionFragmentDirections.actionConversionFragmentToDetailConversionFragment(item.id)
         view?.findNavController()?.navigate(action)
     }

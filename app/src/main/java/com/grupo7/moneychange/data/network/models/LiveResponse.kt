@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.models.response
+package com.grupo7.moneychange.data.network.models
 
 data class LiveResponse(
     val privacy: String,

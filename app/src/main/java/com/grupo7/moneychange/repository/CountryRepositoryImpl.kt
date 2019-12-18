@@ -6,12 +6,11 @@ import android.location.Geocoder
 import android.location.Location
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.grupo7.moneychange.data.repositories.CountryRepository
 import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class CountryRepositoryImpl(context: Context) : CountryRepository {
+class CountryRepositoryImpl(context: Context) : ICountryRepository {
 
     private val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     private val geocoder = Geocoder(context)
