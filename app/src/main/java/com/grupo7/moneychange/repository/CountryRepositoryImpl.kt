@@ -10,7 +10,7 @@ import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class CountryRepositoryImpl(context: Context) : ICountryRepository {
+class CountryRepositoryImpl(context: Context) : CountryRepository {
 
     private val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     private val geocoder = Geocoder(context)

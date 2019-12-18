@@ -18,7 +18,7 @@ val conversionModule = module {
     viewModel { ConversionViewModel(get(), get(), get(), get()) }
     viewModel { DetailConversionViewModel(get())}
 
-    factory<ICountryRepository> { CountryRepositoryImpl(context = androidContext()) }
+    factory<CountryRepository> { CountryRepositoryImpl(context = androidContext()) }
     factory<LiveRepository> { LiveRepositoryImpl(liveApi = get()) }
     factory { CurrencyRepository(androidContext()) }
     factory { HistoryRepository(androidContext()) }

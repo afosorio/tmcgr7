@@ -18,7 +18,7 @@ class ConversionViewModel(
     private val liveRepository: LiveRepository,
     private val currentRepository: CurrencyRepository,
     private val historyRepository: HistoryRepository,
-    private val countryRepository: ICountryRepository
+    private val countryRepository: CountryRepository
 
 ) : ViewModel() {
 
