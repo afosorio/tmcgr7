@@ -1,13 +1,13 @@
-package com.grupo7.moneychange.data
+package com.grupo7.moneychange.data.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.grupo7.moneychange.data.dao.CurrencyDao
-import com.grupo7.moneychange.data.dao.HistoryDao
-import com.grupo7.moneychange.data.entity.Currency
-import com.grupo7.moneychange.data.entity.History
+import com.grupo7.moneychange.data.local.dao.CurrencyDao
+import com.grupo7.moneychange.data.local.dao.HistoryDao
+import com.grupo7.moneychange.data.local.entity.Currency
+import com.grupo7.moneychange.data.local.entity.History
 
 /**
  * afosorio 23.11.2019
@@ -32,7 +32,8 @@ abstract class MoneyChangeDb : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     MoneyChangeDb::class.java,
-                    DATABASE_NAME)
+                    DATABASE_NAME
+                )
                     .fallbackToDestructiveMigration()
                     .build()
             }

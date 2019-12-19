@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo7.moneychange.data.entity.Currency
-import com.grupo7.moneychange.data.entity.History
-import com.grupo7.moneychange.data.repositories.CountryRepository
-import com.grupo7.moneychange.data.repositories.LiveRepository
-import com.grupo7.moneychange.repository.CurrencyRepository
-import com.grupo7.moneychange.repository.HistoryRepository
+import com.grupo7.moneychange.data.local.entity.Currency
+import com.grupo7.moneychange.data.local.entity.History
+import com.grupo7.moneychange.repository.*
+import com.grupo7.moneychange.repository.local.CurrencyRepository
+import com.grupo7.moneychange.repository.local.HistoryRepository
+import com.grupo7.moneychange.repository.network.LiveRepository
 import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.coroutines.launch
 

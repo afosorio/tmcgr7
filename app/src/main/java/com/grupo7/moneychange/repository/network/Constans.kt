@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.data.repositories
+package com.grupo7.moneychange.repository.network
 
 object Constans {
     object Key {

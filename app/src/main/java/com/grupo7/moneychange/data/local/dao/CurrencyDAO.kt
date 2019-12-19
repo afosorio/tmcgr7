@@ -1,6 +1,6 @@
-package com.grupo7.moneychange.data.dao
+package com.grupo7.moneychange.data.local.dao
 
-import com.grupo7.moneychange.data.entity.Currency
+import com.grupo7.moneychange.data.local.entity.Currency
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
