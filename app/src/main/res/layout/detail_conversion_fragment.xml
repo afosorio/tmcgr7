@@ -19,7 +19,7 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{String.format(@string/date, viewModel.historyData.currencyTo)}"
+            android:text="@{String.format(@string/date, viewModel.dateTextView)}"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/conversion"

@@ -12,6 +12,7 @@ import com.grupo7.moneychange.repository.local.HistoryRepository
 import com.grupo7.moneychange.repository.network.LiveRepository
 import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.coroutines.launch
+import java.util.*
 
 class ConversionViewModel(
 
@@ -93,11 +94,11 @@ class ConversionViewModel(
         }
 
         val result = (textViewConversionFrom.toInt() * textViewCurrency.value)
-
         this.editTextConversionTo.value = result.toString()
         saveHistory(
             History(
                 0,
+                Date(),
                 1,
                 textViewCurrency.id,
                 textViewConversionFrom.toDouble(),
