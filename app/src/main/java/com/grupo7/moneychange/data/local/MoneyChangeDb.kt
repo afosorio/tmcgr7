@@ -16,7 +16,7 @@ import com.grupo7.moneychange.utils.Converters
  * This class contain database instance
  */
 
-@Database(entities = [Currency::class, History::class], version = 2)
+@Database(entities = [Currency::class, History::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class MoneyChangeDb : RoomDatabase() {
 
