@@ -22,9 +22,6 @@ interface HistoryDao {
     @Delete
     fun delete(vararg history: History)
 
-//    @Query("SELECT * FROM History" )
-//    fun getAll(): List<History>
-
     @Query("SELECT * FROM HISTORY")
 
     fun getAll(): LiveData<List<History>>

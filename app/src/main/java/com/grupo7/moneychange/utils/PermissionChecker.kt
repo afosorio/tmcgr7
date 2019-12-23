@@ -9,6 +9,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 class PermissionChecker(private val activity: Activity, private val permission: String) {
+
     suspend fun requestPermission(): Boolean =
         suspendCancellableCoroutine { continuation ->
             Dexter

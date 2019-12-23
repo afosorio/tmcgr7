@@ -28,6 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="20 de Octubre 2019" />
 
+        
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/conversion"
             android:layout_width="wrap_content"
