@@ -1,13 +1,15 @@
-package com.grupo7.moneychange.data
+package com.grupo7.moneychange.data.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.grupo7.moneychange.data.dao.CurrencyDao
-import com.grupo7.moneychange.data.dao.HistoryDao
-import com.grupo7.moneychange.data.entity.Currency
-import com.grupo7.moneychange.data.entity.History
+import androidx.room.TypeConverters
+import com.grupo7.moneychange.data.local.dao.CurrencyDao
+import com.grupo7.moneychange.data.local.dao.HistoryDao
+import com.grupo7.moneychange.data.local.entity.Currency
+import com.grupo7.moneychange.data.local.entity.History
+import com.grupo7.moneychange.utils.Converters
 
 /**
  * afosorio 23.11.2019
@@ -15,6 +17,7 @@ import com.grupo7.moneychange.data.entity.History
  */
 
 @Database(entities = [Currency::class, History::class], version = 2)
+@TypeConverters(Converters::class)
 abstract class MoneyChangeDb : RoomDatabase() {
 
     abstract fun historyDao(): HistoryDao
@@ -32,7 +35,8 @@ abstract class MoneyChangeDb : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     MoneyChangeDb::class.java,
-                    DATABASE_NAME)
+                    DATABASE_NAME
+                )
                     .fallbackToDestructiveMigration()
                     .build()
             }

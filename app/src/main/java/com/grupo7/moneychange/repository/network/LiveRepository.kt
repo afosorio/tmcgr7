@@ -1,7 +1,7 @@
-package com.grupo7.moneychange.data.repositories
+package com.grupo7.moneychange.repository.network
 
 import com.grupo7.moneychange.data.network.RetrofitLiveData
-import com.grupo7.moneychange.models.response.LiveResponse
+import com.grupo7.moneychange.data.network.models.LiveResponse
 
 interface LiveRepository {
     fun getLive(): RetrofitLiveData<LiveResponse>

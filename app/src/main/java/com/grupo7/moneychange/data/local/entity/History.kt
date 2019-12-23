@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.data.entity
+package com.grupo7.moneychange.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -18,8 +18,8 @@ class History (
     @ColumnInfo(name = "id")
     val id: Int = 0,
 
-    //@ColumnInfo(name = "date") @NotNull
-    //val date:Date,
+    @ColumnInfo(name = "date")
+    val date: Date,
 
     @ColumnInfo(name = "currencyfrom")
     val currencyFrom:Int,

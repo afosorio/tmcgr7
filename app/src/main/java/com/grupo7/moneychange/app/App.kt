@@ -1,8 +1,8 @@
 package com.grupo7.moneychange.app
 
 import android.app.Application
-import com.grupo7.moneychange.ui.di.conversionModule
-import com.grupo7.moneychange.ui.di.retrofitModule
+import com.grupo7.moneychange.di.conversionModule
+import com.grupo7.moneychange.di.retrofitModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
