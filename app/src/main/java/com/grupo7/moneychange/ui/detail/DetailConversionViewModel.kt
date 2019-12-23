@@ -17,6 +17,7 @@ class DetailConversionViewModel(
     private val _historyData = MutableLiveData<History>()
     val historyData: LiveData<History> get() = _historyData
 
+
     val dateTextView: MutableLiveData<String> = MutableLiveData()
 
     fun fetchHistoryById(id: Int) {

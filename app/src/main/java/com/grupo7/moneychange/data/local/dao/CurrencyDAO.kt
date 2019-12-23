@@ -25,6 +25,4 @@ interface CurrencyDao {
     @Query("DELETE FROM " + Currency.TABLE_NAME)
     fun deleteAll()
 
-  //  @Query("SELECT * FROM "  + Currency.TABLE_NAME + " WHERE description = : description)")
- //   fun getCurrencyByDescription(description:String) :  LiveData<List<Currency>>
 }
