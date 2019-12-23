@@ -14,7 +14,10 @@ class DetailConversionFragment : Fragment() {
     private val detailViewModel: DetailConversionViewModel by viewModel()
     private lateinit var dataBindingView: DetailConversionFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         dataBindingView = DetailConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = detailViewModel

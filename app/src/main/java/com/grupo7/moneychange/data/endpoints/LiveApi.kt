@@ -1,6 +1,6 @@
-package com.grupo7.moneychange.data.network.endpoints
+package com.grupo7.moneychange.data.endpoints
 
-import com.grupo7.moneychange.data.network.models.LiveResponse
+import com.grupo7.moneychange.models.response.LiveResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

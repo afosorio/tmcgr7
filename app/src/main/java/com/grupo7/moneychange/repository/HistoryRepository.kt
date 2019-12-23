@@ -1,11 +1,11 @@
-package com.grupo7.moneychange.repository.local
+package com.grupo7.moneychange.repository
 
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.grupo7.moneychange.data.local.MoneyChangeDb
-import com.grupo7.moneychange.data.local.dao.HistoryDao
-import com.grupo7.moneychange.data.local.entity.History
+import com.grupo7.moneychange.data.MoneyChangeDb
+import com.grupo7.moneychange.data.dao.HistoryDao
+import com.grupo7.moneychange.data.entity.History
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

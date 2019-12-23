@@ -1,13 +1,14 @@
-package com.grupo7.moneychange.di
+package com.grupo7.moneychange.ui.di
 
 import com.grupo7.moneychange.R
-import com.grupo7.moneychange.data.network.endpoints.LiveApi
+import com.grupo7.moneychange.data.endpoints.LiveApi
 import com.grupo7.moneychange.data.network.RetrofitBuild
-import com.grupo7.moneychange.repository.*
-import com.grupo7.moneychange.repository.local.CurrencyRepository
-import com.grupo7.moneychange.repository.local.HistoryRepository
-import com.grupo7.moneychange.repository.network.LiveRepository
-import com.grupo7.moneychange.repository.network.LiveRepositoryImpl
+import com.grupo7.moneychange.data.repositories.CountryRepository
+import com.grupo7.moneychange.data.repositories.LiveRepository
+import com.grupo7.moneychange.data.repositories.LiveRepositoryImpl
+import com.grupo7.moneychange.repository.CountryRepositoryImpl
+import com.grupo7.moneychange.repository.CurrencyRepository
+import com.grupo7.moneychange.repository.HistoryRepository
 import com.grupo7.moneychange.ui.conversion.ConversionViewModel
 import com.grupo7.moneychange.ui.detail.DetailConversionViewModel
 import org.koin.android.ext.koin.androidContext
