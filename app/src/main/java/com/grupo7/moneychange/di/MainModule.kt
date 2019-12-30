@@ -1,6 +1,9 @@
 package com.grupo7.moneychange.di
 
+import androidx.room.Room
 import com.grupo7.moneychange.R
+import com.grupo7.moneychange.app.App
+import com.grupo7.moneychange.data.local.MoneyChangeDb
 import com.grupo7.moneychange.data.network.endpoints.LiveApi
 import com.grupo7.moneychange.data.network.RetrofitBuild
 import com.grupo7.moneychange.repository.*
@@ -20,10 +23,14 @@ val conversionModule = module {
 
     factory<CountryRepository> { CountryRepositoryImpl(context = androidContext()) }
     factory<LiveRepository> { LiveRepositoryImpl(liveApi = get()) }
-    factory { CurrencyRepository(androidContext()) }
-    factory { HistoryRepository(androidContext()) }
+    factory { CurrencyRepository(db = get()) }
+    factory { HistoryRepository(db = get()) }
 }
 val retrofitModule = module {
     single { RetrofitBuild(androidContext().resources.getString(R.string.base_url)) }
     single { get<RetrofitBuild>().retrofit.create(LiveApi::class.java) }
+}
+
+val dbRoom = module{
+    single { Room.databaseBuilder(androidContext(), MoneyChangeDb::class.java, "money_change_db").build() }
 }

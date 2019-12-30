@@ -12,18 +12,10 @@ import org.jetbrains.annotations.NotNull
 data class Currency(
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    val id: Int = 0,
-
-    @ColumnInfo(name = "description") @NotNull
+    var id: Int = 0,
     var description:String,
-
-    @ColumnInfo(name = "icon") @NotNull
     var icon:String,
-
-    @ColumnInfo(name = "value") @NotNull
     var value:Double
-
 ) {
 
     companion object {
