@@ -27,9 +27,7 @@ class DetailConversionFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        /*detailViewModel.historyData.observe(this, Observer {
-            val s = it.toString()
-        })*/
+
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
     }
 

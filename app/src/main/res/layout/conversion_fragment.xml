@@ -61,7 +61,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:hint="1"
+                android:hint="0"
                 android:inputType="number"
                 android:lines="1"
                 android:text="@={viewModel.textViewConversionFrom}"

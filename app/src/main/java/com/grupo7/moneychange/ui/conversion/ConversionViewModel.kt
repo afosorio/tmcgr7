@@ -11,7 +11,9 @@ import com.grupo7.moneychange.repository.local.CurrencyRepository
 import com.grupo7.moneychange.repository.local.HistoryRepository
 import com.grupo7.moneychange.repository.network.LiveRepository
 import com.grupo7.moneychange.utils.PermissionChecker
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class ConversionViewModel(
@@ -26,7 +28,8 @@ class ConversionViewModel(
     val textViewCurrency: MutableLiveData<Currency> = MutableLiveData()
     val editTextConversionTo: MutableLiveData<String> = MutableLiveData("0$")
     val textViewRateConversion: MutableLiveData<String> = MutableLiveData()
-    val textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
+    var textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
+
 
     private val countryMutable = MutableLiveData<String>()
 
@@ -52,15 +55,14 @@ class ConversionViewModel(
     }
 
     private fun initServiceCall() {
-        viewModelScope.launch {
+
             liveRepository.getLive().observeForever {
                 it?.takeIf {
                     it.success
                 }?.let { response ->
-                    successPath(response.quotes)
+                    successPath(coins = response.quotes)
                 } ?: errorPath()
             }
-        }
     }
 
     private fun initCurrency() {
@@ -82,27 +84,30 @@ class ConversionViewModel(
         saveCurrencyList(coins)
     }
 
-    private fun saveCurrencyList(coins: MutableMap<String, Double>) {
+    private  fun saveCurrencyList(coins: MutableMap<String, Double>) {
 
         val listFromServer = mutableListOf<Currency>()
         coins.forEach {
             val objectToSave = Currency(0, it.key.substring(3, 6), "", it.value )
             listFromServer.add(objectToSave)
         }
-        currentRepository.insertCurrencyList(listFromServer)
+        viewModelScope.launch(Dispatchers.IO) {
+            currentRepository.insertCurrencyList(listFromServer)
+        }
     }
 
-    fun onClickChange(textViewConversionFrom: String?, textViewCurrency: Currency?) {
+    fun onClickChange(from: String?, currency: Currency?) {
 
-        if (textViewConversionFrom.isNullOrBlank() || textViewCurrency == null) {
+        if (from.isNullOrBlank() || currency == null) {
             return
         }
 
-        val result = (textViewConversionFrom.toInt() * textViewCurrency.value)
-        val history = History(0, Date(), 1, textViewCurrency.id, textViewConversionFrom.toDouble(), result)
+        val result = (from.toInt() * currency.value)
+        val history = History(0, Date(), 1, currency.id, from.toDouble(), result)
         saveHistory(history)
 
         this.editTextConversionTo.value = result.toString()
+        this.textViewConversionFrom.value = ""
     }
 
     private fun saveHistory(history: History) {
