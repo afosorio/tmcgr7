@@ -48,13 +48,16 @@ class ConversionViewModel(
 
     private fun initServiceCall() {
         viewModelScope.launch {
-            liveRepository.getLive().observeForever {
+            liveRepository.getLive()?.let {
+                successPath(it.quotes)
+            }
+            /*liveRepository.getLive().observeForever {
                 it?.takeIf {
                     it.success
                 }?.let { response ->
                     successPath(response.quotes)
                 } ?: errorPath()
-            }
+            }*/
         }
     }
 
