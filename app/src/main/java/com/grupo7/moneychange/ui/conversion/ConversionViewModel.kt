@@ -58,16 +58,16 @@ class ConversionViewModel(
         viewModelScope.launch {
             liveRepository.getLive()?.let {
                 successPath(it.quotes)
-            }
-            /*liveRepository.getLive().observeForever {
-                it?.takeIf {
-                    it.success
-                }?.let { response ->
-                    successPath(coins = response.quotes)
-                } ?: errorPath()
-            }*/
+            } ?: errorPath()
         }
     }
+
+    private fun initCurrency() {
+        currentRepository.getAll().observeForever {
+            _currencyList.value = it
+        }
+    }
+
 
     private fun initHistory() {
         historyRepository.getAll().observeForever {

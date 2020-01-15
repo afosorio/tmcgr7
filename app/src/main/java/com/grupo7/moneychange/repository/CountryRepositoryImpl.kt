@@ -34,7 +34,11 @@ class CountryRepositoryImpl(context: Context) : CountryRepository {
 
     private fun Location?.toCountry(): String {
         val country = this?.let {
-            geocoder.getFromLocation(latitude, longitude, 1)
+            try {
+                geocoder.getFromLocation(latitude, longitude, 1)
+            } catch (ex: Exception){
+                null
+            }
         }
         return country?.firstOrNull()?.countryName ?: DEFAULT_COUNTRY_NAME
 
