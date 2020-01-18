@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grupo7.moneychange.data.local.entity.Currency
 import com.grupo7.moneychange.data.local.entity.History
+import com.grupo7.moneychange.data.network.RetrofitResult
 import com.grupo7.moneychange.repository.*
 import com.grupo7.moneychange.repository.local.CurrencyRepository
 import com.grupo7.moneychange.repository.local.HistoryRepository
@@ -57,7 +58,7 @@ class ConversionViewModel(
     private fun initServiceCall() {
         viewModelScope.launch {
             liveRepository.getLive()?.let {
-                successPath(it.quotes)
+                successPath((it as RetrofitResult.Success).data.quotes)
             } ?: errorPath()
         }
     }
