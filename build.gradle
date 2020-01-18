@@ -37,6 +37,7 @@ buildscript {
         dexter = "6.0.0"
         play_services = "17.0.0"
         gradle_version = '3.5.3'
+        dimen="1.0.6"
     }
 
     repositories {

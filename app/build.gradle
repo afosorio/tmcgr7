@@ -81,4 +81,7 @@ dependencies {
     //permission
     implementation "com.karumi:dexter:$dexter"
 
+    //dimens
+    implementation "com.intuit.sdp:sdp-android:$dimen"
+
 }

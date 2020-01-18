@@ -22,8 +22,8 @@
             style="@style/TextOrangeStyleBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:text="@{String.format(@string/current_location, viewModel.country)}"
             app:layout_constraintEnd_toEndOf="@+id/imageView3"
             app:layout_constraintStart_toStartOf="@+id/imageView3"
@@ -32,8 +32,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/llErrorContainer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/_0sdp"
+            android:layout_height="@dimen/_0sdp"
             android:background="@android:color/darker_gray"
             android:orientation="horizontal"
             android:visibility="gone"
@@ -44,8 +44,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="@dimen/_0sdp"
+                android:layout_height="@dimen/_0sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,33 +55,33 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="129dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="@dimen/logo_width"
+            android:layout_height="@dimen/logo_height"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/moneychangelogo" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="25dp"
-            android:layout_height="26dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="65dp"
+            android:layout_width="@dimen/icon_width"
+            android:layout_height="@dimen/icon_height"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_65sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_location" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/_0sdp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="5dp"
+            android:layout_marginStart="@dimen/_19sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginEnd="@dimen/_19sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toTopOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -93,14 +93,14 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp">
+                android:padding="@dimen/_10sdp">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/conversion_from_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_width="@dimen/_0sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_19sdp"
                     app:coin_values_from="@{viewModel.currencyList}"
                     app:layout_constraintEnd_toStartOf="@+id/exchange_img"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -110,8 +110,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/exchange_img"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/_19sdp"
+                    android:layout_height="@dimen/_19sdp"
                     android:rotation="90"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="@+id/conversion_from_spinner"
@@ -123,10 +123,10 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/conversion_to_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="@dimen/_0sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_19sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     app:coin_values="@{viewModel.currencyList}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -138,9 +138,9 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/conversion_from_edit"
                     style="@style/TextBlueStyleBold"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="@dimen/_0sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@null"
                     android:focusedByDefault="true"
                     android:hint="escriba aqui la cantidad"
@@ -157,8 +157,8 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/conversion_to"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_0sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:gravity="center"
                     android:maxLines="1"
                     style="@style/TextBlueStyleRegular"
@@ -174,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()-> viewModel.onClickChange(viewModel.textViewConversionFrom, viewModel.textViewCurrency)}"
-                    android:padding="6dp"
+                    android:padding="@dimen/_6sdp"
                     android:text="@android:string/ok"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/conversion_from_edit"
@@ -186,8 +186,8 @@
 
                 <ImageView
                     android:id="@+id/imageView4"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
+                    android:layout_width="@dimen/_0sdp"
+                    android:layout_height="@dimen/_1sdp"
                     android:background="@drawable/gray_little_line"
                     app:layout_constraintBottom_toTopOf="@+id/conversion_to"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -199,12 +199,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="5dp"
+            android:layout_width="@dimen/_0sdp"
+            android:layout_height="@dimen/_0sdp"
+            android:layout_marginStart="@dimen/_19sdp"
+            android:layout_marginEnd="@dimen/_19sdp"
+            android:layout_marginBottom="@dimen/_19sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -214,17 +214,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp">
+                android:padding="@dimen/_10sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/history_title"
                     style="@style/TextBlueStyleBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_24sdp"
                     android:gravity="center"
                     android:text="@string/history"
                     app:layout_constraintBottom_toTopOf="@+id/recyclerView"
@@ -237,9 +237,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="@dimen/_0sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_16sdp"
                     app:bind_item_data="@{viewModel.historyList}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -254,7 +254,7 @@
                     android:id="@+id/deleteHistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/history_title"
                     app:srcCompat="@drawable/ic_delete" />
