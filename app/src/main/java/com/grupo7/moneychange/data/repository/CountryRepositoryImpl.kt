@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.repository
+package com.grupo7.moneychange.data.repository
 
 import android.annotation.SuppressLint
 import android.content.Context

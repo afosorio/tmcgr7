@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.grupo7.moneychange.databinding.DetailConversionFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

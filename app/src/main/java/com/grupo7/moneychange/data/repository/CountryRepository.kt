@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.repository
+package com.grupo7.moneychange.data.repository
 
 import com.grupo7.moneychange.utils.PermissionChecker
 
