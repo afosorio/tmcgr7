@@ -33,9 +33,12 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
 
         @SuppressLint("SetTextI18n")
         fun bind(item: History, clickDataUp: Listener, clickDetailHistory: Listener) {
-            itemView.conversion_text?.text = "From = ${item.valueFrom} -  To = ${item.valueTo}"
+            itemView.from_text_value?.text = item.valueFrom.toString()
+            itemView.from_text?.text = item.currencyFrom.toString()
+            itemView.to_text?.text = item.currencyTo.toString()
+            itemView.to_text_value?.text = item.valueTo.toString()
             itemView.data_up?.setOnClickListener { clickDataUp(item) }
-            itemView.conversion_text?.setOnClickListener { clickDetailHistory(item) }
+            itemView.card_parent?.setOnClickListener { clickDetailHistory(item) }
         }
     }
 }
