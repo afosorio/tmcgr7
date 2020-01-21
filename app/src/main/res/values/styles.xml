@@ -1,11 +1,39 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/blueColor</item>
+        <item name="colorPrimaryDark">@color/blueColor</item>
+        <item name="colorAccent">@color/whiteColor</item>
+    </style>
+
+
+
+    <style name="TextBlueStyleRegular">
+        <!--<item name="android:background">@color/colorPrimaryDark</item>-->
+        <item name="android:textColor">@color/blueColor</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="TextBlueStyleBold">
+        <!--<item name="android:background">@color/colorPrimaryDark</item>-->
+        <item name="android:textColor">@color/blueColor</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TextOrangeStyleRegular">
+        <!--<item name="android:background">@color/colorPrimaryDark</item>-->
+        <item name="android:textColor">@color/orangeColor</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="TextOrangeStyleBold">
+        <!--<item name="android:background">@color/colorPrimaryDark</item>-->
+        <item name="android:textColor">@color/orangeColor</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 </resources>
