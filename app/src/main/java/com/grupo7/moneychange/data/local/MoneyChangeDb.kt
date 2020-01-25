@@ -10,7 +10,7 @@ import com.grupo7.moneychange.data.local.entity.History
 import com.grupo7.moneychange.utils.Converters
 
 
-@Database(entities = [Currency::class, History::class], version = 3)
+@Database(entities = [Currency::class, History::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class MoneyChangeDb : RoomDatabase() {
 

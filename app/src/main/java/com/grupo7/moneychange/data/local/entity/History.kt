@@ -17,9 +17,9 @@ class History (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val date: Date,
-    val currencyFrom:Int,
-    val currencyTo:Int,
-    val valueFrom : Double,
+    val currencyFrom: String,
+    val currencyTo: String,
+    val valueFrom: Double,
     val valueTo: Double
 ) {
 
