@@ -11,11 +11,12 @@ import com.grupo7.moneychange.ui.adapters.IRecyclerViewAdapter
 import com.grupo7.moneychange.data.local.entity.History
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.utils.PermissionChecker
+import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConversionFragment : Fragment() {
 
-    private val conversionViewModel: ConversionViewModel by viewModel()
+    private val conversionViewModel: ConversionViewModel by currentScope.viewModel(this)
     private lateinit var dataBindingView: ConversionFragmentBinding
     private lateinit var permissionChecker: PermissionChecker
 

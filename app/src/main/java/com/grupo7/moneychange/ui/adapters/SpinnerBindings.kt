@@ -9,7 +9,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.grupo7.moneychange.R
-import com.grupo7.moneychange.data.local.entity.Currency
+import com.grupo7.moneychange.ui.model.Currency
 
 
 @BindingAdapter("coin_values")
