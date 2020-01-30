@@ -5,18 +5,13 @@ import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.grupo7.moneychange.data.local.MoneyChangeDb
-import com.grupo7.moneychange.di.conversionModule
-import com.grupo7.moneychange.di.dbRoom
-import com.grupo7.moneychange.di.retrofitModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import com.grupo7.moneychange.di.initDI
 
 class App : Application() {
 
     private val DATABASE_NAME = "money_change_db"
 
-    lateinit var  db : MoneyChangeDb
+    lateinit var db: MoneyChangeDb
         private set
 
 
@@ -29,24 +24,11 @@ class App : Application() {
     }
     override fun onCreate() {
         super.onCreate()
-
         // Start DataBase
 
         db = Room.databaseBuilder(this@App, MoneyChangeDb::class.java, DATABASE_NAME).fallbackToDestructiveMigration().build()
 
         // Start Koin
-        startKoin {
-            androidLogger()
-            androidContext(this@App)
-            modules(appModule)
-        }
-
-
+        initDI()
     }
-
-    private val appModule = listOf(
-        retrofitModule,
-        conversionModule,
-        dbRoom
-    )
 }
