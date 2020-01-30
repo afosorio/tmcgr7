@@ -108,7 +108,6 @@ class ConversionViewModel(
         saveHistory(history)
 
         this.editTextConversionTo.value = result.toString()
-        this.textViewConversionFrom.value = ""
     }
 
     private fun saveHistory(history: History) {

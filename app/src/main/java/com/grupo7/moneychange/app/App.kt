@@ -32,7 +32,7 @@ class App : Application() {
 
         // Start DataBase
 
-        db = Room.databaseBuilder(this@App, MoneyChangeDb::class.java, DATABASE_NAME).addMigrations(MIGRATION_3_4).fallbackToDestructiveMigration().build()
+        db = Room.databaseBuilder(this@App, MoneyChangeDb::class.java, DATABASE_NAME).fallbackToDestructiveMigration().build()
 
         // Start Koin
         startKoin {
