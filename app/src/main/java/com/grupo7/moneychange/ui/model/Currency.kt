@@ -7,7 +7,7 @@ data class Currency(
     var value: Double
 ) {
     override fun toString(): String {
-        return this.description.substring(3, 6)
+        return this.description
     }
 }
 
