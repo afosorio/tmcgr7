@@ -11,7 +11,8 @@ import kotlinx.android.synthetic.main.item_history.view.*
 
 typealias Listener = ((History) -> Unit)
 
-class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickDetailHistory: Listener) : RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
+class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickDetailHistory: Listener) :
+    RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
 
     private var items = emptyList<History>()
 
@@ -35,7 +36,8 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
         fun bind(item: History, clickDataUp: Listener, clickDetailHistory: Listener) {
             itemView.from_text_value?.text = item.valueFrom.toString()
             itemView.from_text?.text = item.currencyFrom.toString()
-            itemView.to_text?.text = item.currencyTo.toString()
+            val toText = item.currencyTo.toString()
+            itemView.to_text?.text = toText.subSequence(toText.length - 3, toText.length)
             itemView.to_text_value?.text = item.valueTo.toString()
             itemView.data_up?.setOnClickListener { clickDataUp(item) }
             itemView.card_parent?.setOnClickListener { clickDetailHistory(item) }

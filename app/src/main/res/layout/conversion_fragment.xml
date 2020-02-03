@@ -98,7 +98,7 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/conversion_from_spinner"
                     android:layout_width="@dimen/_0sdp"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_19sdp"
                     app:coin_values_from="@{viewModel.currencyList}"
@@ -124,7 +124,7 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/conversion_to_spinner"
                     android:layout_width="@dimen/_0sdp"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_19sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     app:coin_values="@{viewModel.currencyList}"
