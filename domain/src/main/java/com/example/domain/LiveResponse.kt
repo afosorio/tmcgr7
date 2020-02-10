@@ -1,11 +1,8 @@
-package com.grupo7.moneychange.data.dto
+package com.example.domain
 
-/**
- * afosorio 23.11.2019
- */
-data class CurrencyDTO(
+data class LiveResponse(
     val privacy: String,
-    val quotes: Quotes,
+    val quotes: MutableMap<String, Double>,
     val source: String,
     val success: Boolean,
     val terms: String,

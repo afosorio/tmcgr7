@@ -22,5 +22,3 @@ class HistoryRepository(private var  db : MoneyChangeDb) : HistoryDataSource {
 
     override fun getAll(): LiveData<List<History>> = allHistory
 }
-
-
