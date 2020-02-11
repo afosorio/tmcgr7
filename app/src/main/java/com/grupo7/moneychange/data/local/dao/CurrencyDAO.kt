@@ -1,11 +1,8 @@
 package com.grupo7.moneychange.data.local.dao
 
-import com.grupo7.moneychange.data.local.entity.Currency
-
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.OnConflictStrategy.REPLACE
+import com.grupo7.moneychange.data.local.entity.Currency
 
 /**
  * afosorio 23.11.2019
@@ -17,7 +14,7 @@ interface CurrencyDao {
     fun insert(currency: Currency)
 
     @Insert(onConflict = REPLACE)
-    fun insertCurrencies(currencies : List<Currency>)
+    fun insertCurrencies(currencies: List<Currency>)
 
     @Update
     fun update(vararg currency: Currency)
@@ -26,9 +23,15 @@ interface CurrencyDao {
     fun delete(vararg currency: Currency)
 
     @Query("SELECT * FROM " + Currency.TABLE_NAME)
-    fun getAll(): LiveData<List<Currency>>
+    fun getAll(): List<Currency>
 
     @Query("DELETE FROM " + Currency.TABLE_NAME)
     fun deleteAll()
+
+    @Query("SELECT COUNT(id) FROM CURRENCY")
+    fun currencyCount(): Int
+
+    @Query("SELECT * FROM CURRENCY WHERE id = :id")
+    fun findById(id: Int): Currency
 
 }

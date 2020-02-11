@@ -4,24 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo7.moneychange.data.local.entity.Currency
-import com.grupo7.moneychange.data.local.entity.History
-import com.grupo7.moneychange.repository.*
-import com.grupo7.moneychange.repository.local.CurrencyRepository
+import com.example.domain.Currency
+import com.example.domain.History
+import com.example.usecases.GetCurrencies
+import com.example.usecases.GetHistories
+import com.grupo7.moneychange.repository.CountryRepository
 import com.grupo7.moneychange.repository.local.HistoryRepository
 import com.grupo7.moneychange.repository.network.LiveRepository
 import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class ConversionViewModel(
 
     private val liveRepository: LiveRepository,
-    private val currentRepository: CurrencyRepository,
     private val historyRepository: HistoryRepository,
-    private val countryRepository: CountryRepository
+    private val countryRepository: CountryRepository,
+    private val getCurrencies: GetCurrencies,
+    private val getHistories: GetHistories
 
 ) : ViewModel() {
 
@@ -56,24 +57,24 @@ class ConversionViewModel(
 
     private fun initServiceCall() {
 
-            liveRepository.getLive().observeForever {
-                it?.takeIf {
-                    it.success
-                }?.let { response ->
-                    successPath(coins = response.quotes)
-                } ?: errorPath()
-            }
+        liveRepository.getLive().observeForever {
+            it?.takeIf {
+                it.success
+            }?.let { response ->
+                successPath(coins = response.quotes)
+            } ?: errorPath()
+        }
     }
 
     private fun initCurrency() {
-        currentRepository.getAll().observeForever {
-            _currencyList.value = it
+        viewModelScope.launch {
+            _currencyList.postValue(getCurrencies.invoke())
         }
     }
 
     private fun initHistory() {
-        historyRepository.getAll().observeForever {
-            _historyList.value = it
+        viewModelScope.launch {
+            _historyList.postValue(getHistories.invoke())
         }
     }
 
@@ -84,14 +85,15 @@ class ConversionViewModel(
         saveCurrencyList(coins)
     }
 
-    private  fun saveCurrencyList(coins: MutableMap<String, Double>) {
+    private fun saveCurrencyList(coins: MutableMap<String, Double>) {
 
         val listFromServer = mutableListOf<Currency>()
         coins.forEach {
-            val objectToSave = Currency(0, it.key.substring(3, 6), "", it.value )
+            val objectToSave = Currency(0, it.key.substring(3, 6), "", it.value)
             listFromServer.add(objectToSave)
         }
         viewModelScope.launch(Dispatchers.IO) {
+
             currentRepository.insertCurrencyList(listFromServer)
         }
     }

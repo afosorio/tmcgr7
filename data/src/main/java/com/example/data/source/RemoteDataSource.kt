@@ -3,5 +3,5 @@ package com.example.data.source
 import com.example.domain.LiveResponse
 
 interface RemoteDataSource {
-    fun getLive(apiKey: String): LiveResponse
+    suspend fun getLive(apiKey: String): LiveResponse
 }

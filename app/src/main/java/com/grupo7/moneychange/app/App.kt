@@ -3,9 +3,7 @@ package com.grupo7.moneychange.app
 import android.app.Application
 import androidx.room.Room
 import com.grupo7.moneychange.data.local.MoneyChangeDb
-import com.grupo7.moneychange.di.conversionModule
-import com.grupo7.moneychange.di.dbRoom
-import com.grupo7.moneychange.di.retrofitModule
+import com.grupo7.moneychange.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -36,6 +34,8 @@ class App : Application() {
     private val appModule = listOf(
         retrofitModule,
         conversionModule,
-        dbRoom
+        dbRoom,
+        scopesModule,
+        dataModule
     )
 }
