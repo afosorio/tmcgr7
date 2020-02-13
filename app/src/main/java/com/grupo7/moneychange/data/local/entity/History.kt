@@ -1,10 +1,8 @@
 package com.grupo7.moneychange.data.local.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import org.jetbrains.annotations.NotNull
 import java.util.*
 
 @Entity(tableName = History.TABLE_NAME,

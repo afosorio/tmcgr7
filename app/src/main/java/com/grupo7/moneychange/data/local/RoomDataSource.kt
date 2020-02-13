@@ -1,9 +1,9 @@
 package com.grupo7.moneychange.data.local
 
-import com.example.data.source.LocalDataSource
+import com.grupo7.data.source.LocalDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.example.domain.Currency as DomainCurrency
+import com.grupo7.domain.Currency as DomainCurrency
 import com.grupo7.moneychange.data.local.entity.Currency as RoomCurrency
 
 class RoomDataSource(db: MoneyChangeDb) : LocalDataSource {

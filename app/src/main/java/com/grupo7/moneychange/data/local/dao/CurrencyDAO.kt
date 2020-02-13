@@ -25,7 +25,7 @@ interface CurrencyDao {
     @Query("SELECT * FROM " + Currency.TABLE_NAME)
     fun getAll(): List<Currency>
 
-    @Query("DELETE FROM " + Currency.TABLE_NAME)
+    @Query("DELETE FROM ${Currency.TABLE_NAME}")
     fun deleteAll()
 
     @Query("SELECT COUNT(id) FROM CURRENCY")
