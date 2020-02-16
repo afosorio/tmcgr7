@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 /**
  * afosorio 21.11.2019
  */
-@Entity(tableName = Currency.TABLE_NAME)
+@Entity
 data class Currency(
 
     @PrimaryKey(autoGenerate = true)
@@ -14,10 +14,4 @@ data class Currency(
     var description: String,
     var icon: String,
     var value: Double
-) {
-
-    companion object {
-        const val TABLE_NAME = "currency"
-    }
-}
-
+)

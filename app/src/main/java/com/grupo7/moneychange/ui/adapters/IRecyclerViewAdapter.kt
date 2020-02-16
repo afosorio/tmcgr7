@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.grupo7.moneychange.R
-import com.grupo7.moneychange.data.local.entity.History
+import com.grupo7.domain.History
 import kotlinx.android.synthetic.main.item_history.view.*
 
 typealias Listener = ((History) -> Unit)

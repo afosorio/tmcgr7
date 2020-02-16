@@ -20,7 +20,7 @@ import java.util.*
 class ConversionViewModel(
 
     private val getAllExchangeRateData: GetAllExchangeRateData,
-    //private val historyRepository: HistoryRepository,
+    private val historyRepository: HistoryRepository,
     private val countryRepository: CountryRepository,
     //private val getCurrencies: GetCurrencies,
     private val getHistories: GetHistories
@@ -59,9 +59,10 @@ class ConversionViewModel(
         viewModelScope.launch {
             when (val result = getAllExchangeRateData.invoke()) {
                 is ResultData.Success -> {
-                    _currencyList.value //= result.data.toModelCurrency()
+                    _currencyList.value = result.data
                 }
                 is ResultData.Error -> {
+                    result.exception.toString()
                 }
             }
         }
@@ -88,9 +89,9 @@ class ConversionViewModel(
     }
 
     private fun saveHistory(history: History) {
-        /*viewModelScope.launch {
-            historyRepository.insert(history)
-        }*/
+        viewModelScope.launch {
+            //historyRepository.insert(history)
+        }
     }
 
     fun getLocation(permissionChecker: PermissionChecker) {

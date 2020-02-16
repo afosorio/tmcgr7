@@ -1,12 +1,15 @@
 package com.grupo7.moneychange.data.network
 
+import com.grupo7.data.repository.ResultData
 import retrofit2.Response
 import java.io.IOException
 
+/*
 sealed class ResultData<out T : Any> {
     data class Success<out T : Any>(val data: T) : ResultData<T>()
     data class Error(val exception: Exception) : ResultData<Nothing>()
 }
+*/
 
 suspend fun <T : Any> safeApiCall(call: suspend () -> ResultData<T>, errorMessage: String): ResultData<T> = try {
     call.invoke()

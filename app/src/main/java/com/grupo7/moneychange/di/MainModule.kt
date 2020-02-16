@@ -2,30 +2,28 @@ package com.grupo7.moneychange.di
 
 import android.app.Application
 import androidx.room.Room
-
-import com.grupo7.usecases.GetCurrencies
-import com.grupo7.usecases.GetHistories
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.data.local.MoneyChangeDb
 import com.grupo7.moneychange.data.network.RetrofitBuild
-import com.grupo7.moneychange.data.repository.network.ConversionRepository
-import com.grupo7.moneychange.data.repository.network.ConversionRepositoryImpl
-import com.grupo7.moneychange.data.source.LiveDataSource
-import com.grupo7.moneychange.data.source.LiveDataSourceImpl
-import com.grupo7.moneychange.ui.conversion.ConversionFragment
 import com.grupo7.moneychange.data.network.endpoints.LiveApi
 import com.grupo7.moneychange.data.repository.CountryRepository
 import com.grupo7.moneychange.data.repository.CountryRepositoryImpl
 import com.grupo7.moneychange.data.repository.local.CurrencyRepository
 import com.grupo7.moneychange.data.repository.local.HistoryRepository
+import com.grupo7.moneychange.data.repository.network.ConversionRepository
+import com.grupo7.moneychange.data.repository.network.ConversionRepositoryImpl
+import com.grupo7.moneychange.data.source.LiveDataSource
+import com.grupo7.moneychange.data.source.LiveDataSourceImpl
+import com.grupo7.moneychange.ui.conversion.ConversionFragment
 import com.grupo7.moneychange.ui.conversion.ConversionViewModel
 import com.grupo7.moneychange.ui.detail.DetailConversionViewModel
 import com.grupo7.moneychange.usecases.GetAllExchangeRateData
+import com.grupo7.usecases.GetHistories
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 fun Application.initDI() {
@@ -38,8 +36,9 @@ fun Application.initDI() {
 
 val presentationModule = module {
     scope(named<ConversionFragment>()) {
-        viewModel { ConversionViewModel(get(), get(), get()) }
+        viewModel { ConversionViewModel(getAllExchangeRateData = get(), historyRepository = get(), countryRepository = get(), getHistories = get()) }
         scoped { GetAllExchangeRateData(get()) }
+        scoped { GetHistories(get()) }
     }
     viewModel { DetailConversionViewModel(get()) }
 }
