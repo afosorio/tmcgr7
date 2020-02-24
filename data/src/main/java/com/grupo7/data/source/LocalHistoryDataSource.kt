@@ -2,7 +2,7 @@ package com.grupo7.data.source
 
 import com.grupo7.domain.History
 
-interface HistoryDataSource {
+interface LocalHistoryDataSource {
     suspend fun isEmpty(): Boolean
     suspend fun saveHistory(history: History)
     suspend fun getHistory(): List<History>

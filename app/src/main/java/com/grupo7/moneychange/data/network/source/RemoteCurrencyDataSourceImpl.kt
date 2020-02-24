@@ -1,7 +1,7 @@
 package com.grupo7.moneychange.data.network.source
 
 import com.grupo7.data.repository.ResultData
-import com.grupo7.data.source.RemoteDataSource
+import com.grupo7.data.source.RemoteCurrencyDataSource
 import com.grupo7.domain.Currency
 import com.grupo7.moneychange.data.mappers.toDomainCurrency
 import com.grupo7.moneychange.data.network.callServices
@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
-class RemoteDataSourceImpl(private val liveApi: LiveApi) : RemoteDataSource {
+class RemoteCurrencyDataSourceImpl(private val liveApi: LiveApi) : RemoteCurrencyDataSource {
     override suspend fun getAllExchangeRateData(): ResultData<List<Currency>> = withContext(Dispatchers.IO) {
         safeApiCall(
             call = { renderData(liveApi.getLive(Constans.Key.ACCESS_KEY).callServices()) },

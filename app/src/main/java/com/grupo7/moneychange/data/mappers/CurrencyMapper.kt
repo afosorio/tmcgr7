@@ -15,24 +15,26 @@ fun Map<String, Double>?.toDomainCurrency(): List<DomainCurrency> =
     } ?: emptyList()
 
 fun List<DomainCurrency>.toDataBaseCurrency(): List<DataBaseCurrency> =
-    this.map {
-        DataBaseCurrency(
-            id = it.id,
-            description = it.description,
-            value = it.value,
-            icon = it.icon
-        )
-    }
+    this.map { it.toDataBaseCurrency() }
+
+fun DomainCurrency.toDataBaseCurrency(): DataBaseCurrency =
+    DataBaseCurrency(
+        id = id,
+        description = description,
+        value = value,
+        icon = icon
+    )
 
 fun List<DataBaseCurrency>.toDomainCurrency(): List<DomainCurrency> =
-    this.map {
-        DomainCurrency(
-            it.id,
-            it.description,
-            it.icon,
-            it.value
-        )
-    }
+    this.map { it.toDomainCurrency() }
+
+fun DataBaseCurrency.toDomainCurrency(): DomainCurrency =
+    DomainCurrency(
+        id,
+        description,
+        icon,
+        value
+    )
 
 fun List<DomainCurrency>.toModelCurrency(): List<ModelCurrency> =
     this.map {
