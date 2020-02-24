@@ -4,22 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo7.domain.History
+import com.grupo7.data.repository.ResultData
 import com.grupo7.domain.Currency
-import com.grupo7.moneychange.data.mappers.toModelCurrency
-import com.grupo7.moneychange.data.network.ResultData
+import com.grupo7.domain.History
 import com.grupo7.moneychange.data.repository.CountryRepository
 import com.grupo7.moneychange.data.repository.local.HistoryRepository
-import com.grupo7.moneychange.usecases.GetAllExchangeRateData
+import com.grupo7.moneychange.utils.PermissionChecker
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
-import com.grupo7.moneychange.utils.PermissionChecker
 import kotlinx.coroutines.launch
 import java.util.*
 
 class ConversionViewModel(
 
-    private val getAllExchangeRateData: GetAllExchangeRateData,
+    private val getCurrencies: GetCurrencies,
     private val historyRepository: HistoryRepository,
     private val countryRepository: CountryRepository,
     //private val getCurrencies: GetCurrencies,
@@ -57,7 +55,7 @@ class ConversionViewModel(
 
     private fun initServiceCall() {
         viewModelScope.launch {
-            when (val result = getAllExchangeRateData.invoke()) {
+            when (val result = getCurrencies.invoke()) {
                 is ResultData.Success -> {
                     _currencyList.value = result.data
                 }

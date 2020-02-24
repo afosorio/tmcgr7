@@ -1,6 +1,7 @@
 package com.grupo7.moneychange.data.local
 
 import com.grupo7.data.source.LocalDataSource
+import com.grupo7.moneychange.data.mappers.toDataBaseCurrency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.grupo7.domain.Currency as DomainCurrency
@@ -15,7 +16,7 @@ class RoomDataSource(db: MoneyChangeDb) : LocalDataSource {
         withContext(Dispatchers.IO) { currencyDao.currencyCount() <= 0 }
 
     override suspend fun saveCurrencies(currencies: List<DomainCurrency>) {
-        withContext(Dispatchers.IO) { currencyDao.insertCurrencies(currencies.map { it.toRoomCurrency() }) }
+        withContext(Dispatchers.IO) { currencyDao.insertCurrencies(currencies.toDataBaseCurrency()) }
     }
 
     override suspend fun getCurrencies(): List<DomainCurrency> =
