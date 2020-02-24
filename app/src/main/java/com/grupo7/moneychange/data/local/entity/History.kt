@@ -5,25 +5,25 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = History.TABLE_NAME,
-        foreignKeys = [
-            ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyFrom"), onDelete = ForeignKey.NO_ACTION),
-            ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyTo"), onDelete = ForeignKey.NO_ACTION)]
-    )
-class History (
+@Entity(//tableName = History.TABLE_NAME,
+    foreignKeys = [
+        ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyFrom"), onDelete = ForeignKey.NO_ACTION),
+        ForeignKey(entity = Currency::class, parentColumns = arrayOf("id"), childColumns = arrayOf("currencyTo"), onDelete = ForeignKey.NO_ACTION)]
+)
+class History(
 
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val date: Date,
-    val currencyFrom:Int,
-    val currencyTo:Int,
-    val valueFrom : Double,
+    val currencyFrom: Int,
+    val currencyTo: Int,
+    val valueFrom: Double,
     val valueTo: Double
 ) {
-
+/*
     companion object{
         const val  TABLE_NAME = "history"
-    }
+    }*/
 
     override fun toString(): String {
         return valueTo.toString()

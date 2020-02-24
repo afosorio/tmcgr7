@@ -16,7 +16,7 @@ class LocalCurrencyDataSourceImpl(db: MoneyChangeDb) : LocalCurrencyDataSource {
         withContext(Dispatchers.IO) { currencyDao.currencyCount() <= 0 }
 
     override suspend fun saveCurrencies(currencies: List<DomainCurrency>) {
-        withContext(Dispatchers.IO) { currencyDao.insertCurrencies(currencies.toDataBaseCurrency()) }
+        withContext(Dispatchers.IO) { currencyDao.insert(currencies.toDataBaseCurrency()) }
     }
 
     override suspend fun getCurrencies(): List<DomainCurrency> =

@@ -7,11 +7,11 @@ import com.grupo7.moneychange.data.local.entity.History
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class HistoryRepository(private var  db : MoneyChangeDb) : HistoryDataSource {
+class HistoryRepository(private var db: MoneyChangeDb) : HistoryDataSource {
 
     private var allHistory: LiveData<List<History>> = db.historyDao().getAll()
 
-    override suspend fun insert(history: History) = withContext(Dispatchers.IO) {
+    override suspend fun insert(history: History): Long = withContext(Dispatchers.IO) {
         db.historyDao().insert(history)
     }
 
@@ -19,5 +19,5 @@ class HistoryRepository(private var  db : MoneyChangeDb) : HistoryDataSource {
         db.historyDao().findById(id)
     }
 
-    override fun getAll(): LiveData<List<History>> = allHistory
+    override suspend fun getAll(): LiveData<List<History>> = allHistory
 }

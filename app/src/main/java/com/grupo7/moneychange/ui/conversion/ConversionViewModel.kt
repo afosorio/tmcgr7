@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.grupo7.data.repository.HistoryRepository
 import com.grupo7.data.repository.ResultData
 import com.grupo7.domain.Currency
 import com.grupo7.domain.History
 import com.grupo7.moneychange.data.repository.CountryRepository
-import com.grupo7.moneychange.data.repository.local.HistoryRepository
 import com.grupo7.moneychange.utils.PermissionChecker
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
@@ -16,11 +16,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class ConversionViewModel(
-
     private val getCurrencies: GetCurrencies,
-    private val historyRepository: HistoryRepository,
     private val countryRepository: CountryRepository,
-    //private val getCurrencies: GetCurrencies,
     private val getHistories: GetHistories
 
 ) : ViewModel() {

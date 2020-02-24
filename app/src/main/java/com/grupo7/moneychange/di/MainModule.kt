@@ -41,7 +41,6 @@ val presentationModule = module {
         viewModel {
             ConversionViewModel(
                 getCurrencies = get(),
-                historyRepository = get(),
                 countryRepository = get(),
                 getHistories = get()
             )
@@ -61,7 +60,7 @@ val dataModule = module {
 val appModule = module {
     single { RetrofitBuild(androidContext().resources.getString(R.string.base_url)) }
     single { get<RetrofitBuild>().retrofit.create(LiveApi::class.java) }
-    single { Room.databaseBuilder(androidContext(), MoneyChangeDb::class.java, "money_change_db").build().currencyDao() }
+    single { MoneyChangeDb.build(get()) }
     factory<RemoteCurrencyDataSource> { RemoteCurrencyDataSourceImpl(get()) }
     factory<LocalCurrencyDataSource> { LocalCurrencyDataSourceImpl(get()) }
     factory<LocalHistoryDataSource> { LocalHistoryDataSourceImpl(get()) }
