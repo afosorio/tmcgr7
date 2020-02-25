@@ -34,13 +34,16 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
 
         @SuppressLint("SetTextI18n")
         fun bind(item: History, clickDataUp: Listener, clickDetailHistory: Listener) {
-            itemView.from_text_value?.text = item.valueFrom.toString()
-            itemView.from_text?.text = item.currencyFrom.toString()
-            val toText = item.currencyTo.toString()
-            itemView.to_text?.text = toText.subSequence(toText.length - 3, toText.length)
-            itemView.to_text_value?.text = item.valueTo.toString()
-            itemView.data_up?.setOnClickListener { clickDataUp(item) }
-            itemView.card_parent?.setOnClickListener { clickDetailHistory(item) }
+            with(itemView){
+                from_text_value?.text = item.valueFrom.toString()
+                from_text?.text = item.currencyFrom.toString()
+                val toText = item.currencyTo.toString()
+                //TODO("Se debe verificar la siguiente linea, ya que hace crachear la app")
+                //to_text?.text = toText.subSequence(toText.length - 3, toText.length)
+                to_text_value?.text = item.valueTo.toString()
+                data_up?.setOnClickListener { clickDataUp(item) }
+                card_parent?.setOnClickListener { clickDetailHistory(item) }
+            }
         }
     }
 }
