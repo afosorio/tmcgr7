@@ -18,7 +18,7 @@ class DetailConversionFragment : Fragment() {
         dataBindingView = DetailConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = detailViewModel
         }
-        var args = DetailConversionFragmentArgs.fromBundle(arguments!!)
+        val args = DetailConversionFragmentArgs.fromBundle(arguments!!)
         detailViewModel.fetchHistoryById(args.historyId)
         return dataBindingView.root
 

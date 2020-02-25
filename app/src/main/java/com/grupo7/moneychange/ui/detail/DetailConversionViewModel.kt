@@ -29,7 +29,7 @@ class DetailConversionViewModel(
 
     private fun setDateFormat(){
         if (historyData.value != null){
-            var sdf = SimpleDateFormat("dd-MMMM-yyyy")
+            val sdf = SimpleDateFormat("dd-MMMM-yyyy")
             dateTextView.value  = sdf.format(historyData.value?.date)
         }
     }

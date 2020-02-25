@@ -22,7 +22,10 @@ import com.grupo7.moneychange.data.local.source.LocalCurrencyDataSourceImpl
 import com.grupo7.moneychange.data.local.source.LocalHistoryDataSourceImpl
 import com.grupo7.usecases.SaveHistory
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 fun Application.initDI() {
