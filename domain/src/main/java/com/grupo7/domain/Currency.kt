@@ -5,4 +5,8 @@ data class Currency(
     var description: String,
     var icon: String,
     var value: Double
-)
+){
+    override fun toString(): String {
+        return this.description.substring(3, 6)
+    }
+}

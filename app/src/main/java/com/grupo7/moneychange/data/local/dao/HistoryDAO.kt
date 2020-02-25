@@ -1,7 +1,7 @@
 package com.grupo7.moneychange.data.local.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
 import com.grupo7.moneychange.data.local.entity.History
 
 /**
@@ -14,5 +14,5 @@ abstract class HistoryDao : BaseDao<History> {
     abstract fun findById(id: Int): History
 
     @Query("SELECT * FROM History")
-    abstract fun getAll(): LiveData<List<History>>
+    abstract fun getAll(): List<History>
 }

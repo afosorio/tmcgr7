@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo7.data.repository.HistoryRepository
 import com.grupo7.data.repository.ResultData
 import com.grupo7.domain.Currency
 import com.grupo7.domain.History
@@ -12,13 +11,15 @@ import com.grupo7.moneychange.data.repository.CountryRepository
 import com.grupo7.moneychange.utils.PermissionChecker
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
+import com.grupo7.usecases.SaveHistory
 import kotlinx.coroutines.launch
 import java.util.*
 
 class ConversionViewModel(
     private val getCurrencies: GetCurrencies,
     private val countryRepository: CountryRepository,
-    private val getHistories: GetHistories
+    private val getHistories: GetHistories,
+    private val saveHistory: SaveHistory
 
 ) : ViewModel() {
 
@@ -36,18 +37,16 @@ class ConversionViewModel(
     private var _currencyList = MutableLiveData<List<Currency>>().apply {
         value = emptyList()
     }
-    val currencyList: LiveData<List<Currency>>
-        get() = _currencyList
+    val currencyList: LiveData<List<Currency>> = _currencyList
 
     private var _historyList = MutableLiveData<List<History>>().apply {
         value = emptyList()
     }
-    val historyList: LiveData<List<History>>
-        get() = _historyList
+    val historyList: LiveData<List<History>> = _historyList
 
     init {
         initServiceCall()
-        initHistory()
+        getHistories()
     }
 
     private fun initServiceCall() {
@@ -63,9 +62,9 @@ class ConversionViewModel(
         }
     }
 
-    private fun initHistory() {
+    private fun getHistories() {
         viewModelScope.launch {
-            _historyList.postValue(getHistories.invoke())
+            _historyList.value = getHistories.invoke()
         }
     }
 
@@ -85,7 +84,10 @@ class ConversionViewModel(
 
     private fun saveHistory(history: History) {
         viewModelScope.launch {
-            //historyRepository.insert(history)
+            val result = saveHistory.invoke(history)
+            if (result >= 1L) {
+                getHistories()
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package com.grupo7.moneychange.di
 
 import android.app.Application
-import androidx.room.Room
 import com.grupo7.data.source.RemoteCurrencyDataSource
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.data.local.MoneyChangeDb
@@ -19,8 +18,9 @@ import com.grupo7.data.repository.CurrencyRepository
 import com.grupo7.data.repository.HistoryRepository
 import com.grupo7.data.source.LocalHistoryDataSource
 import com.grupo7.data.source.LocalCurrencyDataSource
-import com.grupo7.moneychange.data.local.dataSourceImpl.LocalCurrencyDataSourceImpl
-import com.grupo7.moneychange.data.local.dataSourceImpl.LocalHistoryDataSourceImpl
+import com.grupo7.moneychange.data.local.source.LocalCurrencyDataSourceImpl
+import com.grupo7.moneychange.data.local.source.LocalHistoryDataSourceImpl
+import com.grupo7.usecases.SaveHistory
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,11 +42,13 @@ val presentationModule = module {
             ConversionViewModel(
                 getCurrencies = get(),
                 countryRepository = get(),
-                getHistories = get()
+                getHistories = get(),
+                saveHistory = get()
             )
         }
         scoped { GetCurrencies(currencyRepository = get()) }
         scoped { GetHistories(historyRepository = get()) }
+        scoped { SaveHistory(historyRepository = get()) }
     }
     viewModel { DetailConversionViewModel(get()) }
 }

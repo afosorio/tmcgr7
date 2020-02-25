@@ -9,4 +9,8 @@ class History (
     val currencyTo:Int,
     val valueFrom : Double,
     val valueTo: Double
-)
+){
+    override fun toString(): String {
+        return valueTo.toString()
+    }
+}

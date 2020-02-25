@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo7.moneychange.data.local.entity.History
-import com.grupo7.moneychange.data.repository.local.HistoryRepository
+import com.grupo7.data.repository.HistoryRepository
+import com.grupo7.domain.History
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 

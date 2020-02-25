@@ -1,4 +1,4 @@
-package com.grupo7.moneychange.data.local.dataSourceImpl
+package com.grupo7.moneychange.data.local.source
 
 import com.grupo7.data.source.LocalCurrencyDataSource
 import com.grupo7.moneychange.data.local.MoneyChangeDb

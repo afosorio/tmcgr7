@@ -1,6 +1,5 @@
 package com.grupo7.moneychange.data.mappers
 
-import com.grupo7.moneychange.ui.model.Currency as ModelCurrency
 import com.grupo7.moneychange.data.local.entity.Currency as DataBaseCurrency
 import com.grupo7.domain.Currency as DomainCurrency
 
@@ -35,13 +34,3 @@ fun DataBaseCurrency.toDomainCurrency(): DomainCurrency =
         icon,
         value
     )
-
-fun List<DomainCurrency>.toModelCurrency(): List<ModelCurrency> =
-    this.map {
-        ModelCurrency(
-            it.id,
-            it.description,
-            it.icon,
-            it.value
-        )
-    }
