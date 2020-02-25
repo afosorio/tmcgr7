@@ -1,8 +1,8 @@
 <resources>
 
     <dimen name="_0sdp">0dp</dimen>
-    <dimen name="icon_width">@dimen/_24sdp</dimen>
-    <dimen name="icon_height">@dimen/_24sdp</dimen>
+    <dimen name="icon_width">@dimen/_14sdp</dimen>
+    <dimen name="icon_height">@dimen/_14sdp</dimen>
 
     <dimen name="logo_width">@dimen/_120sdp</dimen>
     <dimen name="logo_height">@dimen/_50sdp</dimen>

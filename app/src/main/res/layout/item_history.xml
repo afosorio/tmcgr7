@@ -6,51 +6,95 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:cardCornerRadius="3dp"
-
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        app:cardCornerRadius="@dimen/_3sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/conversion_text"
-                style="@style/TextBlueStyleRegular"
-                android:layout_width="0dp"
+                android:id="@+id/from_text"
+                style="@style/TextBlueStyleBold"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:paddingStart="@dimen/_25sdp"
+                android:paddingEnd="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="center"
                 android:inputType="textMultiLine"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/data_up"
+                app:layout_constraintBottom_toTopOf="@+id/to_text"
+                app:layout_constraintEnd_toStartOf="@+id/from_text_value"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/conversion_rate_hint" />
+                app:textAllCaps="true"
+                tools:text="usd" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/from_text_value"
+                style="@style/TextBlueStyleRegular"
+                android:layout_width="@dimen/_0sdp"
+
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                app:layout_constraintBottom_toBottomOf="@+id/from_text"
+                app:layout_constraintEnd_toStartOf="@+id/data_up"
+                app:layout_constraintStart_toEndOf="@+id/from_text"
+                app:layout_constraintTop_toTopOf="@+id/from_text"
+                tools:text="$1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/to_text"
+                style="@style/TextBlueStyleBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:paddingStart="@dimen/_25sdp"
+                android:paddingEnd="@dimen/_25sdp"
+                android:gravity="center"
+                android:inputType="textMultiLine"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/to_text_value"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/from_text"
+                app:textAllCaps="true"
+                tools:text="cop" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/to_text_value"
+                style="@style/TextBlueStyleRegular"
+                android:layout_width="@dimen/_0sdp"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                app:layout_constraintBottom_toBottomOf="@+id/to_text"
+                app:layout_constraintEnd_toStartOf="@+id/data_up"
+                app:layout_constraintStart_toEndOf="@+id/to_text"
+                app:layout_constraintTop_toTopOf="@+id/to_text"
+                tools:text="$3500" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/data_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:padding="10dp"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:padding="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/conversion_text"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_data_up" />
+                android:src="@drawable/ic_data_up" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
