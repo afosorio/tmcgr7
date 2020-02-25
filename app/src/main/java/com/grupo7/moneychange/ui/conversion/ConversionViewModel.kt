@@ -13,6 +13,8 @@ import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.*
 
 class ConversionViewModel(
@@ -74,12 +76,11 @@ class ConversionViewModel(
             return
         }
 
-        val result = (from.toInt() * currency.value)
-        val history = History(0, Date(), 1, currency.id, from.toDouble(), result)
+        val result = BigDecimal((from.toInt() * currency.value)).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+        val history = History(0, Date(), "USD", currency.description, from.toDouble(), result)
         saveHistory(history)
 
         this.editTextConversionTo.value = result.toString()
-        this.textViewConversionFrom.value = ""
     }
 
     private fun saveHistory(history: History) {
