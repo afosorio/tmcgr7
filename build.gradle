@@ -36,7 +36,7 @@ buildscript {
         kotlin_version = '1.3.61'
         dexter = "6.0.0"
         play_services = "17.0.0"
-        gradle_version = '3.5.3'
+        gradle_version = '3.6.0'
         dimen="1.0.6"
     }
 
@@ -57,6 +57,7 @@ buildscript {
 
 plugins {
     id("io.gitlab.arturbosch.detekt").version("1.2.0")
+    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
 }
 
 detekt {
@@ -86,6 +87,20 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.grupo7.moneychange.ui.adapters.IRecyclerViewAdapter
-import com.grupo7.moneychange.data.local.entity.History
+import com.grupo7.domain.History
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.utils.PermissionChecker
 import org.koin.androidx.scope.currentScope

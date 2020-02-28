@@ -36,6 +36,10 @@ repositories {
 }
 
 dependencies {
+    implementation project(":data")
+    implementation project(":domain")
+    implementation project(":usecases")
+
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$support.appcompat"
     implementation "androidx.core:core-ktx:$core_ktx"

@@ -1,5 +1,6 @@
 package com.grupo7.moneychange.data.network
 
+import com.grupo7.moneychange.data.network.endpoints.LiveApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -28,4 +29,6 @@ class RetrofitBuild(baseUrl: String) {
             .baseUrl(baseUrl)
             .build()
     }
+
+    val service: LiveApi = retrofit.run { create(LiveApi::class.java) }
 }

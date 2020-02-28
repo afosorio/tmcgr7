@@ -4,25 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo7.moneychange.data.local.entity.History
-import com.grupo7.moneychange.data.mappers.toModelCurrency
-import com.grupo7.moneychange.data.network.ResultData
+import com.grupo7.data.repository.ResultData
+import com.grupo7.domain.Currency
+import com.grupo7.domain.History
 import com.grupo7.moneychange.data.repository.CountryRepository
-import com.grupo7.moneychange.data.repository.local.HistoryRepository
-import com.grupo7.moneychange.ui.model.Currency
-import com.grupo7.moneychange.usecases.GetAllExchangeRateData
 import com.grupo7.moneychange.utils.PermissionChecker
+import com.grupo7.usecases.GetCurrencies
+import com.grupo7.usecases.GetHistories
+import com.grupo7.usecases.SaveHistory
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
 
-
 class ConversionViewModel(
-
-    private val getAllExchangeRateData: GetAllExchangeRateData,
-    private val historyRepository: HistoryRepository,
-    private val countryRepository: CountryRepository
+    private val getCurrencies: GetCurrencies,
+    private val countryRepository: CountryRepository,
+    private val getHistories: GetHistories,
+    private val saveHistory: SaveHistory
 
 ) : ViewModel() {
 
@@ -40,36 +39,34 @@ class ConversionViewModel(
     private var _currencyList = MutableLiveData<List<Currency>>().apply {
         value = emptyList()
     }
-    val currencyList: LiveData<List<Currency>>
-        get() = _currencyList
+    val currencyList: LiveData<List<Currency>> = _currencyList
 
     private var _historyList = MutableLiveData<List<History>>().apply {
         value = emptyList()
     }
-    val historyList: LiveData<List<History>>
-        get() = _historyList
+    val historyList: LiveData<List<History>> = _historyList
 
     init {
         initServiceCall()
-        initHistory()
+        getHistories()
     }
 
     private fun initServiceCall() {
         viewModelScope.launch {
-            when (val result = getAllExchangeRateData.invoke()) {
+            when (val result = getCurrencies.invoke()) {
                 is ResultData.Success -> {
-                    _currencyList.value = result.data.toModelCurrency()
+                    _currencyList.value = result.data
                 }
                 is ResultData.Error -> {
+                    result.exception.toString()
                 }
             }
         }
     }
 
-
-    private fun initHistory() {
-        historyRepository.getAll().observeForever {
-            _historyList.value = it
+    private fun getHistories() {
+        viewModelScope.launch {
+            _historyList.value = getHistories.invoke()
         }
     }
 
@@ -80,7 +77,7 @@ class ConversionViewModel(
         }
 
         val result = BigDecimal((from.toInt() * currency.value)).setScale(2, RoundingMode.HALF_EVEN).toDouble()
-        val history = History(0, Date(), "USD", currency.description, from.toDouble(), result)
+        val history = History(0, Date(), 1, currency.id, from.toDouble(), result)
         saveHistory(history)
 
         this.editTextConversionTo.value = result.toString()
@@ -88,7 +85,10 @@ class ConversionViewModel(
 
     private fun saveHistory(history: History) {
         viewModelScope.launch {
-            historyRepository.insert(history)
+            val result = saveHistory.invoke(history)
+            if (result >= 1L) {
+                getHistories()
+            }
         }
     }
 
