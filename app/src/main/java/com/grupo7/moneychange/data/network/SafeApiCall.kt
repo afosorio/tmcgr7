@@ -1,7 +1,7 @@
 package com.grupo7.moneychange.data.network
 
 import android.util.Log
-import com.grupo7.data.repository.ResultData
+import com.grupo7.data.ResultData
 import retrofit2.Response
 import java.io.IOException
 
