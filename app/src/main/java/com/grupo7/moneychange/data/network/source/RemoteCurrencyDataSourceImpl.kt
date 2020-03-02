@@ -1,6 +1,6 @@
 package com.grupo7.moneychange.data.network.source
 
-import com.grupo7.data.repository.ResultData
+import com.grupo7.data.ResultData
 import com.grupo7.data.source.RemoteCurrencyDataSource
 import com.grupo7.domain.Constans
 import com.grupo7.domain.Currency

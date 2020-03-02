@@ -1,25 +1,24 @@
 package com.grupo7.moneychange.di
 
 import android.app.Application
-import com.grupo7.data.source.RemoteCurrencyDataSource
+import com.grupo7.data.repository.CountryRepository
+import com.grupo7.data.repository.CurrencyRepository
+import com.grupo7.data.repository.HistoryRepository
+import com.grupo7.data.source.*
 import com.grupo7.moneychange.R
 import com.grupo7.moneychange.data.local.MoneyChangeDb
+import com.grupo7.moneychange.data.local.source.LocalCurrencyDataSourceImpl
+import com.grupo7.moneychange.data.local.source.LocalHistoryDataSourceImpl
+import com.grupo7.moneychange.data.local.source.LocationDataSourceImpl
 import com.grupo7.moneychange.data.network.RetrofitBuild
 import com.grupo7.moneychange.data.network.endpoints.LiveApi
 import com.grupo7.moneychange.data.network.source.RemoteCurrencyDataSourceImpl
-import com.grupo7.moneychange.data.repository.CountryRepository
-import com.grupo7.moneychange.data.repository.CountryRepositoryImpl
 import com.grupo7.moneychange.ui.conversion.ConversionFragment
 import com.grupo7.moneychange.ui.conversion.ConversionViewModel
 import com.grupo7.moneychange.ui.detail.DetailConversionViewModel
+import com.grupo7.moneychange.utils.AndroidPermissionChecker
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
-import com.grupo7.data.repository.CurrencyRepository
-import com.grupo7.data.repository.HistoryRepository
-import com.grupo7.data.source.LocalHistoryDataSource
-import com.grupo7.data.source.LocalCurrencyDataSource
-import com.grupo7.moneychange.data.local.source.LocalCurrencyDataSourceImpl
-import com.grupo7.moneychange.data.local.source.LocalHistoryDataSourceImpl
 import com.grupo7.usecases.SaveHistory
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -54,7 +53,7 @@ val presentationModule = module {
 }
 
 val dataModule = module {
-    factory<CountryRepository> { CountryRepositoryImpl(context = get()) }
+    factory { CountryRepository(locationDataSource = get(), permissionChecker = get()) }
     factory { CurrencyRepository(remoteCurrencyDataSource = get(), localCurrencyDataSource = get()) }
     factory { HistoryRepository(localHistoryDataSource = get()) }
 }
@@ -66,4 +65,6 @@ val appModule = module {
     factory<RemoteCurrencyDataSource> { RemoteCurrencyDataSourceImpl(get()) }
     factory<LocalCurrencyDataSource> { LocalCurrencyDataSourceImpl(get()) }
     factory<LocalHistoryDataSource> { LocalHistoryDataSourceImpl(get()) }
+    factory<LocationDataSource> { LocationDataSourceImpl(get()) }
+    factory<PermissionChecker> { AndroidPermissionChecker(get()) }
 }

@@ -1,4 +1,4 @@
-package com.grupo7.data.repository
+package com.grupo7.data
 
 sealed class ResultData<out T : Any> {
     data class Success<out T : Any>(val data: T) : ResultData<T>()

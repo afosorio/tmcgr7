@@ -1,5 +1,6 @@
 package com.grupo7.data.repository
 
+import com.grupo7.data.ResultData
 import com.grupo7.data.source.LocalCurrencyDataSource
 import com.grupo7.data.source.RemoteCurrencyDataSource
 import com.grupo7.domain.Currency
