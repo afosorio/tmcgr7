@@ -5,10 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.grupo7.moneychange.data.local.entity.Currency
-
-/**
- * afosorio 23.11.2019
- */
 @Dao
 abstract class CurrencyDao : BaseDao<Currency> {
 

@@ -132,7 +132,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/exchange_img"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:selectedValue="@={viewModel.textViewCurrency}"
+                    app:selectedValue="@={viewModel.textViewCurrencyTo}"
                     tools:listitem="@android:layout/simple_spinner_item" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -157,11 +157,11 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/conversion_to"
+                    style="@style/TextBlueStyleRegular"
                     android:layout_width="@dimen/_0sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:gravity="center"
                     android:maxLines="1"
-                    style="@style/TextBlueStyleRegular"
                     android:text="@={viewModel.editTextConversionTo}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -173,7 +173,7 @@
                     android:id="@+id/btnConvert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{()-> viewModel.onClickChange(viewModel.textViewConversionFrom, viewModel.textViewCurrency)}"
+                    android:onClick="@{()-> viewModel.onClickChange(viewModel.textViewConversionFrom, viewModel.textViewCurrencyTo)}"
                     android:padding="@dimen/_6sdp"
                     android:text="@android:string/ok"
                     android:textStyle="bold"

@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.grupo7.domain.History
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.ui.adapters.IRecyclerViewAdapter
+import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,7 +47,7 @@ class ConversionFragment : Fragment() {
         conversionViewModel.getLocation()
     }
 
-    private fun navigationDetailConversionFragment(item: History) {
+    private fun navigationDetailConversionFragment(item: HistoryItem) {
         val action = ConversionFragmentDirections.actionConversionFragmentToDetailConversionFragment(item.id)
         view?.findNavController()?.navigate(action)
     }
