@@ -8,16 +8,14 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
-import com.grupo7.moneychange.R
 import com.grupo7.domain.Currency
+import com.grupo7.moneychange.R
 
 
 @BindingAdapter("coin_values")
 fun setCoinValues(appCompatSpinner: AppCompatSpinner, currencyList: List<Currency>) {
-
     val adapter = ArrayAdapter(appCompatSpinner.context, R.layout.spinner_item, currencyList)
     adapter.setDropDownViewResource(R.layout.spinner_item)
-
     appCompatSpinner.apply {
         this.adapter = adapter
     }
@@ -37,8 +35,9 @@ fun setCoinValuesFrom(appCompatSpinner: AppCompatSpinner, currencyList: List<Cur
 }
 
 @BindingAdapter(value = ["selectedValue", "selectedValueAttrChanged"], requireAll = false)
-fun bindSpinnerData(pAppCompatSpinner: AppCompatSpinner, newSelectedValue: Currency?,
-                    newTextAttrChanged: InverseBindingListener
+fun bindSpinnerData(
+    pAppCompatSpinner: AppCompatSpinner, newSelectedValue: Currency?,
+    newTextAttrChanged: InverseBindingListener
 ) {
     pAppCompatSpinner.onItemSelectedListener = object : OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
