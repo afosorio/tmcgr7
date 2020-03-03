@@ -69,10 +69,9 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
     // Test
-    testImplementation "junit:junit:$test.junit"
+    testImplementation testLibs.values()
     androidTestImplementation "androidx.test:runner:$test.runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test.espresso_core"
-    testImplementation "org.koin:koin-test:$koin_version"
 
     //google location services
     implementation "com.google.android.gms:play-services-gcm:$play_services"

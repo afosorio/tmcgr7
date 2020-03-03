@@ -31,7 +31,7 @@ buildscript {
 
         nav_version = "2.1.0"
         lifecycle_version = "2.1.0"
-        koin_version = "2.0.1"
+        koin_version = "2.1.1"
         core_ktx = '1.1.0'
         kotlin_version = '1.3.61'
         dexter = "6.0.0"
@@ -84,6 +84,16 @@ allprojects {
     repositories {
         google()
         jcenter()
+    }
+    ext {
+        testLibs = [
+                junit     : 'junit:junit:4.12',
+                mockito   : 'org.mockito:mockito-core:3.3.0',
+                koinTest  : "org.koin:koin-test:$koin_version",
+                rules     : 'androidx.test:rules:1.2.0',
+                extJunit  : 'androidx.test.ext:junit-ktx:1.1.1',
+                //testShared: project(':testShared')
+        ]
     }
 }
 
