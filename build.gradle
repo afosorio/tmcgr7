@@ -88,11 +88,16 @@ allprojects {
     ext {
         testLibs = [
                 junit     : 'junit:junit:4.12',
-                mockito   : 'org.mockito:mockito-core:3.3.0',
+                mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0",
+                mockitoInline: "org.mockito:mockito-inline:2.28.2",
                 koinTest  : "org.koin:koin-test:$koin_version",
                 rules     : 'androidx.test:rules:1.2.0',
                 extJunit  : 'androidx.test.ext:junit-ktx:1.1.1',
-                //testShared: project(':testShared')
+                testShared: project(':testShared')
+        ]
+        kotlinLibs = [
+                stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+                coroutines: 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.2'
         ]
     }
 }

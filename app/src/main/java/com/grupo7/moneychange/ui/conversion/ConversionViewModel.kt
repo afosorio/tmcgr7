@@ -96,6 +96,7 @@ class ConversionViewModel(
     private fun saveHistory(history: History) {
         viewModelScope.launch {
             val result = saveHistory.invoke(history)
+            //todo que significa el 1L ? el id del registro?
             if (result >= 1L) {
                 getHistories()
             }
