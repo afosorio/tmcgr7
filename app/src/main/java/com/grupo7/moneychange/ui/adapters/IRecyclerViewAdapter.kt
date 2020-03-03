@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.grupo7.moneychange.R
-import com.grupo7.domain.History
+import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
 import kotlinx.android.synthetic.main.item_history.view.*
 
-typealias Listener = ((History) -> Unit)
+typealias Listener = ((HistoryItem) -> Unit)
 
 class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickDetailHistory: Listener) :
     RecyclerView.Adapter<IRecyclerViewAdapter.ViewHolder>() {
 
-    private var items = emptyList<History>()
+    private var items = emptyList<HistoryItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,7 +25,7 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position], clickDataUp, clickDetailHistory)
 
-    fun update(items: List<History>) {
+    fun update(items: List<HistoryItem>) {
         this.items = items
         notifyDataSetChanged()
     }
@@ -33,13 +33,17 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: History, clickDataUp: Listener, clickDetailHistory: Listener) {
-            with(itemView){
+        fun bind(item: HistoryItem, clickDataUp: Listener, clickDetailHistory: Listener) {
+            with(itemView) {
                 from_text_value?.text = item.valueFrom.toString()
-                from_text?.text = item.currencyFrom.toString()
-                val toText = item.currencyTo.toString()
-                //TODO("Se debe verificar la siguiente linea, ya que hace crachear la app")
-                //to_text?.text = toText.subSequence(toText.length - 3, toText.length)
+                val fromText= item.currencyFrom
+                from_text?.text = if (fromText.length > 3) {
+                    fromText.subSequence(fromText.length - 3, fromText.length)
+                } else fromText
+                val toText = item.currencyTo
+                to_text?.text = if (toText.length > 3) {
+                    toText.subSequence(toText.length - 3, toText.length)
+                } else toText
                 to_text_value?.text = item.valueTo.toString()
                 data_up?.setOnClickListener { clickDataUp(item) }
                 card_parent?.setOnClickListener { clickDetailHistory(item) }

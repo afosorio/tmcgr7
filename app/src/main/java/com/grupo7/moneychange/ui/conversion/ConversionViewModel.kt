@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grupo7.data.repository.CountryRepository
 import com.grupo7.data.ResultData
+import com.grupo7.data.repository.CountryRepository
 import com.grupo7.domain.Currency
 import com.grupo7.domain.History
+import com.grupo7.moneychange.data.mappers.toHistoryItem
+import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
@@ -21,10 +23,10 @@ class ConversionViewModel(
     private val countryRepository: CountryRepository,
     private val getHistories: GetHistories,
     private val saveHistory: SaveHistory
-
 ) : ViewModel() {
 
-    val textViewCurrency: MutableLiveData<Currency> = MutableLiveData()
+    val textViewCurrencyTo: MutableLiveData<Currency> = MutableLiveData()
+    val textViewCurrencyFrom: MutableLiveData<Currency> = MutableLiveData()
     val editTextConversionTo: MutableLiveData<String> = MutableLiveData("0$")
     val textViewRateConversion: MutableLiveData<String> = MutableLiveData()
     var textViewConversionFrom: MutableLiveData<String> = MutableLiveData()
@@ -40,10 +42,10 @@ class ConversionViewModel(
     }
     val currencyList: LiveData<List<Currency>> = _currencyList
 
-    private var _historyList = MutableLiveData<List<History>>().apply {
+    private var _historyList = MutableLiveData<List<HistoryItem>>().apply {
         value = emptyList()
     }
-    val historyList: LiveData<List<History>> = _historyList
+    val historyList: LiveData<List<HistoryItem>> = _historyList
 
     init {
         initServiceCall()
@@ -65,7 +67,11 @@ class ConversionViewModel(
 
     private fun getHistories() {
         viewModelScope.launch {
-            _historyList.value = getHistories.invoke()
+            _currencyList.value?.let { currencyList ->
+                _historyList.value = getHistories.invoke().map {
+                    it.toHistoryItem(currencyList)
+                }
+            }
         }
     }
 
@@ -76,10 +82,15 @@ class ConversionViewModel(
         }
 
         val result = BigDecimal((from.toInt() * currency.value)).setScale(2, RoundingMode.HALF_EVEN).toDouble()
-        val history = History(0, Date(), 1, currency.id, from.toDouble(), result)
+        val history = History(0, Date(), getBaseCurrency(), currency.id, from.toDouble(), result)
         saveHistory(history)
 
         this.editTextConversionTo.value = result.toString()
+    }
+
+    private fun getBaseCurrency(): Int {
+        _currencyList.value?.find { it.description.contains("USDUSD") }?.let { return it.id }
+        return 1
     }
 
     private fun saveHistory(history: History) {
@@ -97,8 +108,13 @@ class ConversionViewModel(
         }
     }
 
-    fun clickDataUp(item: History) {
-        //TODO("se debe actualizar el spinner de la moneda seleccionada")
+    fun clickDataUp(item: HistoryItem) {
+        textViewCurrencyFrom.value = _currencyList.value?.find {
+            it.description == item.currencyFrom
+        }
+        textViewCurrencyTo.value = _currencyList.value?.find {
+            it.description == item.currencyTo
+        }
         textViewConversionFrom.value = item.valueFrom.toInt().toString()
         editTextConversionTo.value = item.valueTo.toString()
     }
