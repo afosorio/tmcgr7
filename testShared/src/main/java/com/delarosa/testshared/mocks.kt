@@ -7,7 +7,7 @@ import java.util.*
 val mockedCurrency = Currency(
     id = 0,
     description = "USDCOP",
-    icon = "",
+    icon = "dd",
     value = 3.500
 )
 
@@ -19,3 +19,4 @@ val mockedHistory = History(
     valueFrom = 1.0,
     valueTo = 3.500
 )
+
