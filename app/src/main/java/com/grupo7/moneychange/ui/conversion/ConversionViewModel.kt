@@ -13,7 +13,6 @@ import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -51,7 +50,7 @@ class ConversionViewModel(
 
     init {
         initServiceCall()
-        getHistories()
+        getLocation()
     }
 
     private fun initServiceCall() {
@@ -67,7 +66,7 @@ class ConversionViewModel(
         }
     }
 
-    private fun getHistories() {
+    fun getHistories() {
         launch {
             _currencyList.value?.let { currencyList ->
                 _historyList.value = getHistories.invoke().map {
@@ -105,7 +104,7 @@ class ConversionViewModel(
         }
     }
 
-    fun getLocation() {
+    private fun getLocation() {
         launch {
             countryMutable.value = countryRepository.getCountryLocation()
         }

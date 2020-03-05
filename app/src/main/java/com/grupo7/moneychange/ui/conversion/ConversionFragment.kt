@@ -10,7 +10,6 @@ import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.ui.adapters.IRecyclerViewAdapter
 import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
 import org.koin.androidx.scope.currentScope
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.viewmodel.scope.viewModel
 
 class ConversionFragment : Fragment() {
@@ -40,12 +39,12 @@ class ConversionFragment : Fragment() {
     }
 
     private fun initListAdapter() {
+        conversionViewModel.getHistories()
         val viewModel = dataBindingView.viewModel
         viewModel?.let {
             val adapter = IRecyclerViewAdapter(conversionViewModel::clickDataUp, ::navigationDetailConversionFragment)
             dataBindingView.recyclerView.adapter = adapter
         }
-        conversionViewModel.getLocation()
     }
 
     private fun navigationDetailConversionFragment(item: HistoryItem) {
