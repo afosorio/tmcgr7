@@ -5,10 +5,10 @@ import androidx.lifecycle.Observer
 import com.delarosa.testshared.mockedCurrency
 import com.delarosa.testshared.mockedHistory
 import com.grupo7.data.ResultData
-import com.grupo7.data.repository.CountryRepository
 import com.grupo7.domain.Currency
 import com.grupo7.moneychange.data.mappers.toHistoryItem
 import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
+import com.grupo7.usecases.GetCountry
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
@@ -34,13 +34,13 @@ class ConversionViewModelTest {
     lateinit var getCurrencies: GetCurrencies
 
     @Mock
-    lateinit var countryRepository: CountryRepository
-
-    @Mock
     lateinit var getHistories: GetHistories
 
     @Mock
     lateinit var saveHistory: SaveHistory
+
+    @Mock
+    lateinit var getCountry: GetCountry
 
     @Mock
     lateinit var observerCurrencyList: Observer<List<Currency>>
@@ -67,7 +67,7 @@ class ConversionViewModelTest {
 
     /*I don't need the setUp at the begging*/
     private fun setUp() {
-        vm = ConversionViewModel(getCurrencies, countryRepository, getHistories, saveHistory, Dispatchers.Unconfined)
+        vm = ConversionViewModel(getCurrencies, getHistories, saveHistory,getCountry, Dispatchers.Unconfined)
     }
 
     @Test
@@ -75,7 +75,7 @@ class ConversionViewModelTest {
         runBlocking {
             setUp()
             vm.country.observeForever(observerCountry)
-            verify(observerCountry).onChanged(countryRepository.getCountryLocation())
+            verify(observerCountry).onChanged(getCountry.invoke())
         }
     }
 
@@ -97,7 +97,6 @@ class ConversionViewModelTest {
         runBlocking {
             val currencyList = listOf(mockedCurrency.copy(1))
             val historyList = listOf(mockedHistory.copy(currencyTo = 1, id = 1))
-
             val historyItemList = historyList.map {
                 it.toHistoryItem(currencyList)
             }

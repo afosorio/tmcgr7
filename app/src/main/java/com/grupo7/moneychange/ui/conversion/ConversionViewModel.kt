@@ -3,12 +3,12 @@ package com.grupo7.moneychange.ui.conversion
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.grupo7.data.ResultData
-import com.grupo7.data.repository.CountryRepository
 import com.grupo7.domain.Currency
 import com.grupo7.domain.History
 import com.grupo7.moneychange.data.mappers.toHistoryItem
 import com.grupo7.moneychange.ui.common.ScopedViewModel
 import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
+import com.grupo7.usecases.GetCountry
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
@@ -20,9 +20,9 @@ import java.util.*
 
 class ConversionViewModel(
     private val getCurrencies: GetCurrencies,
-    private val countryRepository: CountryRepository,
     private val getHistories: GetHistories,
     private val saveHistory: SaveHistory,
+    private val getCountry: GetCountry,
     override val uiDispatcher: CoroutineDispatcher
 ) : ScopedViewModel(uiDispatcher) {
 
@@ -106,7 +106,7 @@ class ConversionViewModel(
 
     private fun getLocation() {
         launch {
-            countryMutable.value = countryRepository.getCountryLocation()
+            countryMutable.value = getCountry.invoke()
         }
     }
 

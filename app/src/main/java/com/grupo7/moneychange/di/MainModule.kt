@@ -17,6 +17,7 @@ import com.grupo7.moneychange.ui.conversion.ConversionFragment
 import com.grupo7.moneychange.ui.conversion.ConversionViewModel
 import com.grupo7.moneychange.ui.detail.DetailConversionViewModel
 import com.grupo7.moneychange.utils.AndroidPermissionChecker
+import com.grupo7.usecases.GetCountry
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
@@ -42,15 +43,17 @@ val presentationModule = module {
         viewModel {
             ConversionViewModel(
                 getCurrencies = get(),
-                countryRepository = get(),
                 getHistories = get(),
                 saveHistory = get(),
+                getCountry = get(),
                 uiDispatcher = get()
             )
         }
         scoped { GetCurrencies(currencyRepository = get()) }
         scoped { GetHistories(historyRepository = get()) }
         scoped { SaveHistory(historyRepository = get()) }
+        scoped { GetCountry(countryRepository = get()) }
+
     }
     viewModel {
         DetailConversionViewModel(

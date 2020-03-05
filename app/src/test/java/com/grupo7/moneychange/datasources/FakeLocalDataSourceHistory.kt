@@ -4,12 +4,12 @@ import com.grupo7.data.source.LocalHistoryDataSource
 import com.grupo7.domain.History
 
 class FakeLocalDataSourceHistory : LocalHistoryDataSource {
-    var history: ArrayList<History> = arrayListOf()
+    var history: List<History> = emptyList()
 
     override suspend fun isEmpty() = history.isEmpty()
 
     override suspend fun saveHistory(history: History): Long {
-        this.history.add(history)
+        this.history.toMutableList().add(history)
         return 1L
     }
 
