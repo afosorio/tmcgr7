@@ -20,6 +20,8 @@ import com.grupo7.moneychange.utils.AndroidPermissionChecker
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,14 +44,20 @@ val presentationModule = module {
                 getCurrencies = get(),
                 countryRepository = get(),
                 getHistories = get(),
-                saveHistory = get()
+                saveHistory = get(),
+                uiDispatcher = get()
             )
         }
         scoped { GetCurrencies(currencyRepository = get()) }
         scoped { GetHistories(historyRepository = get()) }
         scoped { SaveHistory(historyRepository = get()) }
     }
-    viewModel { DetailConversionViewModel(get()) }
+    viewModel {
+        DetailConversionViewModel(
+            historyRepository = get(),
+            uiDispatcher = get()
+        )
+    }
 }
 
 val dataModule = module {
@@ -62,6 +70,7 @@ val appModule = module {
     single { RetrofitBuild(androidContext().resources.getString(R.string.base_url)) }
     single { get<RetrofitBuild>().retrofit.create(LiveApi::class.java) }
     single { MoneyChangeDb.build(get()) }
+    single<CoroutineDispatcher> { Dispatchers.Main }
     factory<RemoteCurrencyDataSource> { RemoteCurrencyDataSourceImpl(get()) }
     factory<LocalCurrencyDataSource> { LocalCurrencyDataSourceImpl(get()) }
     factory<LocalHistoryDataSource> { LocalHistoryDataSourceImpl(get()) }

@@ -2,17 +2,18 @@ package com.grupo7.moneychange.ui.conversion
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.grupo7.data.ResultData
 import com.grupo7.data.repository.CountryRepository
 import com.grupo7.domain.Currency
 import com.grupo7.domain.History
 import com.grupo7.moneychange.data.mappers.toHistoryItem
+import com.grupo7.moneychange.ui.common.ScopedViewModel
 import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
 import com.grupo7.usecases.GetCurrencies
 import com.grupo7.usecases.GetHistories
 import com.grupo7.usecases.SaveHistory
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -22,8 +23,9 @@ class ConversionViewModel(
     private val getCurrencies: GetCurrencies,
     private val countryRepository: CountryRepository,
     private val getHistories: GetHistories,
-    private val saveHistory: SaveHistory
-) : ViewModel() {
+    private val saveHistory: SaveHistory,
+    override val uiDispatcher: CoroutineDispatcher
+) : ScopedViewModel(uiDispatcher) {
 
     val textViewCurrencyTo: MutableLiveData<Currency> = MutableLiveData()
     val textViewCurrencyFrom: MutableLiveData<Currency> = MutableLiveData()
@@ -53,7 +55,7 @@ class ConversionViewModel(
     }
 
     private fun initServiceCall() {
-        viewModelScope.launch {
+        launch {
             when (val result = getCurrencies.invoke()) {
                 is ResultData.Success -> {
                     _currencyList.value = result.data
@@ -66,7 +68,7 @@ class ConversionViewModel(
     }
 
     private fun getHistories() {
-        viewModelScope.launch {
+        launch {
             _currencyList.value?.let { currencyList ->
                 _historyList.value = getHistories.invoke().map {
                     it.toHistoryItem(currencyList)
@@ -94,7 +96,7 @@ class ConversionViewModel(
     }
 
     private fun saveHistory(history: History) {
-        viewModelScope.launch {
+        launch {
             val result = saveHistory.invoke(history)
             //todo que significa el 1L ? el id del registro?
             if (result >= 1L) {
@@ -104,7 +106,7 @@ class ConversionViewModel(
     }
 
     fun getLocation() {
-        viewModelScope.launch {
+        launch {
             countryMutable.value = countryRepository.getCountryLocation()
         }
     }
