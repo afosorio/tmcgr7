@@ -49,8 +49,8 @@ class ConversionViewModel(
     val historyList: LiveData<List<HistoryItem>> = _historyList
 
     init {
+        countryMutable.value = "..."
         initServiceCall()
-        getLocation()
     }
 
     private fun initServiceCall() {
@@ -104,7 +104,7 @@ class ConversionViewModel(
         }
     }
 
-    private fun getLocation() {
+    fun updateLocation() {
         launch {
             countryMutable.value = getCountry.invoke()
         }

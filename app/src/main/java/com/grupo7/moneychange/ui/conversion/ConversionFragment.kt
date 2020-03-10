@@ -1,5 +1,7 @@
 package com.grupo7.moneychange.ui.conversion
 
+import android.Manifest
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.ui.adapters.IRecyclerViewAdapter
+import com.grupo7.moneychange.ui.common.PermissionRequester
 import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.scope.viewModel
@@ -35,6 +38,12 @@ class ConversionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //TODO revisar si se está pidiendo el permiso
+        activity?.let {
+            PermissionRequester(it as Activity, Manifest.permission.ACCESS_COARSE_LOCATION).request {
+                conversionViewModel.updateLocation()
+            }
+        }
         initListAdapter()
     }
 

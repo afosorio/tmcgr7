@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         appBarConfiguration = AppBarConfiguration.Builder(R.id.detailConversionFragment).build()
     }
 

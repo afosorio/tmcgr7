@@ -74,6 +74,7 @@ class ConversionViewModelTest {
     fun `observing LiveData launches location permission request`() {
         runBlocking {
             setUp()
+            vm.updateLocation()
             vm.country.observeForever(observerCountry)
             verify(observerCountry).onChanged(getCountry.invoke())
         }

@@ -101,6 +101,7 @@ class ConversionIntegrationTest : AutoCloseKoinTest() {
         location.location = "COUNTRY-N"
         vm = get()
         vm.country.observeForever(observerCountry)
+        vm.updateLocation()
         verify(observerCountry).onChanged("COUNTRY-N")
     }
 
