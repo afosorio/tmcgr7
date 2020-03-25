@@ -105,7 +105,6 @@ class ConversionViewModelTest {
             whenever(getHistories.invoke()).thenReturn(historyList)
 
             setUp()
-            vm.getHistories()
             vm.currencyList.observeForever(observerCurrencyList)
             vm.historyList.observeForever(observerHistoryList)
 

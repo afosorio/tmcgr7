@@ -90,7 +90,6 @@ class ConversionIntegrationTest : AutoCloseKoinTest() {
         val localDataSource = get<LocalHistoryDataSource>() as FakeLocalDataSourceHistory
         localDataSource.history = fakeLocalHistory
         vm = get()
-        vm.getHistories()
         vm.historyList.observeForever(observerHistoryList)
         verify(observerHistoryList).onChanged(fakeLocalHistory.map { it.toHistoryItem(currencyList) })
     }

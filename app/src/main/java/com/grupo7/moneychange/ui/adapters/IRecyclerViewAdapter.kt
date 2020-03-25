@@ -23,7 +23,10 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position], clickDataUp, clickDetailHistory)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(items[position], clickDataUp, clickDetailHistory)
+        holder.itemView.setOnClickListener { clickDetailHistory(items[position]) }
+    }
 
     fun update(items: List<HistoryItem>) {
         this.items = items
@@ -36,7 +39,7 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
         fun bind(item: HistoryItem, clickDataUp: Listener, clickDetailHistory: Listener) {
             with(itemView) {
                 from_text_value?.text = item.valueFrom.toString()
-                val fromText= item.currencyFrom
+                val fromText = item.currencyFrom
                 from_text?.text = if (fromText.length > 3) {
                     fromText.subSequence(fromText.length - 3, fromText.length)
                 } else fromText
@@ -46,7 +49,6 @@ class IRecyclerViewAdapter(private val clickDataUp: Listener, private val clickD
                 } else toText
                 to_text_value?.text = item.valueTo.toString()
                 data_up?.setOnClickListener { clickDataUp(item) }
-                card_parent?.setOnClickListener { clickDetailHistory(item) }
             }
         }
     }

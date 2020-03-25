@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.grupo7.moneychange.R
 import com.grupo7.moneychange.databinding.ConversionFragmentBinding
 import com.grupo7.moneychange.ui.adapters.IRecyclerViewAdapter
 import com.grupo7.moneychange.ui.common.PermissionRequester
@@ -46,7 +47,6 @@ class ConversionFragment : Fragment() {
     }
 
     private fun initListAdapter() {
-        conversionViewModel.getHistories()
         val viewModel = dataBindingView.viewModel
         viewModel?.let {
             val adapter = IRecyclerViewAdapter(conversionViewModel::clickDataUp, ::navigationDetailConversionFragment)
@@ -55,7 +55,7 @@ class ConversionFragment : Fragment() {
     }
 
     private fun navigationDetailConversionFragment(item: HistoryItem) {
-        val action = ConversionFragmentDirections.actionConversionFragmentToDetailConversionFragment(item.id)
-        view?.findNavController()?.navigate(action)
+        val bundle = Bundle().apply { putSerializable("history", item) }
+        view?.findNavController()?.navigate(R.id.action_conversionFragment_to_detailConversionFragment, bundle)
     }
 }

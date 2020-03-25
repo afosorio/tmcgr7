@@ -57,7 +57,6 @@ val presentationModule = module {
     }
     viewModel {
         DetailConversionViewModel(
-            historyRepository = get(),
             uiDispatcher = get()
         )
     }

@@ -8,7 +8,7 @@ class CountryRepository(
     private val permissionChecker: PermissionChecker
 ) {
     companion object {
-        const val DEFAULT_COUNTRY_NAME = "Rusia"
+        const val DEFAULT_COUNTRY_NAME = "US"
     }
 
     suspend fun getCountryLocation(): String {

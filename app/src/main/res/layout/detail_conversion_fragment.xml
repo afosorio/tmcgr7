@@ -13,8 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/blueColor"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/blueColor">
 
 
         <androidx.cardview.widget.CardView
@@ -43,10 +43,10 @@
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="center"
-                    android:lines="1"
-                    android:text="@{String.format(@string/conversion, viewModel.historyData.valueFrom, viewModel.historyData.currencyFrom, viewModel.historyData.currencyTo, viewModel.historyData.valueTo)}"
+                    android:lines="2"
+                    android:text="@{String.format(@string/conversion, viewModel.historyData.valueFrom, viewModel.historyData.currencyFrom, viewModel.historyData.valueTo,viewModel.historyData.currencyTo)}"
                     android:textColor="@android:color/black"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     app:layout_constraintBottom_toTopOf="@+id/rate_base"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -61,9 +61,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:lines="1"
-                    android:text="@{String.format(@string/conversion_rate, viewModel.historyData.valueFrom, viewModel.historyData.valueTo)}"
+                    android:text="@{String.format(@string/conversion_rate,viewModel.historyData.valueFrom, viewModel.historyData.valueTo)}"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.909"

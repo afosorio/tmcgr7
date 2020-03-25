@@ -3,7 +3,6 @@ package com.grupo7.moneychange.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.grupo7.data.repository.HistoryRepository
-import com.grupo7.domain.History
 import com.grupo7.moneychange.ui.common.ScopedViewModel
 import com.grupo7.moneychange.ui.entitiesUi.HistoryItem
 import kotlinx.coroutines.CoroutineDispatcher
@@ -11,26 +10,32 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class DetailConversionViewModel(
-    private val historyRepository: HistoryRepository,
     override val uiDispatcher: CoroutineDispatcher
 ) : ScopedViewModel(uiDispatcher) {
-
 
     private val _historyData = MutableLiveData<HistoryItem>()
     val historyData: LiveData<HistoryItem> get() = _historyData
 
-
     val dateTextView: MutableLiveData<String> = MutableLiveData()
 
-    fun fetchHistoryById(id: Int) {
+    fun fetchHistory(data: HistoryItem) {
         launch {
-            //TODO evaluar si este viewmodel debe llamar un  repositorio??? o se le puede pasar la informacion de la moneda por argumentos? o si se debe llamar un caso de uso.
-            // TODO las siguientes lineas de codigo hay que refactorizarlas a como debe ser
-            val data: History = historyRepository.findById(id)
-            val history = HistoryItem(data.id, data.date, data.currencyFrom.toString(), data.currencyTo.toString(), data.valueFrom, data.valueTo)
+            val history =
+                HistoryItem(
+                    data.id,
+                    data.date,
+                    refactorString(data.currencyFrom),
+                    refactorString(data.currencyTo),
+                    data.valueFrom,
+                    data.valueTo
+                )
             _historyData.value = history
             setDateFormat()
         }
+    }
+
+    private fun refactorString(string: String): String {
+        return string.substring(3, string.length)
     }
 
     private fun setDateFormat() {

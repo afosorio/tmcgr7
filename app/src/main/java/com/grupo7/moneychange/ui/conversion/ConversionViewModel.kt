@@ -58,6 +58,7 @@ class ConversionViewModel(
             when (val result = getCurrencies.invoke()) {
                 is ResultData.Success -> {
                     _currencyList.value = result.data
+                    getHistories()
                 }
                 is ResultData.Error -> {
                     result.exception.toString()
@@ -66,7 +67,7 @@ class ConversionViewModel(
         }
     }
 
-    fun getHistories() {
+    private fun getHistories() {
         launch {
             _currencyList.value?.let { currencyList ->
                 _historyList.value = getHistories.invoke().map {
@@ -97,7 +98,6 @@ class ConversionViewModel(
     private fun saveHistory(history: History) {
         launch {
             val result = saveHistory.invoke(history)
-            //todo que significa el 1L ? el id del registro?
             if (result >= 1L) {
                 getHistories()
             }

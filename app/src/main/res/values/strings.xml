@@ -4,6 +4,6 @@
     <string name="conversion_rate_hint">1 USD = 3500 COP</string>
     <string name="conversion_rate">%.2f USD = %.2f COP</string>
     <string name="date">%s</string>
-    <string name="conversion">%.1f %s to %s %.1f</string>
+    <string name="conversion">%.1f %s to %.1f %s</string>
     <string name="history">History</string>
 </resources>

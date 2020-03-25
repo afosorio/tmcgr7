@@ -38,19 +38,3 @@ val fakeListCurrency = listOf(
     mockedCurrency.copy(4)
 )
 
-val fakeListHistory = listOf(
-    mockedHistory.copy(1),
-    mockedHistory.copy(2),
-    mockedHistory.copy(3),
-    mockedHistory.copy(4)
-)
-
-fun returnHistoryItemList(): List<HistoryItem> {
-    val currencyList = listOf(mockedCurrency.copy(1))
-    val historyList = listOf(mockedHistory.copy(currencyTo = 1, id = 1))
-    return historyList.map {
-        it.toHistoryItem(currencyList)
-    }
-}
-
-

@@ -23,8 +23,9 @@
         android:name="com.grupo7.moneychange.ui.detail.DetailConversionFragment"
         android:label="Detail Page"
         tools:layout="@layout/detail_conversion_fragment" >
+
         <argument
-            android:name="historyId"
-            app:argType="integer" />
+            android:name="history"
+            app:argType="com.grupo7.moneychange.ui.entitiesUi.HistoryItem" />
     </fragment>
 </navigation>

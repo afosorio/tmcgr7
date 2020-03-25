@@ -13,20 +13,19 @@ class DetailConversionFragment : Fragment() {
     private val detailViewModel: DetailConversionViewModel by viewModel()
     private lateinit var dataBindingView: DetailConversionFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
-        //TODO mostrar la información real en esta pantalla.
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBindingView = DetailConversionFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = detailViewModel
         }
-        val args = DetailConversionFragmentArgs.fromBundle(arguments!!)
-        detailViewModel.fetchHistoryById(args.historyId)
+        val args = arguments?.let { DetailConversionFragmentArgs.fromBundle(it) }?.history
+        args?.let {
+            detailViewModel.fetchHistory(it)
+        }
         return dataBindingView.root
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         dataBindingView.lifecycleOwner = this.viewLifecycleOwner
     }
 
