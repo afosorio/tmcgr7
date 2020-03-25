@@ -94,7 +94,10 @@ allprojects {
                 koinTest  : "org.koin:koin-test:$koin_version",
                 rules     : 'androidx.test:rules:1.2.0',
                 extJunit  : 'androidx.test.ext:junit-ktx:1.1.1',
-                testShared: project(':testShared')
+                testShared: project(':testShared'),
+                mockWebServer: 'com.squareup.okhttp3:mockwebserver:4.2.1',
+                okhttpIdling : 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+
         ]
         kotlinLibs = [
                 stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
