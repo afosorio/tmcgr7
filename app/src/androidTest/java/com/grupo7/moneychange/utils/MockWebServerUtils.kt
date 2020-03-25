@@ -12,7 +12,7 @@ fun MockResponse.fromJson(context: Context, jsonFile: String): MockResponse =
 
 private
 fun readJsonFile(context: Context, jsonFilePath: String): String {
-    val res = context.packageManager.getResourcesForApplication("com.antonioleiva.mymovies.test")
+    val res = context.packageManager.getResourcesForApplication("com.grupo7.moneychange.test")
 
     var br: BufferedReader? = null
 
