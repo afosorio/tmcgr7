@@ -1,7 +1,6 @@
 package com.grupo7.moneychange.ui.conversion
 
 import android.Manifest
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,9 +37,8 @@ class ConversionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //TODO revisar si se está pidiendo el permiso
         activity?.let {
-            PermissionRequester(it as Activity, Manifest.permission.ACCESS_COARSE_LOCATION).request {
+            PermissionRequester(it, Manifest.permission.ACCESS_COARSE_LOCATION).request {
                 conversionViewModel.updateLocation()
             }
         }

@@ -30,5 +30,4 @@ class RetrofitBuild(baseUrl: String) {
             .build()
     }
 
-    val service: LiveApi = retrofit.run { create(LiveApi::class.java) }
 }
