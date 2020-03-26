@@ -1,11 +1,11 @@
 # tmcgr7
 Aplicación para el manejo de cambio de moneda de usd a cualquier otra moneda en tiempo real.
 La aplicación permite al usuario
--ubicarlo
--escoger moneda que quiere convertir
--guardar historial de monedas convertidas
--cargar la información del historico y poder cambiar el valor a convertir
--ver el detalle de cada conversión incluyendo fecha.
+- Ubicarlo
+- Escoger moneda que quiere convertir
+- Guardar historial de monedas convertidas
+- Cargar la información del historico y poder cambiar el valor a convertir
+- Ver el detalle de cada conversión incluyendo fecha.
 
 ## Plataforma
 
