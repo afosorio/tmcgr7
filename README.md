@@ -38,11 +38,11 @@ Desde Android Studio:
 
 ## Estructura
 
-***módulo de aplicación.***
+***módulo de aplicación***
 - Cosas específicas de Android
     - Maneja todos los requisitos de interfaz de usuario, todas las clases de fragmentos se suscriben a eventos que el viewModel puede reaccionar.
     - Para construir la IU se sigue el patrón de "Single Activity" por flujo y Fragmento por pantalla.
-    - El controlador de navegación JetPack se usa para manejar la navegación en la aplicación
+    - El controlador de navegación JetPack se usa para manejar la navegación en la aplicación.
         
 ***módulo de datos***
 - Llamadas API asignadas usando el cliente Retrofit (https://square.github.io/retrofit/) en los repositorios
