@@ -37,19 +37,20 @@ Desde Android Studio:
  **Android Target API:** 29  
 
 ## Estructura
-- módulo de aplicación.
+
+-  **módulo de aplicación. **
     - Cosas específicas de Android
-        * Maneja todos los requisitos de interfaz de usuario, todas las clases de fragmentos se suscriben a eventos que el viewModel puede reaccionar.
-        * Para construir la IU se sigue el patrón de "Single Activity" por flujo y Fragmento por pantalla.
-         * El controlador de navegación JetPack se usa para manejar la navegación en la aplicación
-- módulo de datos
-   * Llamadas API asignadas usando el cliente Retrofit (https://square.github.io/retrofit/) en los repositorios
-   * Maneja las clases de Datasource.
-- módulo de dominio
-    * Principalmente clases de datos que representan los tipos de datos en la aplicación.
-- módulo de casos de uso
-   * Los casos de uso son clases puras de Kotlin que representan una unidad de lógica de negocio (también conocidos como interactors). Para ejecutar casos de uso en un hilo diferente, estamos utilizando Coroutines y los resultados se modelan en función de la clase sellada ResultData.
-   * El tipo ResultData representa valores con dos posibilidades: un valor que es exitoso o un error;
+        - Maneja todos los requisitos de interfaz de usuario, todas las clases de fragmentos se suscriben a eventos que el viewModel puede reaccionar.
+        - Para construir la IU se sigue el patrón de "Single Activity" por flujo y Fragmento por pantalla.
+        - El controlador de navegación JetPack se usa para manejar la navegación en la aplicación
+-  **módulo de datos **
+    - Llamadas API asignadas usando el cliente Retrofit (https://square.github.io/retrofit/) en los repositorios
+    - Maneja las clases de Datasource.
+-  **módulo de dominio **
+    - Principalmente clases de datos que representan los tipos de datos en la aplicación.
+-  **módulo de casos de uso **
+    - Los casos de uso son clases puras de Kotlin que representan una unidad de lógica de negocio (también conocidos como interactors). Para ejecutar casos de uso en un hilo diferente, estamos utilizando Coroutines y los resultados se modelan en función de la clase sellada ResultData.
+    - El tipo ResultData representa valores con dos posibilidades: un valor que es exitoso o un error;
 
 ## Arquitectura
 
