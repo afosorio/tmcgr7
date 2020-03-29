@@ -28,7 +28,7 @@ class RetrofitBuild(baseUrl: String) {
 
         retrofit = Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(mosh))
-            .client(client)
+            .client(okHttpClient)
             .baseUrl(baseUrl)
             .build()
     }
